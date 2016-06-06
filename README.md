@@ -5,7 +5,7 @@ Application:
 https://educama.cfapps.io
 
 Documentation:
-https://educama.atlassian.net/wiki/DOC
+https://educama.atlassian.net/wiki/display/DOC
 
 Tickets:
 https://educama.atlassian.net/browse/ECM
