@@ -10,3 +10,6 @@ https://educama.atlassian.net/wiki/DOC
 Tickets:
 https://educama.atlassian.net/browse/ECM
 
+Continuous Deployment:
+https://travis-ci.org/EduCaMa/Showcase
+
