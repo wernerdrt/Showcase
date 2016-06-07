@@ -20,5 +20,5 @@ https://educama.cfapps.io
 mvnw clean verify
 
 ## Start application
-java -jar target/showcase-0.0.1-SNAPSHOT.jar
+java -jar target/showcase-0.0.2-SNAPSHOT.jar
 
