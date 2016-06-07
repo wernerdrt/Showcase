@@ -4,7 +4,7 @@
 
 	<groupId>educama</groupId>
 	<artifactId>showcase</artifactId>
-	<version>0.0.1</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>educama</name>
@@ -52,7 +52,7 @@
 		<url>https://github.com/EduCaMa/Showcase</url>
 		<connection>scm:git:git://github.com/kevinsawicki/github-maven-example.git</connection>
 		<developerConnection>scm:git:git@github.com:EduCaMa/Showcase.git</developerConnection>
-	  <tag>v0.0.1</tag>
+	  <tag>HEAD</tag>
   </scm>
 
 	<build>
