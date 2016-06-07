@@ -23,7 +23,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	 */
 	@Override
 	public void addViewControllers(ViewControllerRegistry registry) {
-		registry.addRedirectViewController("/", "/index2.html");
+		registry.addRedirectViewController("/", "/index.html");
 		registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
 		super.addViewControllers(registry);
 	}
