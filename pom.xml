@@ -49,11 +49,25 @@
 		</repository>
 	</repositories>
 
+	<scm>
+		<url>https://github.com/EduCaMa/Showcase</url>
+		<connection>scm:git:git://github.com/kevinsawicki/github-maven-example.git</connection>
+		<developerConnection>scm:git:git@github.com:EduCaMa/Showcase.git</developerConnection>
+	</scm>
+
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>2.5.3</version>
+				<configuration>
+					<tagNameFormat>v@{project.version}</tagNameFormat>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
