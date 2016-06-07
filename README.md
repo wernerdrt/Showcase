@@ -1,15 +1,24 @@
 # Showcase
 A showcase demonstrating Case Management and Business Process Management based on Camunda BPM, Spring Boot, Angular 
 
-Application:
-https://educama.cfapps.io
-
-Documentation:
+## Documentation:
 https://educama.atlassian.net/wiki/display/DOC
 
-Tickets:
+## Tickets:
 https://educama.atlassian.net/browse/ECM
 
-Continuous Deployment:
+##Continuous Deployment:
 https://travis-ci.org/EduCaMa/Showcase
+
+#Deployed Application:
+https://educama.cfapps.io
+
+## Build (Unix):
+./mvnw clean verify
+
+## Build (Windows)
+mvnw clean verify
+
+## Start application
+java -jar target/educama-0.0.1-SNAPSHOT.jar
 
