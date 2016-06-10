@@ -1,6 +1,5 @@
 applications:
 - name: educama
-  path: target/showcase-0.0.2-SNAPSHOT.jar
+  path: target/showcase-@project.version@.jar
   memory: 512M
   buildpack: java_buildpack
-
