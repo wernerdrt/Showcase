@@ -1,6 +1,13 @@
 language: java
 jdk:
-- oraclejdk8
+  - oraclejdk8
+before_install:
+  - chmod +x *.sh
+before_script:
+  - source ./start-xvfb.sh
+script: 
+# Maven have to be called manually, because travis is starting maven only to the test phase. So the integration tests can't be started.
+  - ./mvnw verify
 deploy:
   edge: true
   provider: cloudfoundry
@@ -10,3 +17,7 @@ deploy:
   api: https://api.run.pivotal.io
   organization: tosch
   space: development
+  on:
+    repo: EduCaMa/Showcase
+addons:
+  firefox: "42.0"
