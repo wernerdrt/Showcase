@@ -6,8 +6,10 @@ before_install:
 before_script:
   - source ./start-xvfb.sh
 script: 
-# Maven have to be called manually, because travis is starting maven only to the test phase. So the integration tests can't be started.
+  # Overwrite default "./mvnw test" so that the integration tests are executed as well.
   - ./mvnw verify
+after_success:
+- ./upload-serenity-reports.sh
 deploy:
   edge: true
   provider: cloudfoundry
