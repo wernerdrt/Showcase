@@ -18,3 +18,9 @@ hs_err_pid*
 .project
 /manifest.yml
 
+#Node JS
+node_modules
+jspm_packages
+dist
+typings
+npm-debug.log

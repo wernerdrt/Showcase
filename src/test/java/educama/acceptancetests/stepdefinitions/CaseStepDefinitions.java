@@ -1,7 +1,6 @@
 package educama.acceptancetests.stepdefinitions;
 
 import org.jbehave.core.annotations.Given;
-import org.jbehave.core.annotations.Named;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
 
@@ -12,24 +11,41 @@ public class CaseStepDefinitions extends GlobalStepDefinitions {
 
 	@Steps
 	CaseSteps user;
-	
+
 	/*
-	 * Show-cases.story
+	 * Empty Caselist
 	 */
 
-	@Given("the main page is shown")
-	public void givenTheMainPageIsShown() {
+	@Given("There are no open cases")
+	public void givenThereAreNoOpenCases() {
 		user.opensThePage();
+		user.openCasePage();
 	}
 
-	@When("I enter the name $name")
-	public void whenIEnterTheName(@Named("name") String name) {
-		user.entersTheName(name);
+	@When("I show the list of open cases")
+	public void whenIShowTheListOfOpenCases() {
+
 	}
 
-	@Then("$name should be greeted")
-	public void thenNameShouldBeGreeted(@Named("name") String name) {
-		user.checksHeading(name);
+	@Then("I see an empty list")
+	public void thenISeeAnEmptyList() {
+		user.checksTheCaseList();
 	}
 
+	/*
+	 * Caselist with one case
+	 */
+	@Given("There is 1 case")
+	public void givenThereIsOneCase() {
+		user.opensThePage();
+		user.openCasePage();
+		user.openAddCaseModal();
+		user.addOneCase();
+		user.closeAddCaseModal();
+	}
+
+	@Then("I see 1 case")
+	public void thenISeeOneCase() {
+		user.checksTheCaseListForOneCase();
+	}
 }
