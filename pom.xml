@@ -44,20 +44,24 @@
 			<scope>test</scope>
 		</dependency>
 
+		<!-- Serenety test dependencies-->
 		<dependency>
 			<groupId>net.serenity-bdd</groupId>
 			<artifactId>serenity-core</artifactId>
 			<version>${serenity.version}</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>net.serenity-bdd</groupId>
 			<artifactId>serenity-jbehave</artifactId>
 			<version>${serenity.jbehave.version}</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>net.serenity-bdd</groupId>
 			<artifactId>serenity-junit</artifactId>
 			<version>${serenity.version}</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
