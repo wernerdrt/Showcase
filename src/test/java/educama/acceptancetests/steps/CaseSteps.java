@@ -1,27 +1,53 @@
 package educama.acceptancetests.steps;
 
-import static org.junit.Assert.assertThat;
 import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
-import educama.acceptancetests.pages.WelcomePage;
+import java.util.List;
+
+import educama.acceptancetests.pages.CasesPage;
 import net.thucydides.core.annotations.Step;
 
 public class CaseSteps {
 
-	WelcomePage welcomePage;
-	
+	CasesPage casePage;
+
 	@Step
 	public void opensThePage() {
-		welcomePage.open();
+		casePage.open();
 	}
 
 	@Step
-	public void entersTheName(String name) {
-		welcomePage.enterNameInInputbox(name);
+	public void openCasePage() {
+		casePage.openCases();
 	}
 
 	@Step
-	public void checksHeading(String name) {
-		assertThat("The greetings are wrong", welcomePage.getGreetings().contains(name), is(true));
+	public void checksTheCaseList() {
+		assertThat("There are cases in the case list.", casePage.getCaseList().size() == 0, is(true));
 	}
+
+	@Step
+	public void checksTheCaseListForOneCase() {
+		List<String> caseList = casePage.getCaseList();
+		int size = caseList.size();
+
+		assertThat("There are" + size + " case/s in the case list", size == 1, is(true));
+	}
+
+	@Step
+	public void addOneCase() {
+		casePage.addCase();
+	}
+
+	@Step
+	public void openAddCaseModal() {
+		casePage.openAddCaseModal();
+	}
+
+	@Step
+	public void closeAddCaseModal() {
+		casePage.closeAddCaseModal();
+	}
+
 }

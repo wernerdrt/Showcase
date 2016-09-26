@@ -1,0 +1,27 @@
+h1 {
+  color: #369;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 250%;
+}
+body {
+  margin: 2em;
+}
+
+/* for row in table */
+.highlight {
+  background: #337ab7;
+  color: white;
+}
+
+/* for header of columns */
+.clickable {
+  cursor: pointer;
+}
+
+/* for search component */
+.has-feedback .form-control-feedback {
+	left: 1px;
+}
+.has-feedback .form-control {
+	padding-left: 35px;
+}
