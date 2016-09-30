@@ -1,21 +1,27 @@
 language: java
 jdk:
-  - oraclejdk8
+- oraclejdk8
 env:
-  - NODE_VERSION="6.1"
+  global:
+  - NODE_VERSION: 6
+  - FRONTEND_URL: http://educama.mybluemix.net
+  - BACKEND_URL: http://educama-backend.mybluemix.net
 before_install:
-  - nvm install $NODE_VERSION
-before_script:
-  - source ./start-xvfb.sh
-script: 
-  # Overwrite default "./mvnw test" so that the integration tests are executed as well.
-  - ./mvnw verify
-after_success:
-- ./upload-serenity-reports.sh
+- nvm install $NODE_VERSION
+script:
+- (cd backend && ./build.sh)
+  && (cd frontend && ./build.sh)
+  && (cd acceptance-tests && ./mvnw verify -DskipTests=true -Dmaven.javadoc.skip=true -B -V) #Don't test yet but make sure that the dependencies are cached between builds
+after_deploy:
+  (cd acceptance-tests && ./build.sh && ./deploy.sh)
+addons:
+  #Browser is used by the acceptance tests
+  firefox: '42.0'
 cache:
   timeout: 604800 #1 week
   directories:
   - "$HOME/.m2"
+  - "frontend/node_modules"
 deploy:
   edge: true
   provider: cloudfoundry
@@ -27,5 +33,3 @@ deploy:
   space: dev
   on:
     repo: EduCaMa/Showcase
-addons:
-  firefox: "42.0"
