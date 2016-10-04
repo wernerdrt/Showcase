@@ -12,6 +12,10 @@ script:
   - ./mvnw verify
 after_success:
 - ./upload-serenity-reports.sh
+cache:
+  timeout: 604800 #1 week
+  directories:
+  - "$HOME/.m2"
 deploy:
   edge: true
   provider: cloudfoundry
