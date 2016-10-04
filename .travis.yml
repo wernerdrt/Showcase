@@ -4,7 +4,6 @@ jdk:
 env:
   - NODE_VERSION="6.1"
 before_install:
-  - chmod +x *.sh
   - nvm install $NODE_VERSION
 before_script:
   - source ./start-xvfb.sh
