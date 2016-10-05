@@ -75,7 +75,7 @@
 
 	<scm>
 		<url>https://github.com/EduCaMa/Showcase</url>
-		<connection>scm:git:git://github.com/kevinsawicki/github-maven-example.git</connection>
+		<connection>scm:git:git@github.com:EduCaMa/Showcase.git</connection>
 		<developerConnection>scm:git:git@github.com:EduCaMa/Showcase.git</developerConnection>
 		<tag>HEAD</tag>
 	</scm>
