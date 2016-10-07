@@ -21,7 +21,7 @@
 	</properties>
 
 	<dependencies>
-		<!-- Serenity test dependencies-->
+		<!-- Serenity test dependencies -->
 		<dependency>
 			<groupId>net.serenity-bdd</groupId>
 			<artifactId>serenity-core</artifactId>
