@@ -1,10 +1,10 @@
-package educama.acceptancetests.stepdefinitions;
+package org.educama.acceptancetests.stepdefinitions;
 
+import org.educama.acceptancetests.steps.CaseSteps;
 import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
 
-import educama.acceptancetests.steps.CaseSteps;
 import net.thucydides.core.annotations.Steps;
 
 public class CaseStepDefinitions extends GlobalStepDefinitions {

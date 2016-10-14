@@ -1,4 +1,4 @@
-package educama.acceptancetests.pages;
+package org.educama.acceptancetests.pages;
 
 import java.util.ArrayList;
 import java.util.List;

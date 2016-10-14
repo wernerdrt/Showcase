@@ -1,4 +1,4 @@
-package educama;
+package org.educama;
 
 import net.serenitybdd.jbehave.SerenityStories;
 
