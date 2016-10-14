@@ -1,0 +1,11 @@
+applications:
+- name: educama-backend
+  path: backend/target/educama-backend.jar
+  buildpack: java_buildpack
+  memory: 768M
+  disk_quota: 256M
+- name: educama
+  path: frontend/educama-frontend.zip
+  buildpack: staticfile_buildpack
+  memory: 64M
+  disk_quota: 256M
