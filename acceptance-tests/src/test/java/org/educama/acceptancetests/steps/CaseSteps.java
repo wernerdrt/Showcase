@@ -1,11 +1,12 @@
-package educama.acceptancetests.steps;
+package org.educama.acceptancetests.steps;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 import java.util.List;
 
-import educama.acceptancetests.pages.CasesPage;
+import org.educama.acceptancetests.pages.CasesPage;
+
 import net.thucydides.core.annotations.Step;
 
 public class CaseSteps {
