@@ -10,17 +10,32 @@
 
 	<description>Acceptance tests of EduCaMa</description>
 
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>1.3.5.RELEASE</version>
+		<relativePath /> <!-- lookup parent from repository -->
+	</parent>
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.8</java.version>
+		<educama.backend.version>0.0.2-SNAPSHOT</educama.backend.version>
 		<maven.plugins.version>2.19.1</maven.plugins.version>
 		<serenity.version>1.1.36</serenity.version>
 		<serenity.maven.version>1.1.36</serenity.maven.version>
 		<webdriver.driver>firefox</webdriver.driver>
 		<serenity.jbehave.version>1.6.0</serenity.jbehave.version>
+		<jetty.version>9.3.12.v20160915</jetty.version>
 	</properties>
 
 	<dependencies>
+		<!-- Dependency to backend -->
+		<dependency>
+			<groupId>org.educama</groupId>
+			<artifactId>educama-backend</artifactId>
+			<version>${educama.backend.version}</version>
+		</dependency>
 		<!-- Serenity test dependencies -->
 		<dependency>
 			<groupId>net.serenity-bdd</groupId>
@@ -39,6 +54,32 @@
 			<artifactId>serenity-junit</artifactId>
 			<version>${serenity.version}</version>
 			<scope>test</scope>
+		</dependency>
+		<!-- Remove default Spring Boot dependency to Tomcat and replace it with 
+			Jetty because it can be configured with a directory outside of the project -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-tomcat</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-jersey</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-tomcat</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-jetty</artifactId>
 		</dependency>
 	</dependencies>
 
@@ -59,6 +100,72 @@
 
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<mainClass>org.educama.EducamaApplication</mainClass>
+				</configuration>
+				<executions>
+					<execution>
+						<id>pre-integration-test</id>
+						<goals>
+							<goal>start</goal>
+						</goals>
+						<configuration>
+							<wait>1000</wait>
+							<maxAttempts>60</maxAttempts>
+							<arguments>
+								<argument>--server.port=8091</argument>
+							</arguments>
+						</configuration>
+					</execution>
+					<execution>
+						<id>post-integration-test</id>
+						<goals>
+							<goal>stop</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- Use Jetty Server to host the frontend during integration tests. Documentation: 
+				www.eclipse.org/jetty/documentation/current/jetty-maven-plugin.html -->
+			<plugin>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
+				<version>${jetty.version}</version>
+				<configuration>
+					<stopKey>STOP</stopKey>
+					<stopPort>9999</stopPort>
+					<stopWait>5</stopWait>
+					<webAppSourceDirectory>${basedir}/../frontend</webAppSourceDirectory>
+					<httpConnector>
+						<port>8090</port>
+					</httpConnector>
+				</configuration>
+				<executions>
+					<execution>
+						<id>start-jetty</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>start</goal>
+						</goals>
+						<configuration>
+							<daemon>true</daemon>
+						</configuration>
+					</execution>
+					<execution>
+						<id>stop-jetty</id>
+						<phase>post-integration-test</phase>
+						<goals>
+							<goal>stop</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+
 			<plugin>
 				<artifactId>maven-failsafe-plugin</artifactId>
 				<version>${maven.plugins.version}</version>
