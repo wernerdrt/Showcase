@@ -3,6 +3,8 @@
 # The idea of this script is based on the concept from https://gist.github.com/domenic/ec8b0fc8ab45f39403dd
 set -e # Exit with nonzero exit code if anything fails
 
+START_TIME=$SECONDS
+
 # Determine hash of newest commit
 SHA=`git rev-parse --verify HEAD`
 echo "Creating Serenity Report for commit $SHA"
@@ -50,4 +52,7 @@ echo "Step 6: Show git status"
 git status
 
 echo "Successfully pushed changes!"
+
+ELAPSED_TIME=$(($SECONDS - $START_TIME))
+echo "Upload serenity reports duration: $ELAPSED_TIME seconds"
 
