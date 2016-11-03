@@ -12,9 +12,7 @@ before_install:
 script:
 - (cd backend && ./build.sh)
   && (cd frontend && ./build.sh)
-  && (cd acceptance-tests && ./mvnw verify -DskipTests=true -Dmaven.javadoc.skip=true -B -V) #Don't test yet but make sure that the dependencies are cached between builds
-after_deploy:
-  (cd acceptance-tests && ./build.sh && ./deploy.sh)
+  && (cd acceptance-tests && ./build.sh && ./upload-serenity-reports.sh)
 addons:
   #Browser is used by the acceptance tests
   firefox: '42.0'
