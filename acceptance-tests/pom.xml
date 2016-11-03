@@ -218,7 +218,6 @@
 						</goals>
 						<phase>integration-test</phase>
 						<configuration>
-							<testFailureIgnore>true</testFailureIgnore>
 							<excludes>
 								<exclude>none</exclude>
 							</excludes>
