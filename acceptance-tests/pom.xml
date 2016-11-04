@@ -25,6 +25,8 @@
 		<serenity.version>1.1.36</serenity.version>
 		<serenity.maven.version>1.1.36</serenity.maven.version>
 		<webdriver.driver>firefox</webdriver.driver>
+		<!-- using version 1.6.0 because with any newer version (tested up to 1.13.0)
+			the acceptance tests would not start -->
 		<serenity.jbehave.version>1.6.0</serenity.jbehave.version>
 		<jetty.version>9.3.12.v20160915</jetty.version>
 	</properties>
@@ -48,6 +50,15 @@
 			<artifactId>serenity-jbehave</artifactId>
 			<version>${serenity.jbehave.version}</version>
 			<scope>test</scope>
+			<!-- Excluding the serenity-core dependency because in the used version 
+				a rc is used for which the pom is missing. serenity-core is part of the project
+				anyway in a stable version -->
+			<exclusions>
+				<exclusion>
+					<groupId>net.serenity-bdd</groupId>
+					<artifactId>serenity-core</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>net.serenity-bdd</groupId>
