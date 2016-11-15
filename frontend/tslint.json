@@ -31,9 +31,8 @@
     ],
     "directive-selector-prefix": [
       true,
-      "ss"
+      "educama"
     ],
-    // should be activated again
     "component-selector-prefix": [
       false,
       "educama"
@@ -51,7 +50,7 @@
     "pipe-naming": [
       true,
       "camelCase",
-      "ss"
+      "educama"
     ],
     "component-class-suffix": true,
     "directive-class-suffix": true,

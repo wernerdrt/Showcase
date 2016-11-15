@@ -1,55 +1,39 @@
 package org.educama.acceptancetests.steps;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import net.thucydides.core.annotations.Step;
+import org.educama.acceptancetests.pages.ShipmentCapturePage;
+import org.educama.acceptancetests.pages.ShipmentListPage;
 
 import java.util.List;
 
-import org.educama.acceptancetests.pages.ShipmentsListPage;
-
-import net.thucydides.core.annotations.Step;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
 public class ShipmentsListSteps {
 
-	ShipmentsListPage shipmentsListPage;
-
-	@Step
-	public void opensThePage() {
-		shipmentsListPage.open();
-		shipmentsListPage.openShipments();
-	}
+	ShipmentListPage shipmentsListPage;
+	ShipmentCapturePage shipmentCapturePage;
 
 	@Step
 	public void openShipmentsListPage() {
-		shipmentsListPage.openShipments();
+		shipmentsListPage.open();
 	}
 
 	@Step
 	public void checksTheShipmentsList() {
-		assertThat("There are cases in the case list.", shipmentsListPage.getShipmentsList().size() == 0, is(true));
+		assertThat("There are shipments in the shipment list.", shipmentsListPage.getShipmentsList().size() == 0, is(true));
 	}
 
 	@Step
 	public void checksTheShipmentListForOneShipment() {
 		List<String> shipmentsList = shipmentsListPage.getShipmentsList();
 		int size = shipmentsList.size();
-
-		assertThat("There are" + size + " shipment/s in the shipment list", size == 1, is(true));
+		assertThat("There are " + size + " shipment/s in the shipment list", size == 1, is(true));
 	}
 
 	@Step
 	public void addOneShipment() {
-		shipmentsListPage.addShipment();
+		shipmentsListPage.openShipmentCapturePage();
+		shipmentCapturePage.createShipment();
 	}
-
-	@Step
-	public void openAddShipmentModal() {
-		shipmentsListPage.openAddShipmentModal();
-	}
-
-	@Step
-	public void closeAddShipmentModal() {
-		shipmentsListPage.closeAddShipmentModal();
-	}
-
 }

@@ -1,3 +1,17 @@
 {
-
+  "ERROR-COMPONENT_TITLE": "Attention",
+  "GENERIC_CANCEL": "Cancel",
+  "GENERIC_CREATE": "Create",
+  "GENERIC_NEW": "New",
+  "GENERIC_NO-RECORDS-FOUND": "No records found.",
+  "GENERIC_OK": "OK",
+  "GENERIC_REFRESH": "Refresh",
+  "REST-CLIENT-SERVICE_ERROR-SERVER-UNREACHABLE": "Please apologize! We encountered a technical problem. Please try again later.",
+  "SHIPMENT-LIST-COMPONENT_TITLE": "List of Shipments",
+  "SHIPMENT-CAPTURE-COMPONENT_TITLE": "Create a new Shipment",
+  "SHIPMENT_CAPTURE_COMPONENT-PANEL_SENDER_RECEIVER_ADDRESS": "Sender and Receiver Address",
+  "SHIPMENT-RESOURCE_TRACKING-ID": "Tracking ID",
+  "SHIPMENT-RESOURCE_CUSTOMER": "Customer",
+  "SHIPMENT-RESOURCE_SENDER-ADDRESS": "Sender Address",
+  "SHIPMENT-RESOURCE_RECEIVER-ADDRESS": "Receiver Address"
 }

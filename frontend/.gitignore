@@ -3,10 +3,12 @@ dist
 docs
 node_modules
 resources/styles/**/*.css
-
 npm-debug.log
 
+#Eclipse
 .project
-.idea/
+
+#IntelliJ
+.idea
 *.iml
 

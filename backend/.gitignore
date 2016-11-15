@@ -2,10 +2,12 @@
 hs_err_pid*
 
 # Misc
-/target/
-.settings
 .classpath
 .project
+.settings
+/target/
 /manifest.yml
-.idea/
+
+#IntelliJ
+.idea
 *.iml
