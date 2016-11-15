@@ -5,29 +5,42 @@
   <title>EduCaMa</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link data-require="bootstrap-css@*" data-semver="3.3.1" rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css"
-  />
-  <link rel="stylesheet" href="styles.css">
+  <link data-require="bootstrap-css@*" data-semver="3.3.1" rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css"/>
 
-  <!-- 1. Load libraries -->
-  <!-- Polyfill(s) for older browsers -->
-  <script src="https://unpkg.com/core-js/client/shim.min.js"></script>
+  <!-- build:css -->
+  <link rel="stylesheet" type="text/css" href="resources/primeng/font-awesome.min.css"/>
+  <link rel="stylesheet" type="text/css" href="/node_modules/primeng/resources/primeng.min.css"/>
+  <link rel="stylesheet" type="text/css"href="resources/styles/styles.css"/>
+  <!-- endbuild -->
 
-  <script src="https://unpkg.com/zone.js@0.6.23?main=browser"></script>
-  <script src="https://unpkg.com/reflect-metadata@0.1.3"></script>
-  <script src="https://unpkg.com/systemjs@0.19.27/dist/system.src.js"></script>
-
-  <!-- 2. Configure SystemJS -->
-  <script src="systemjs.config.js"></script>
-  <script>
-      System.import('app').catch(function(err){ console.error(err); });
-    </script>
 </head>
-
-<!-- 3. Display the application -->
-
 <body>
-  <educama>Loading...</educama>
-</body>
+  <educama-app>
+    <i class="loading-spinner fa fa-spin fa-spinner"></i>
+  </educama-app>
 
-</html>
+  <!-- build:libs -->
+  <!-- <script src="node_modules/es6-shim/es6-shim.min.js"></script> -->
+  <script src="node_modules/core-js/client/shim.min.js"></script>
+  <script src="node_modules/systemjs/dist/system-polyfills.js"></script>
+  <script src="node_modules/zone.js/dist/zone.js"></script>
+  <script src="node_modules/reflect-metadata/Reflect.js"></script>
+  <script src="node_modules/web-animations-js/web-animations-next.min.js"></script>
+  <script src="resources/polyfills/shims_for_IE.js"></script>
+  <script src="resources/polyfills/svg4everybody.js"></script>
+  <!-- endbuild -->
+
+  <!-- build:app -->
+  <!-- endbuild -->
+
+  <!-- build:remove -->
+  <script src="node_modules/systemjs/dist/system.src.js"></script>
+  <script src="./systemjs.config.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      System.import('app')
+              .then(null, console.error.bind(console));
+    });
+  </script>
+  <!-- endbuild -->
+</body>

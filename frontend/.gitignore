@@ -1,10 +1,12 @@
-#Node JS
-node_modules
-jspm_packages
+build
 dist
-typings
+docs
+node_modules
+resources/styles/**/*.css
+
 npm-debug.log
-educama-frontend.zip
 
 .project
+.idea
+*.iml
 
