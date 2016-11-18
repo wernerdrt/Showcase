@@ -5,11 +5,11 @@ START_TIME=$SECONDS
 
 echo -n "NPM Version: " && npm --version
 echo -n "Node Version: " && node --version
-npm install typescript
 npm install
-npm run tsc
-
-zip --quiet --recurse-paths educama-frontend.zip *
+gulp build
+# To be activated once karma text needs to be executed
+# we might have to configure a headless server beforehand
+# gulp test
 
 echo "Directory content after build:"
 ls -al

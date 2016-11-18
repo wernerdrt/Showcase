@@ -6,7 +6,7 @@ applications:
   memory: 768M
   disk_quota: 256M
 - name: educama
-  path: frontend/educama-frontend.zip
+  path: frontend/dist/educama-frontend.zip
   buildpack: staticfile_buildpack
   memory: 64M
   disk_quota: 256M
