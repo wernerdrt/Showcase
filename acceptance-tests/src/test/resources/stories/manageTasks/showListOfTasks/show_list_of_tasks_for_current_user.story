@@ -13,4 +13,3 @@ Scenario: Display a message if there is no task assigned to current user
 Given There are 5 tasks, 0 of them assigned to the current user
 When I show the list of tasks
 Then I see a message "no task is currently assigned to you"
-

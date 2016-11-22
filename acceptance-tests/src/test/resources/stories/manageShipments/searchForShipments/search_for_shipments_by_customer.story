@@ -21,7 +21,3 @@ Given There are 5 shipments, one from customer MyStuff, one from customer MySofa
 When I show the list of current shipments
 And I enter "abc" into the search input field
 Then I see a message "no shipment found for 'abc'"
-
-
-
-
