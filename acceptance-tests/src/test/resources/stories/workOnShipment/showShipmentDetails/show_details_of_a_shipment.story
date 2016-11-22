@@ -11,4 +11,3 @@ Then Tom sees the shipment details
 And Tom sees the available tasks for this shipment
 And Tom sees the active tasks for this shipment
 And Tom sees the completed tasks for this shipment
-

@@ -18,7 +18,3 @@ Scenario: List open shipments with 1 shipment
 Given There is 1 shipment
 When I show the list of current shipments
 Then I see 1 shipment
-
-
-
-
