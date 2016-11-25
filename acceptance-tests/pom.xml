@@ -21,7 +21,6 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.8</java.version>
 		<educama.backend.version>0.0.2-SNAPSHOT</educama.backend.version>
-		<maven.plugins.version>2.19.1</maven.plugins.version>
 		<serenity.version>1.1.36</serenity.version>
 		<serenity.maven.version>1.1.36</serenity.maven.version>
 		<webdriver.driver>firefox</webdriver.driver>
@@ -200,7 +199,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>${maven.plugins.version}</version>
 				<configuration>
 					<excludes>
 						<exclude>**/*AcceptanceTests.java</exclude>
