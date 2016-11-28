@@ -8,7 +8,7 @@
 	<version>0.0.2-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<description>Acceptance tests of EduCaMa</description>
+	<description>Acceptance tests of Educama</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -103,9 +103,9 @@
 	</repositories>
 
 	<scm>
-		<url>https://github.com/EduCaMa/Showcase</url>
-		<connection>scm:git:git@github.com:EduCaMa/Showcase.git</connection>
-		<developerConnection>scm:git:git@github.com:EduCaMa/Showcase.git</developerConnection>
+		<url>https://github.com/Educama/Showcase</url>
+		<connection>scm:git:git@github.com:Educama/Showcase.git</connection>
+		<developerConnection>scm:git:git@github.com:Educama/Showcase.git</developerConnection>
 		<tag>HEAD</tag>
 	</scm>
 

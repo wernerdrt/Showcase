@@ -1,5 +1,5 @@
 /**
- * Gulp Build Script for EduCaMa Frontend
+ * Gulp Build Script for Educama Frontend
  */
 
 var gulp = require('gulp');
