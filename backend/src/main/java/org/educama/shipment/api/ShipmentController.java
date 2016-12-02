@@ -26,9 +26,8 @@ public class ShipmentController {
     private ShipmentBoundaryService shipmentBoundaryService;
 
     /**
-     * API call to create a Shipment case.
-     * The parameter will be converted into a instance of the internal data-model.
-     * This instance is going to be stored into a repository and used to create a case in the CMMN-Engine.
+     * API call to create a shipment.
+     * 
      * @param shipmentWsResourceToCreate as instance of the API-Model (Resource)
      * @return the created instance converted back into the API-Model (Resource)
      */
@@ -43,7 +42,7 @@ public class ShipmentController {
     }
 
     /**
-     * API call to select all shipments from the CMN-engine.
+     * API call to select all shipments.
      * 
      * @return the result collection converted into the API-Model (Resource)
      */

@@ -7,17 +7,17 @@ import java.util.Collection;
 public interface ShipmentBoundaryService {
 
      /**
-     * creating a shipment is done by storing it into a repository and create a Case.
+     * Creates a shipment
      *
      * @param shipment which is to be created as Case
-     * @return the created shipment instance which is enhanced by information by the engine (e.g. ID)
+     * @return the created shipment
      */
     Shipment createShipment(Shipment shipment);
 
     /**
-     * Finding all Shipments is done by looking up all Shipment-cases.
+     * Retrieves all shipments.
      * 
-     * @return a collection of all found Shipment-cases.
+     * @return a collection of all shipments
      */
     Collection<Shipment> findAll();
 }

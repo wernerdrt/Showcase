@@ -1,18 +1,15 @@
 package org.educama.shipment.boundary.impl;
 
-import org.camunda.bpm.engine.runtime.CaseInstance;
+import java.util.Collection;
 
+import org.camunda.bpm.engine.runtime.CaseInstance;
 import org.educama.shipment.boundary.ShipmentBoundaryService;
 import org.educama.shipment.control.ShipmentCaseControlService;
 import org.educama.shipment.model.Shipment;
-
 import org.educama.shipment.repository.ShipmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Collection;
-import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
@@ -37,8 +34,6 @@ public class ShipmentBoundaryServiceImpl implements ShipmentBoundaryService {
 
     @Override
     public Collection<Shipment> findAll() {
-        List<Shipment> allShipments = shipmentRepository.findAll();
-
-        return allShipments;
+        return shipmentRepository.findAll();
     }
 }

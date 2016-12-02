@@ -16,10 +16,9 @@ public class ShipmentCaseControlService {
     private CaseService caseService;
 
     /**
-     * A CaseInstance is created by the the casekey {@link #SHIPMENTCASEKEY} and a UUID as business key.
-     * That business key will be used as transport id in both data model.
+     * Creates a new CaseInstance with a generated business key.
      *
-     * @return by CMMN engine generated CaseInstance
+     * @return the new CaseInstance
      */
     public CaseInstance create() {
         String businessKey = UUID.randomUUID().toString();
