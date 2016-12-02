@@ -58,7 +58,7 @@ public class DefaultUserConfiguration {
     private User createDefaultUser(String username, String password) {
         User user = identityService.newUser(username);
         user.setPassword(password);
-        user.setFirstName("EduCaMa");
+        user.setFirstName("Educama");
         user.setLastName("User");
         identityService.saveUser(user);
 

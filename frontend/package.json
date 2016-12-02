@@ -1,7 +1,7 @@
 {
-  "name": "EduCaMa-Frontend",
+  "name": "Educama-Frontend",
   "version": "1.0.0",
-  "description": "Angular2 Web-UI for EduCaMa Project",
+  "description": "Angular2 Web-UI for Educama Project",
   "dependencies": {
     "@angular/common": "2.1.0",
     "@angular/compiler": "2.1.0",
