@@ -32,7 +32,7 @@ public class ShipmentController {
      * @param shipmentWsResourceToCreate as instance of the API-Model (Resource)
      * @return the created instance converted back into the API-Model (Resource)
      */
-    @RequestMapping(value = "/", method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<?> createShipment(@RequestBody ShipmentResource shipmentWsResourceToCreate) {
         Shipment convertedShipment = shipmentWsResourceToCreate.toShipment();
         Shipment createdShipment = shipmentBoundaryService.createShipment(convertedShipment);
@@ -47,7 +47,7 @@ public class ShipmentController {
      * 
      * @return the result collection converted into the API-Model (Resource)
      */
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public ShipmentListResource shipments() {
         Collection<Shipment> allShipments = shipmentBoundaryService.findAll();
         ShipmentListResource resourceList = new ShipmentListResource().fromShipmentCollection(allShipments);
