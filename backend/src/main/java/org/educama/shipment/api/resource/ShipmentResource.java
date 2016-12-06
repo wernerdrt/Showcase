@@ -10,7 +10,7 @@ public class ShipmentResource {
     public String receiverAddress;
 
     /**
-     * Create a API-Model (Resource) instance from the internal data-model.
+     * Create a API-Model (Resource) instance from the internal data model.
      * 
      * @param shipmentModel instance of the internal-data model
      * @return a converted ShipmentResource
@@ -25,7 +25,7 @@ public class ShipmentResource {
     }
 
     /**
-     * Convert this instance of API-Model (Resource) to the internal data-model.
+     * Convert this instance of API-Model (Resource) to the internal data model.
      * 
      * @return the converted instance
      */
