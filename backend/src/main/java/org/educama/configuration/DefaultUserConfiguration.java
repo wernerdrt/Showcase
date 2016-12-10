@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.camunda.bpm.engine.authorization.Authorization;
 import org.camunda.bpm.engine.authorization.Resources;
 import org.camunda.bpm.engine.AuthorizationService;
@@ -16,6 +19,8 @@ import org.camunda.bpm.engine.FilterService;
 import org.camunda.bpm.engine.filter.Filter;
 import org.camunda.bpm.engine.identity.User;
 import org.camunda.bpm.engine.TaskService;
+
+import java.lang.invoke.MethodHandles;
 
 @Component
 public class DefaultUserConfiguration {
@@ -39,16 +44,20 @@ public class DefaultUserConfiguration {
     @Value("${org.educama.configuration.adminPassword}")
     private String adminPassword;
 
+    private final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+
 
     @PostConstruct
     protected void init() {
-        if(userExists(adminUsername))
-            return;
-
-        User user = createDefaultUser(adminUsername, adminPassword);
-        Group adminGroup = createAdminGroup(user);
-        grantAuthorizationWithPermissions(adminGroup);
-        createAssignedTaskQuery();
+        if(userExists(adminUsername)) {
+            logger.info("Default user '{}' already exists.", adminUsername);
+        } else {
+            logger.info("Creating default user '{}'.", adminUsername);
+            User user = createDefaultUser(adminUsername, adminPassword);
+            Group adminGroup = createAdminGroup(user);
+            grantAuthorizationWithPermissions(adminGroup);
+            createAssignedTaskQuery();
+        }
     }
 
     private boolean userExists(String username) {
