@@ -21,4 +21,7 @@ public class Shipment extends AbstractPersistable<Long> {
 
     @NotBlank
     public String receiverAddress;
+
+    @NotBlank
+    public String customer;
 }
