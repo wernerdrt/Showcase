@@ -15,13 +15,13 @@ public class Shipment extends AbstractPersistable<Long> {
 
     @Column(unique = true)
     public String trackingId;
+    
+    @NotBlank
+    public String customer;
 
     @NotBlank
     public String senderAddress;
 
     @NotBlank
     public String receiverAddress;
-
-    @NotBlank
-    public String customer;
 }
