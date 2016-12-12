@@ -2,6 +2,7 @@
   "name": "Educama-Frontend",
   "version": "1.0.0",
   "description": "Angular2 Web-UI for Educama Project",
+  "license": "Apache-2.0",
   "dependencies": {
     "@angular/common": "2.1.0",
     "@angular/compiler": "2.1.0",
