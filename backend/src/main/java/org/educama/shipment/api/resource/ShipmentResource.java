@@ -8,10 +8,11 @@ public class ShipmentResource {
     public String trackingId;
     public String senderAddress;
     public String receiverAddress;
+    public String customer;
 
     /**
      * Create a API-Model (Resource) instance from the internal data model.
-     * 
+     *
      * @param shipmentModel instance of the internal-data model
      * @return a converted ShipmentResource
      */
@@ -20,13 +21,14 @@ public class ShipmentResource {
         this.receiverAddress = shipmentModel.receiverAddress;
         this.id = shipmentModel.getId();
         this.trackingId = shipmentModel.trackingId;
+        this.customer = shipmentModel.customer;
 
         return this;
     }
 
     /**
      * Convert this instance of API-Model (Resource) to the internal data model.
-     * 
+     *
      * @return the converted instance
      */
     public Shipment toShipment() {
@@ -34,6 +36,7 @@ public class ShipmentResource {
         toConvert.senderAddress = senderAddress;
         toConvert.receiverAddress = receiverAddress;
         toConvert.trackingId = trackingId;
+        toConvert.customer = customer;
 
         return toConvert;
     }
