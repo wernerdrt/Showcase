@@ -2,7 +2,7 @@
 applications:
 - name: educama-backend
   path: backend/target/educama-backend-exec.jar
-  buildpack: java_buildpack
+  buildpack: https://github.com/cloudfoundry/java-buildpack.git#v3.10
   memory: 768M
   disk_quota: 256M
 - name: educama
