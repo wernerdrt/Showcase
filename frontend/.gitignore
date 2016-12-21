@@ -7,6 +7,6 @@ resources/styles/**/*.css
 npm-debug.log
 
 .project
-.idea
+.idea/
 *.iml
 
