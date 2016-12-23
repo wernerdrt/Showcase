@@ -39,7 +39,7 @@
 </cmmn:textAnnotation>
   <cmmn:association id="Association_1xi3yg4" sourceRef="HumanTask_processShipment" targetRef="TextAnnotation_0ml9weh" />
   <cmmndi:CMMNDI>
-    <cmmndi:CMMNDiagram id="educamaShipment" name="EduCaMa Shipment">
+    <cmmndi:CMMNDiagram id="educamaShipment" name="Educama Shipment">
       <cmmndi:Size xsi:type="dc:Dimension" width="500" height="500" />
       <cmmndi:CMMNShape id="DI_CasePlanModel_1" cmmnElementRef="shipmentCasePlanModel">
         <dc:Bounds x="114" y="63" width="539" height="274" />
