@@ -44,6 +44,13 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
+
+		<dependency>
+			<groupId>org.camunda.bpm.extension</groupId>
+			<artifactId>camunda-bpm-assert</artifactId>
+			<version>1.2</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<scm>
