@@ -215,22 +215,24 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<configuration>
-					<excludes>
-						<exclude>**/*AcceptanceTests.java</exclude>
-					</excludes>
-				</configuration>
+				<executions>
+					<!-- Disable execution of maven-surefire-plugin already included in the parent pom because it binds to phases and prevents the Jetty from starting. -->
+					<execution>
+						<id>default-test</id>
+						<phase>non-phase</phase>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
 				<executions>
 					<execution>
 						<id>integration-test</id>
 						<goals>
-							<goal>test</goal>
+							<goal>integration-test</goal>
 						</goals>
-						<phase>integration-test</phase>
 						<configuration>
-							<excludes>
-								<exclude>none</exclude>
-							</excludes>
 							<includes>
 								<include>**/*AcceptanceTests.java</include>
 							</includes>
