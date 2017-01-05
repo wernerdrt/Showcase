@@ -10,7 +10,7 @@ import java.util.UUID;
 @Service
 public class ShipmentCaseControlService {
 
-    private final String SHIPMENTCASEKEY = "shipment";
+    private final String SHIPMENTCASEKEY = "CaseId_shipment";
 
     @Autowired
     private CaseService caseService;

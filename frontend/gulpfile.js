@@ -15,6 +15,7 @@ var ext = require('gulp-ext-replace');
 var gulpif = require('gulp-if');
 var historyApiFallback = require('connect-history-api-fallback');
 var htmlreplace = require('gulp-html-replace');
+var inlineNg2Template = require('gulp-inline-ng2-template');
 var uglify = require('gulp-uglify');
 var KarmaServer = require('karma').Server;
 var postcss = require('gulp-postcss');
@@ -41,6 +42,7 @@ const distDir = 'dist';
 const resourceDir = 'resources';
 
 var tsFiles = ['src/**/*.ts'];
+var tsWatchFiles = ['src/**/*.ts', 'src/**/*.html'];
 var sassFiles = [resourceDir + '/styles/**/*.scss'];
 
 /**************************************************************
@@ -53,8 +55,13 @@ gulp.task('cleanBuildDir', function () {
 });
 
 // clean the dist directory
-gulp.task('cleanDistDir', ['cleanBuildDir'], function () {
+gulp.task('cleanDistDir', function () {
     return del(distDir + '/**/*');
+});
+
+// delete css files
+gulp.task('cleanCSS', function () {
+    return del(resourceDir + '/styles/**/*.css');
 });
 
 /**************************************************************
@@ -74,10 +81,10 @@ function compileTs(files, watchMode) {
         .pipe(tslint({
             formatter: "verbose"
         }))
-        .pipe(gulpif(!watchMode, tslint.report()))
-        .pipe(gulpif(watchMode, tslint.report({
-            emitError: false
-        })))
+        .pipe(tslint.report({
+            emitError: !watchMode
+        }))
+        .pipe(inlineNg2Template({useRelativePaths: true}))
         .pipe(sourcemaps.init())
         .pipe(tsProject())
         .on('error', function () {
@@ -92,7 +99,7 @@ function compileTs(files, watchMode) {
 }
 
 // transpile typescript files
-gulp.task('transpile', ['cleanBuildDir', 'cleanDistDir'], function (done) {
+gulp.task('transpile', ['cleanBuildDir', 'cleanDistDir', 'cleanCSS'], function (done) {
     compileTs(tsFiles)
         .on('finish', done);
 });
@@ -100,16 +107,12 @@ gulp.task('transpile', ['cleanBuildDir', 'cleanDistDir'], function (done) {
 // function to compile sass files
 function compileSass() {
     return gulp.src(sassFiles)
-        .pipe(sourcemaps.init())
-        .pipe(postcss([precss, autoprefixer, cssnano]))
-        .pipe(sourcemaps.write())
-        .pipe(ext('.css'))
         .pipe(sass().on('error', sass.logError))
-        .pipe(gulp.dest(resourceDir + '/styles/'))
+        .pipe(gulp.dest(resourceDir + '/styles/'));
 }
 
 // generate css from sass files
-gulp.task('sass', ['cleanBuildDir', 'cleanDistDir'], function (done) {
+gulp.task('sass', ['cleanBuildDir', 'cleanDistDir', 'cleanCSS'], function (done) {
     compileSass()
         .on('finish', done);
 });
@@ -153,6 +156,7 @@ gulp.task('bundle-css-files', ['copy-resources'], function (done) {
     const cssFiles = [
         resourceDir + '/primeng/font-awesome.min.css',
         nodeModulesDir + '/primeng/resources/primeng.min.css',
+        nodeModulesDir + '/primeng/resources/themes/omega/theme.css',
         resourceDir + '/styles/styles.css'
     ];
     gulp.src(cssFiles, {base: 'resources/styles'})
@@ -306,9 +310,12 @@ gulp.task('remap-istanbul', ['run-karma'], function (done) {
 
 // watch typescript files and transpile them
 gulp.task('watch-ts', function () {
-    return gulp.watch(tsFiles, function (file) {
-        util.log('Compiling ' + file.path + '...');
-        return compileTs(file.path, true);
+    return gulp.watch(tsWatchFiles, function (file) {
+        file.path.endsWith('.html')
+            ? filename = file.path.replace('.html', ".ts")
+            : filename = file.path;
+        util.log('Compiling ' + filename + '...');
+        return compileTs(filename, true);
     });
 });
 

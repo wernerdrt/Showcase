@@ -1,11 +1,22 @@
 import {Component} from "@angular/core";
-import {HTML_TEMPLATE} from "./app.component.html";
+import {TranslateService} from "ng2-translate/ng2-translate";
 
 @Component({
     selector: 'educama-app',
-    template: HTML_TEMPLATE,
-    styles: [`.active-nav { color: white !important; }
-              .nonclickable:hover { color: #9d9d9d !important }`],
+    templateUrl: './app.component.html'
 })
 export class AppComponent {
+
+    constructor(private _translateService: TranslateService) {
+        this.configureLanguage();
+    }
+
+    private configureLanguage() {
+        // configure language for translation service
+        let userLang = navigator.language.split('-')[0];
+        userLang = /(de|en)/gi.test(userLang) ? userLang : 'en';
+        this._translateService.setDefaultLang('en');
+        this._translateService.use(userLang);
+    }
+
 }
