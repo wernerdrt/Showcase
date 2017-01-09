@@ -5,10 +5,3 @@ node_modules
 resources/styles/**/*.css
 npm-debug.log
 
-#Eclipse
-.project
-
-#IntelliJ
-.idea
-*.iml
-
