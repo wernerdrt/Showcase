@@ -1,0 +1,91 @@
+// Quick Reference for Asciidoc: http://asciidoctor.org/docs/asciidoc-syntax-quick-reference/
+
+= Educama RESTful API Documentation
+educama.org;
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 4
+:sectlinks:
+
+= Overview
+
+== HTTP verbs
+
+The Educama RESTful API tries to adhere as closely as possible to standard HTTP and REST conventions in its
+use of HTTP verbs.
+
+|===
+| Verb | Usage
+
+| `GET`
+| Used to retrieve a resource
+
+| `POST`
+| Used to create a new resource
+
+| `DELETE`
+| Used to delete an existing resource
+|===
+
+[[overview-http-status-codes]]
+== HTTP status codes
+
+The Educama RESTful API tries to adhere as closely as possible to standard HTTP and REST conventions in its
+use of HTTP status codes.
+
+|===
+| Status code | Usage
+
+| `200 OK`
+| The request completed successfully
+
+| `201 Created`
+| A new resource has been created successfully. The resource's URI is available from the response's
+`Location` header
+
+| `204 No Content`
+| An update to an existing resource has been applied successfully
+
+| `400 Bad Request`
+| The request was malformed. The response body will include an error providing further information
+
+| `404 Not Found`
+| The requested resource did not exist
+|===
+
+= Resources
+
+== Shipments
+
+This resource provides the entry point with shipments.
+
+=== Create Shipment
+
+A `POST` request is used to create a shipment.
+
+==== Example Request
+include::{snippets}/createShipment/http-request.adoc[]
+
+==== Request structure
+include::{snippets}/createShipment/request-fields.adoc[]
+
+==== Example Response
+include::{snippets}/createShipment/http-response.adoc[]
+
+==== Response structure
+include::{snippets}/createShipment/response-fields.adoc[]
+
+=== List of Shipments
+
+A `GET` request is used to get a list of shipments.
+
+==== Example Request
+include::{snippets}/listShipment/http-request.adoc[]
+
+==== Example Response
+include::{snippets}/listShipment/http-response.adoc[]
+
+==== Response structure
+include::{snippets}/listShipment/response-fields.adoc[]
