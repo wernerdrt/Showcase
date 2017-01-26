@@ -11,8 +11,8 @@ import {State} from "../../app.reducers";
 import {ShipmentResource} from "../api/resources/shipment.resource";
 
 @Component({
-    selector: 'educama-shipment-list-page',
-    templateUrl: './shipment-list-page.component.html'
+    selector: "educama-shipment-list-page",
+    templateUrl: "./shipment-list-page.component.html"
 })
 export class ShipmentListPageComponent implements OnInit, OnDestroy {
 
@@ -58,7 +58,7 @@ export class ShipmentListPageComponent implements OnInit, OnDestroy {
      * Navigate to the shipment capture page
      */
     public onButtonNew(): void {
-        this._router.navigate(['/shipments/capture']);
+        this._router.navigate(["/shipments/capture"]);
     }
 
     /*

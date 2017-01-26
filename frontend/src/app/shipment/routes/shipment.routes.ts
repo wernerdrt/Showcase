@@ -8,11 +8,11 @@ import {ShipmentCapturePageComponent} from "../container/shipment-capture-page.c
  */
 const SHIPMENT_ROUTES: Routes = [
     {
-        path: 'shipments',
+        path: "shipments",
         component: ShipmentListPageComponent
     },
     {
-        path: 'shipments/capture',
+        path: "shipments/capture",
         component: ShipmentCapturePageComponent
     },
 ];

@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable} from "@angular/core";
 
 /*
  * Helper Class for HTTP related support functions
@@ -18,10 +18,10 @@ export class HttpHelper {
      * Provides the base URL (depending on the front end URL) for the REST API calls to the backend.
      */
     public getRestApiBaseUrlFromLocation(location: Location): string {
-        if(location.host.includes('localhost')) {
-            return location.protocol + '//localhost:' + (parseInt(location.port) + 1) + "/educama/v1/"
+        if(location.host.includes("localhost")) {
+            return location.protocol + "//localhost:" + (parseInt(location.port) + 1) + "/educama/v1/"
         } else {
-            return location.protocol + '//educama-backend.mybluemix.net/educama/v1/';
+            return location.protocol + "//educama-backend.mybluemix.net/educama/v1/";
         }
     }
 }

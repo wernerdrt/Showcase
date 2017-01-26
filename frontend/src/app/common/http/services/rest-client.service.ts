@@ -1,13 +1,13 @@
-import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
-import {Http, Response, Headers, RequestOptions, URLSearchParams} from '@angular/http';
+import {Injectable} from "@angular/core";
+import {Observable} from "rxjs/Observable";
+import {Http, Response, Headers, RequestOptions, URLSearchParams} from "@angular/http";
 
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/observable/throw';
+import "rxjs/add/operator/catch";
+import "rxjs/add/operator/map";
+import "rxjs/add/observable/throw";
 
-import {HttpHelper} from '../helper/http.helper';
-import {ErrorService} from '../../error/services/error.service';
+import {HttpHelper} from "../helper/http.helper";
+import {ErrorService} from "../../error/services/error.service";
 
 /*
  * Service to wrap REST HTTP calls and to provide a HAL-based API
@@ -28,7 +28,7 @@ export class RestClientService {
      * Wrapper for HTTP GET operation
      */
     public get(url: string, paramsMap?: Map<any,any>): Observable<any> {
-        this._headers.set('Cache-Control', 'no-cache');
+        this._headers.set("Cache-Control", "no-cache");
         let options = new RequestOptions({headers: this._headers});
         if (paramsMap) {
             let requestParams: URLSearchParams = new URLSearchParams();
@@ -47,9 +47,9 @@ export class RestClientService {
      * Wrapper for HTTP POST operation
      */
     public post(url: string, body?: string): Observable<any> {
-        this._headers.set('Content-Type', 'application/json');
+        this._headers.set("Content-Type", "application/json");
         let options = new RequestOptions({headers: this._headers});
-        if (body === null) body = '';
+        if (body === null) body = "";
         return this._http
             .post(this._baseUrl + url, body, options)
             .map(response => this.mapResponse(response))
@@ -62,7 +62,7 @@ export class RestClientService {
      */
     private mapResponse(res: Response): any {
         if (res.status < 200 || res.status >= 400) {
-            throw new Error('REST-CLIENT-SERVICE_ERROR-SERVER-UNREACHABLE');
+            throw new Error("REST-CLIENT-SERVICE_ERROR-SERVER-UNREACHABLE");
         }
         return res.json() || {};
     }
@@ -71,7 +71,7 @@ export class RestClientService {
      * Method is used to handle errors from mapping
      */
     private handleError(error: any) {
-        let errMsg = error.message || 'REST-CLIENT-SERVICE_ERROR-SERVER-UNREACHABLE';
+        let errMsg = error.message || "REST-CLIENT-SERVICE_ERROR-SERVER-UNREACHABLE";
         this._errorService.showError(errMsg);
         return Observable.throw(errMsg);
     }
