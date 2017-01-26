@@ -1,4 +1,4 @@
-import {MissingTranslationHandler} from 'ng2-translate/ng2-translate';
+import {MissingTranslationHandler} from "ng2-translate/ng2-translate";
 
 /*
  * Educama specific implementation of the MissingTranslationHandler
@@ -6,6 +6,6 @@ import {MissingTranslationHandler} from 'ng2-translate/ng2-translate';
 export class EducamaMissingTranslationHandler implements MissingTranslationHandler {
 
     public handle(key: string) {
-        return key + ' is missing';
+        return key + " is missing";
     }
 }

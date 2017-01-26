@@ -13,30 +13,19 @@
       "check-space"
     ],
     "jsdoc-format": true,
-    "directive-selector-name": [
+    "directive-selector": [
       true,
+      "attribute",
+      "educama",
       "camelCase"
     ],
-    "component-selector-name": [
+    "component-selector": [
       true,
+      "element",
+      "educama",
       "kebab-case"
     ],
-    "directive-selector-type": [
-      true,
-      "attribute"
-    ],
-    "component-selector-type": [
-      true,
-      "element"
-    ],
-    "directive-selector-prefix": [
-      true,
-      "educama"
-    ],
-    "component-selector-prefix": [
-      false,
-      "educama"
-    ],
+
     "use-input-property-decorator": true,
     "use-output-property-decorator": true,
     "use-host-property-decorator": true,
@@ -58,13 +47,11 @@
     "no-access-missing-member": true,
     "invoke-injectable": true,
     "no-consecutive-blank-lines": true,
-    "no-unreachable": true,
     "no-use-before-declare": true,
     "no-var-keyword": true,
-    // should be activated again
     "quotemark":[
-      false,
-      "single"
+      true,
+      "double"
     ],
     "triple-equals":[
       "allow-null-check"

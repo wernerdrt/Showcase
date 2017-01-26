@@ -3,8 +3,8 @@ import {ShipmentResource} from "../api/resources/shipment.resource";
 import {TranslateService} from "ng2-translate/ng2-translate";
 
 @Component({
-    selector: 'educama-shipment-list',
-    templateUrl: './shipment-list.component.html'
+    selector: "educama-shipment-list",
+    templateUrl: "./shipment-list.component.html"
 })
 export class ShipmentListComponent {
 
@@ -17,7 +17,7 @@ export class ShipmentListComponent {
     public emptyListMessage: string;
 
     constructor(_translateService: TranslateService) {
-        _translateService.get('GENERIC_NO-RECORDS-FOUND')
+        _translateService.get("GENERIC_NO-RECORDS-FOUND")
             .subscribe(value => this.emptyListMessage = value);
     }
 }

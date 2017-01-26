@@ -1,5 +1,5 @@
-import {NgModule, ModuleWithProviders} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import {NgModule, ModuleWithProviders} from "@angular/core";
+import {CommonModule} from "@angular/common";
 import {
     ButtonModule,
     DataTableModule,
@@ -8,7 +8,7 @@ import {
     InputTextModule,
     InputTextareaModule,
     PanelModule
-} from 'primeng/primeng';
+} from "primeng/primeng";
 
 @NgModule({
     imports: [CommonModule],

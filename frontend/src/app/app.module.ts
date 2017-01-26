@@ -27,7 +27,7 @@ import {ShipmentModule} from "./shipment/shipment.module";
     ],
     declarations: [AppComponent],
     providers: [
-        {provide: APP_BASE_HREF, useValue: '/'},
+        {provide: APP_BASE_HREF, useValue: "/"},
         APP_ROUTING_PROVIDERS
     ],
     bootstrap: [AppComponent]

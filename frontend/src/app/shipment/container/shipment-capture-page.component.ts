@@ -6,8 +6,8 @@ import {ShipmentResource} from "../api/resources/shipment.resource";
 import {CreateShipmentEvent} from "../components/shipment-capture.component";
 
 @Component({
-    selector: 'educama-shipment-capture-page',
-    templateUrl: './shipment-capture-page.component.html'
+    selector: "educama-shipment-capture-page",
+    templateUrl: "./shipment-capture-page.component.html"
 })
 export class ShipmentCapturePageComponent {
 
@@ -31,7 +31,7 @@ export class ShipmentCapturePageComponent {
         shipment.senderAddress = createShipmentEvent.senderAddress;
         this._shipmentService.createShipment(shipment)
             .subscribe(shipment => {
-                this._router.navigate(['/shipments']);
+                this._router.navigate(["/shipments"]);
             })
     }
 
@@ -39,7 +39,7 @@ export class ShipmentCapturePageComponent {
      * Handles the cancellation of a new shipment creation
      */
     public onCreateShipmentCancellationEvent() {
-        this._router.navigate(['/shipments']);
+        this._router.navigate(["/shipments"]);
     }
 
     /*

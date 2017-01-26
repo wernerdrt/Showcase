@@ -2,8 +2,8 @@ import {Component, Output, OnInit, EventEmitter} from "@angular/core";
 import {FormGroup, FormBuilder, Validators} from "@angular/forms";
 
 @Component({
-    selector: 'educama-shipment-capture',
-    templateUrl: './shipment-capture.component.html'
+    selector: "educama-shipment-capture",
+    templateUrl: "./shipment-capture.component.html"
 })
 export class ShipmentCaptureComponent implements OnInit {
 
@@ -20,9 +20,9 @@ export class ShipmentCaptureComponent implements OnInit {
 
     public ngOnInit() {
         this.shipmentCaptureForm = this._formBuilder.group({
-            customer: ['', [Validators.required]],
-            senderAddress: ['', [Validators.required, Validators.maxLength(100)]],
-            receiverAddress: ['', [Validators.required, Validators.maxLength(100)]],
+            customer: ["", [Validators.required]],
+            senderAddress: ["", [Validators.required, Validators.maxLength(100)]],
+            receiverAddress: ["", [Validators.required, Validators.maxLength(100)]],
         });
     }
 
@@ -38,9 +38,9 @@ export class ShipmentCaptureComponent implements OnInit {
     public createShipment() {
         this.createShipmentEvent.emit(
             new CreateShipmentEvent(
-                this.shipmentCaptureForm.get('customer').value,
-                this.shipmentCaptureForm.get('senderAddress').value,
-                this.shipmentCaptureForm.get('receiverAddress').value
+                this.shipmentCaptureForm.get("customer").value,
+                this.shipmentCaptureForm.get("senderAddress").value,
+                this.shipmentCaptureForm.get("receiverAddress").value
             )
         )
     }

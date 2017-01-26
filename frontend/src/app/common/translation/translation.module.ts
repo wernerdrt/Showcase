@@ -1,14 +1,14 @@
-import {NgModule, ModuleWithProviders} from '@angular/core';
-import {HttpModule, Http} from '@angular/http';
+import {NgModule, ModuleWithProviders} from "@angular/core";
+import {HttpModule, Http} from "@angular/http";
 import {
     TranslateModule,
     TranslateLoader,
     TranslateStaticLoader,
     MissingTranslationHandler
-} from 'ng2-translate/ng2-translate';
-import {I18nDatePipe} from './pipes/i18n-date.pipe';
-import {TimeAgoPipe} from './pipes/time-ago.pipe';
-import {EducamaMissingTranslationHandler} from './helper/educama-missing-translation-handler.helper';
+} from "ng2-translate/ng2-translate";
+import {I18nDatePipe} from "./pipes/i18n-date.pipe";
+import {TimeAgoPipe} from "./pipes/time-ago.pipe";
+import {EducamaMissingTranslationHandler} from "./helper/educama-missing-translation-handler.helper";
 
 @NgModule({
     imports: [HttpModule, TranslateModule],
@@ -27,7 +27,7 @@ export class TranslationModule {
                 },
                 TranslateModule.forRoot({
                     provide: TranslateLoader,
-                    useFactory: (http: Http) => new TranslateStaticLoader(http, 'resources/i18n', '.json'),
+                    useFactory: (http: Http) => new TranslateStaticLoader(http, "resources/i18n", ".json"),
                     deps: [Http]
                 })
             ];
