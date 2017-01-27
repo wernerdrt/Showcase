@@ -35,7 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = EducamaApplication.class, webEnvironment= SpringBootTest.WebEnvironment.DEFINED_PORT)
-public class RestApiDocumentation {
+public class RestApiDocumentationTest {
 	
 	@Rule
 	public final JUnitRestDocumentation restDocumentation = new JUnitRestDocumentation("target/generated-snippets");

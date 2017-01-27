@@ -7,8 +7,8 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
-public class EducamaApplicationTests {
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+public class EducamaApplicationTest {
 
 	/**
 	 * This test verifies that the Spring Context is created successfully, i.e.
