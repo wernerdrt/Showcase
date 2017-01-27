@@ -1,6 +1,5 @@
 package org.educama;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Rule;
@@ -36,7 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = EducamaApplication.class, webEnvironment= SpringBootTest.WebEnvironment.DEFINED_PORT)
-public class RestApiDocumentation {
+public class RestApiDocumentationTest {
 	
 	@Rule
 	public final JUnitRestDocumentation restDocumentation = new JUnitRestDocumentation("target/generated-snippets");
@@ -56,11 +55,13 @@ public class RestApiDocumentation {
 	@Before
 	public void setUp() {
 		this.documentationHandler = document("{methodName}",
-				preprocessRequest(prettyPrint()),
+				preprocessRequest(
+						prettyPrint(),
+						removeHeaders("Host")),
 				preprocessResponse(prettyPrint()));
 
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(this.context)
-				.apply(documentationConfiguration(this.restDocumentation).uris().withPort(8081))
+				.apply(documentationConfiguration(this.restDocumentation))
 				.alwaysDo(this.documentationHandler)
 				.build();
 
@@ -88,7 +89,6 @@ public class RestApiDocumentation {
 						),
 						responseFields(fieldDescriptorShipment)
 				));
-
 	}
 
 	@Test
@@ -98,6 +98,5 @@ public class RestApiDocumentation {
 			.andDo(this.documentationHandler.document(
 					responseFields(
 							fieldWithPath("shipments[]").description("An array of shipment objects")).andWithPrefix("shipments[].", fieldDescriptorShipment)));
-
 	}
 }
