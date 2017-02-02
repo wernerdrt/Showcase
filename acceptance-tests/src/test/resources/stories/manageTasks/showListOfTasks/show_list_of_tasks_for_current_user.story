@@ -4,12 +4,13 @@ Narrative:
   I want to see a list of all tasks assigned to me
   
 
-Scenario: List all tasks assigned to current user
-Given There are 5 tasks, 3 of them assigned to the current user
-When I show the list of tasks
-Then I see 3 tasks
+Scenario: List all tasks assigned to current user 
+Given there are 3 tasks with name 'Check shipment' assigned to Tom
+And there are 2 tasks with name 'Check shipment' assigned to Jerry
+When Tom requests the list of tasks
+Then Tom sees 3 tasks with name 'Check shipment'
 
 Scenario: Display a message if there is no task assigned to current user
-Given There are 5 tasks, 0 of them assigned to the current user
-When I show the list of tasks
-Then I see a message "no task is currently assigned to you"
+Given there are 2 tasks with name 'Check shipment' assigned to Jerry
+When Tom requests the list of tasks
+Then Tom sees an empty list
