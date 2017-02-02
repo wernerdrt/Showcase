@@ -5,6 +5,8 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.FixMethodOrder;
+import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
@@ -15,10 +17,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-
 import java.util.LinkedHashMap;
 import java.util.Map;
-
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
@@ -35,6 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = EducamaApplication.class, webEnvironment= SpringBootTest.WebEnvironment.DEFINED_PORT)
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class RestApiDocumentationTest {
 	
 	@Rule
@@ -51,6 +52,8 @@ public class RestApiDocumentationTest {
 	private RestDocumentationResultHandler documentationHandler;
 
 	private FieldDescriptor[] fieldDescriptorShipment;
+
+	private FieldDescriptor[] fieldDescriptorTask;
 
 	@Before
 	public void setUp() {
@@ -71,8 +74,17 @@ public class RestApiDocumentationTest {
 				fieldWithPath("customer").description("The name of the customer"),
 				fieldWithPath("senderAddress").description("The address of the sender"),
 				fieldWithPath("receiverAddress").description("The address of the final receiver") };
+		
+		fieldDescriptorTask = new FieldDescriptor[] {
+				fieldWithPath("createTime").description("The create time of the task"),
+				fieldWithPath("trackingId").description("The unique business key of the shipment mapped to the task"),
+				fieldWithPath("taskId").description("The Id of the task"),
+				fieldWithPath("name").description("The task name"),
+				fieldWithPath("description").description("The task description"),
+				fieldWithPath("assignee").description("The assignee of the task"),
+				fieldWithPath("customer").description("The shipments customer name") };
 	}
-
+		
 	@Test
 	public void createShipment() throws Exception {
 		Map<String,String> shipment = new LinkedHashMap<>();
@@ -82,7 +94,7 @@ public class RestApiDocumentationTest {
 		this.mockMvc.perform(post("/educama/v1/shipments").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsBytes(shipment)))
 				.andExpect(status().isCreated())
 				.andDo(this.documentationHandler.document(
-						requestFields(
+								requestFields(
 								fieldWithPath("customer").description("The name of the customer"),
 								fieldWithPath("senderAddress").description("The address of the sender"),
 								fieldWithPath("receiverAddress").description("The address of the final receiver")
@@ -90,7 +102,7 @@ public class RestApiDocumentationTest {
 						responseFields(fieldDescriptorShipment)
 				));
 	}
-
+	
 	@Test
 	public void listShipment() throws Exception {
 		this.mockMvc.perform(get("/educama/v1/shipments"))
@@ -98,5 +110,14 @@ public class RestApiDocumentationTest {
 			.andDo(this.documentationHandler.document(
 					responseFields(
 							fieldWithPath("shipments[]").description("An array of shipment objects")).andWithPrefix("shipments[].", fieldDescriptorShipment)));
+	}
+	
+	@Test
+	public void listTasks() throws Exception {
+		this.mockMvc.perform(get("/educama/v1/tasks"))
+			.andExpect(status().isOk())
+			.andDo(this.documentationHandler.document(
+					responseFields(
+							fieldWithPath("tasks[]").description("An array of task objects")).andWithPrefix("tasks[].", fieldDescriptorTask)));
 	}
 }
