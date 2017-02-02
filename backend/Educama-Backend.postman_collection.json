@@ -4,7 +4,8 @@
 	"description": "",
 	"order": [
 		"2bebd759-9a45-0679-557a-07562884040e",
-		"01443c63-88f6-8110-ea3f-958eb05575af"
+		"01443c63-88f6-8110-ea3f-958eb05575af",
+		"88ae27c1-1cbf-a590-6b16-455ec2b63168"
 	],
 	"folders": [],
 	"timestamp": 1482041856460,
@@ -49,6 +50,25 @@
 			"tests": null,
 			"currentHelper": "normal",
 			"helperAttributes": {}
+		},
+		{
+			"id": "88ae27c1-1cbf-a590-6b16-455ec2b63168",
+			"headers": "Content-Type: application/json\n",
+			"url": "http://localhost:8081/educama/v1/tasks",
+			"preRequestScript": null,
+			"pathVariables": {},
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"version": 2,
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1486050708307,
+			"name": "List All Tasks",
+			"description": "",
+			"collectionId": "e384f5fa-7a66-bfc4-64fd-ee868944dd91",
+			"responses": []
 		}
 	]
 }
