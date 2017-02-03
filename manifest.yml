@@ -7,6 +7,6 @@ applications:
   disk_quota: 256M
 - name: educama
   path: frontend/dist/educama-frontend.zip
-  buildpack: staticfile_buildpack
+  buildpack: https://github.com/cloudfoundry/staticfile-buildpack.git#v1.3.16
   memory: 64M
   disk_quota: 64M
