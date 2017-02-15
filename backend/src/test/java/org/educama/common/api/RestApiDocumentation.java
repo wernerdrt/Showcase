@@ -96,7 +96,6 @@ public class RestApiDocumentation {
         // Shipment Resource
 
         fieldDescriptorShipment = new FieldDescriptor[]{
-                fieldWithPath("id").description("The unique database identifier"),
                 fieldWithPath("trackingId").description("The unique business key of the shipment"),
                 fieldWithPath("customer").description("The name of the customer"),
                 fieldWithPath("senderAddress").description("The address of the sender"),
