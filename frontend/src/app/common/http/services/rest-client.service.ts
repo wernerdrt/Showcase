@@ -57,6 +57,20 @@ export class RestClientService {
     }
 
     /*
+     * Wrapper for HTTP PUT operation
+     */
+    public put(url: string, body?: string): Observable<any> {
+        this._headers.set("Content-Type", "application/json");
+        let options = new RequestOptions({headers: this._headers});
+        if (body === null) body = "";
+        let response = this._http
+            .put(this._baseUrl + url, body, options)
+            .map(response => this.mapResponse(response))
+            .catch(error => this.handleError(error));
+        return response;
+    }
+
+    /*
      * Generic response mapper. Handles http errors or maps the JSON response. Since JSON is the object
      * representation in java script, the mappers returns type any. The invoker can cast the response.
      */

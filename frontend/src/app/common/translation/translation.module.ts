@@ -4,11 +4,12 @@ import {
     TranslateModule,
     TranslateLoader,
     TranslateStaticLoader,
-    MissingTranslationHandler
+    MissingTranslationHandler, TranslatePipe
 } from "ng2-translate/ng2-translate";
 import {I18nDatePipe} from "./pipes/i18n-date.pipe";
 import {TimeAgoPipe} from "./pipes/time-ago.pipe";
 import {EducamaMissingTranslationHandler} from "./helper/educama-missing-translation-handler.helper";
+import {TranslationNotifierService} from "./services/translation-notifier.service";
 
 @NgModule({
     imports: [HttpModule, TranslateModule],
@@ -22,7 +23,8 @@ export class TranslationModule {
                 {
                     ngModule: TranslationModule,
                     providers: [
-                        {provide: MissingTranslationHandler, useClass: EducamaMissingTranslationHandler}
+                        {provide: MissingTranslationHandler, useClass: EducamaMissingTranslationHandler},
+                        TranslationNotifierService
                     ]
                 },
                 TranslateModule.forRoot({
