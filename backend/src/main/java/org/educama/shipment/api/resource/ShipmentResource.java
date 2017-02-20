@@ -17,9 +17,9 @@ public class ShipmentResource {
      * @return a converted ShipmentResource
      */
     public ShipmentResource fromShipment(Shipment shipmentModel) {
-    	this.id = shipmentModel.getId();
-    	this.trackingId = shipmentModel.trackingId;
-    	this.customer = shipmentModel.customer;
+        this.id = shipmentModel.getId();
+        this.trackingId = shipmentModel.trackingId;
+        this.customer = shipmentModel.customer;
         this.senderAddress = shipmentModel.senderAddress;
         this.receiverAddress = shipmentModel.receiverAddress;
 

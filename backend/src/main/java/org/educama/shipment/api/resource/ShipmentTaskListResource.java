@@ -1,9 +1,10 @@
 package org.educama.shipment.api.resource;
 
+import org.educama.shipment.boundary.datastructure.ShipmentTaskDS;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import org.educama.shipment.boundary.datastructure.ShipmentTaskDS;
 
 public class ShipmentTaskListResource {
 

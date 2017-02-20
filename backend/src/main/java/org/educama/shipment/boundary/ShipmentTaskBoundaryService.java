@@ -1,7 +1,8 @@
 package org.educama.shipment.boundary;
 
-import java.util.List;
 import org.educama.shipment.boundary.datastructure.ShipmentTaskDS;
+
+import java.util.List;
 
     public interface ShipmentTaskBoundaryService {
     /**

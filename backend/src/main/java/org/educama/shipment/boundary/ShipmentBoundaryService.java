@@ -6,7 +6,7 @@ import java.util.Collection;
 
 public interface ShipmentBoundaryService {
 
-     /**
+    /**
      * Creates a shipment
      *
      * @param shipment which is to be created as Case
@@ -16,7 +16,7 @@ public interface ShipmentBoundaryService {
 
     /**
      * Retrieves all shipments.
-     * 
+     *
      * @return a collection of all shipments
      */
     Collection<Shipment> findAll();

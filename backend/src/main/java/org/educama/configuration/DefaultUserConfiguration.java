@@ -1,25 +1,22 @@
 package org.educama.configuration;
 
-import javax.annotation.PostConstruct;
-
+import org.camunda.bpm.engine.AuthorizationService;
+import org.camunda.bpm.engine.FilterService;
+import org.camunda.bpm.engine.IdentityService;
+import org.camunda.bpm.engine.TaskService;
+import org.camunda.bpm.engine.authorization.Authorization;
+import org.camunda.bpm.engine.authorization.Resources;
+import org.camunda.bpm.engine.filter.Filter;
+import org.camunda.bpm.engine.identity.Group;
+import org.camunda.bpm.engine.identity.User;
+import org.camunda.bpm.engine.task.TaskQuery;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.camunda.bpm.engine.authorization.Authorization;
-import org.camunda.bpm.engine.authorization.Resources;
-import org.camunda.bpm.engine.AuthorizationService;
-import org.camunda.bpm.engine.IdentityService;
-import org.camunda.bpm.engine.identity.Group;
-import org.camunda.bpm.engine.task.TaskQuery;
-import org.camunda.bpm.engine.FilterService;
-import org.camunda.bpm.engine.filter.Filter;
-import org.camunda.bpm.engine.identity.User;
-import org.camunda.bpm.engine.TaskService;
-
+import javax.annotation.PostConstruct;
 import java.lang.invoke.MethodHandles;
 
 @Component
@@ -49,7 +46,7 @@ public class DefaultUserConfiguration {
 
     @PostConstruct
     protected void init() {
-        if(userExists(adminUsername)) {
+        if (userExists(adminUsername)) {
             logger.info("Default user '{}' already exists.", adminUsername);
         } else {
             logger.info("Creating default user '{}'.", adminUsername);
