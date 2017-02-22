@@ -1,10 +1,9 @@
 package org.educama.shipment.api;
 
-import org.educama.shipment.boundary.ShipmentBoundaryService;
 import org.educama.shipment.api.resource.ShipmentListResource;
 import org.educama.shipment.api.resource.ShipmentResource;
+import org.educama.shipment.boundary.ShipmentBoundaryService;
 import org.educama.shipment.model.Shipment;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -27,7 +26,7 @@ public class ShipmentController {
 
     /**
      * API call to create a shipment.
-     * 
+     *
      * @param shipmentWsResourceToCreate as instance of the API-Model (Resource)
      * @return the created instance converted back into the API-Model (Resource)
      */
@@ -43,7 +42,7 @@ public class ShipmentController {
 
     /**
      * API call to select all shipments.
-     * 
+     *
      * @return the result collection converted into the API-Model (Resource)
      */
     @RequestMapping(method = RequestMethod.GET)

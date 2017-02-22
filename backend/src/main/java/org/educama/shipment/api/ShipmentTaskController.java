@@ -1,6 +1,5 @@
 package org.educama.shipment.api;
 
-import java.util.List;
 import org.educama.shipment.api.resource.ShipmentTaskListResource;
 import org.educama.shipment.boundary.ShipmentTaskBoundaryService;
 import org.educama.shipment.boundary.datastructure.ShipmentTaskDS;
@@ -9,6 +8,8 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(path = ShipmentTaskController.SHIPMENTTASK_RESOURCE_PATH, produces = {MediaType.APPLICATION_JSON_VALUE})

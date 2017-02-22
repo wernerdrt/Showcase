@@ -15,7 +15,7 @@ public class ShipmentListResource {
         for (Shipment currentShipment : shipmentsList) {
             shipments.add(new ShipmentResource().fromShipment(currentShipment));
         }
-        
+
         return this;
     }
 }

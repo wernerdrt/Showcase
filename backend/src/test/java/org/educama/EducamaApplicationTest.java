@@ -10,12 +10,12 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class EducamaApplicationTest {
 
-	/**
-	 * This test verifies that the Spring Context is created successfully, i.e.
-	 * the application starts successfully.
-	 */
-	@Test
-	public void contextLoads() {
-	}
+    /**
+     * This test verifies that the Spring Context is created successfully, i.e.
+     * the application starts successfully.
+     */
+    @Test
+    public void contextLoads() {
+    }
 
 }

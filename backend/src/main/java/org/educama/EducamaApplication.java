@@ -9,7 +9,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 @EnableConfigurationProperties({CorsProperties.class})
 public class EducamaApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(EducamaApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(EducamaApplication.class, args);
+    }
 }

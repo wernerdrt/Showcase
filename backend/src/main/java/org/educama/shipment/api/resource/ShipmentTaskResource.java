@@ -1,7 +1,8 @@
 package org.educama.shipment.api.resource;
 
-import java.util.Date;
 import org.educama.shipment.boundary.datastructure.ShipmentTaskDS;
+
+import java.util.Date;
 
 public class ShipmentTaskResource {
 	

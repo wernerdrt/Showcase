@@ -1,8 +1,5 @@
 package org.educama.shipment.boundary.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 import org.camunda.bpm.engine.CaseService;
 import org.camunda.bpm.engine.TaskService;
 import org.camunda.bpm.engine.runtime.CaseInstance;
@@ -14,6 +11,10 @@ import org.educama.shipment.repository.ShipmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
