@@ -9,11 +9,9 @@ import org.educama.customer.model.Customer;
 import org.educama.shipment.api.ShipmentController;
 import org.json.JSONObject;
 import org.junit.Before;
-import org.junit.FixMethodOrder;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
@@ -23,6 +21,7 @@ import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -46,7 +45,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = EducamaApplication.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class RestApiDocumentation {
 
     @Rule
@@ -139,14 +137,9 @@ public class RestApiDocumentation {
     }
 
     @Test
-    public void createShipment() throws Exception {
-        Map<String, String> shipment = new LinkedHashMap<>();
-        shipment.put("customer", "NovaTec Consulting GmbH");
-        shipment.put("senderAddress", "Dieselstr. 18/1, 70771 Leinfelden-Echterdingen, Germany");
-        shipment.put("receiverAddress", "Santa Claus Main Post Office, FI-96930 Arctic Circle, Finland");
-
-        this.mockMvc.perform(post(ShipmentController.SHIPMENT_RESOURCE_PATH).contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsBytes(shipment))).andExpect(status().isCreated()).andDo(
+    public void createShipmentTest() throws Exception {
+        createShipment()
+        .andExpect(status().isCreated()).andDo(
                 this.documentationHandler.document(
                         requestFields(fieldWithPath("customer").description("The name of the customer"),
                                 fieldWithPath("senderAddress").description("The address of the sender"),
@@ -156,7 +149,9 @@ public class RestApiDocumentation {
     }
 
     @Test
-    public void listShipment() throws Exception {
+    public void listShipmentTest() throws Exception {
+        createShipment();
+
         this.mockMvc.perform(get(ShipmentController.SHIPMENT_RESOURCE_PATH)).andExpect(status().isOk())
                 .andDo(this.documentationHandler.document(
                         responseFields(fieldWithPath("shipments[]").description("An array of shipment objects"))
@@ -165,7 +160,9 @@ public class RestApiDocumentation {
     }
 
     @Test
-    public void listTasks() throws Exception {
+    public void listTasksTest() throws Exception {
+        createShipment();
+
         this.mockMvc.perform(get("/educama/v1/tasks"))
                 .andExpect(status().isOk())
                 .andDo(this.documentationHandler
@@ -174,7 +171,7 @@ public class RestApiDocumentation {
     }
 
     @Test
-    public void createCustomer() throws Exception {
+    public void createCustomerTest() throws Exception {
         this.mockMvc
                 .perform(post(CustomerController.CUSTOMER_RESOURCE_PATH)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -188,7 +185,7 @@ public class RestApiDocumentation {
     }
 
     @Test
-    public void updateCustomer() throws Exception {
+    public void updateCustomerTest() throws Exception {
         String uuid = this.createCustomer("Donald Duck");
         Map<String, Object> updatedCustomer = createCustomerResourceHashMap("Daisy Duck");
 
@@ -204,7 +201,7 @@ public class RestApiDocumentation {
     }
 
     @Test
-    public void deleteCustomer() throws Exception {
+    public void deleteCustomerTest() throws Exception {
         String uuid = this.createCustomer("Dagobert Duck");
 
         this.mockMvc
@@ -213,7 +210,7 @@ public class RestApiDocumentation {
     }
 
     @Test
-    public void getSingleCustomer() throws Exception {
+    public void getSingleCustomerTest() throws Exception {
         String uuid = this.createCustomer("Max Mueller");
 
         this.mockMvc
@@ -225,7 +222,9 @@ public class RestApiDocumentation {
     }
 
     @Test
-    public void listCustomers() throws Exception {
+    public void listCustomersTest() throws Exception {
+        this.createCustomer("Simon Schmidt");
+
         this.mockMvc
                 .perform(get(CustomerController.CUSTOMER_RESOURCE_PATH))
                 .andExpect(status().isOk())
@@ -237,7 +236,7 @@ public class RestApiDocumentation {
     }
 
     @Test
-    public void suggestCustomers() throws Exception {
+    public void suggestCustomersTest() throws Exception {
         String uuid = this.createCustomer("Steve Schmitt");
 
         this.mockMvc
@@ -249,6 +248,17 @@ public class RestApiDocumentation {
                                 responseFields(fieldDescriptorCustomerListResource)
                                         .andWithPrefix("customers[].", fieldDescriptorCustomerResource))
                 );
+    }
+
+    private ResultActions createShipment() throws Exception {
+        Map<String, String> shipment = new LinkedHashMap<>();
+        shipment.put("customer", "NovaTec Consulting GmbH");
+        shipment.put("senderAddress", "Dieselstr. 18/1, 70771 Leinfelden-Echterdingen, Germany");
+        shipment.put("receiverAddress", "Santa Claus Main Post Office, FI-96930 Arctic Circle, Finland");
+
+        return this.mockMvc.perform(post(ShipmentController.SHIPMENT_RESOURCE_PATH).contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsBytes(shipment)));
+
     }
 
     private String createCustomer(String name) throws  Exception {
