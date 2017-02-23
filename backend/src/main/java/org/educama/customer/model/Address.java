@@ -5,7 +5,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.persistence.Embeddable;
 
 /**
- * Address entity
+ * This represents the address entity used for database persistence.
  */
 @Embeddable
 public class Address {

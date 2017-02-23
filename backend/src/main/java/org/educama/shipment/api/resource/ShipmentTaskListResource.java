@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * REST-Resource for list of shipment tasks.
+ */
 public class ShipmentTaskListResource {
 
     public Collection<ShipmentTaskResource> tasks;

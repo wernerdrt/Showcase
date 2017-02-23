@@ -5,6 +5,9 @@ import org.educama.shipment.model.Shipment;
 import java.util.ArrayList;
 import java.util.Collection;
 
+/**
+ * REST-Resource for a list of shipments.
+ */
 public class ShipmentListResource {
 
     public Collection<ShipmentResource> shipments;

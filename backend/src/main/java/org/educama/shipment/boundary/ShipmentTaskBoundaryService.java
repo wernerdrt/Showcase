@@ -4,10 +4,14 @@ import org.educama.shipment.api.datastructure.ShipmentTaskDS;
 
 import java.util.List;
 
-    public interface ShipmentTaskBoundaryService {
+
+/**
+ * Boundary service for shipment tasks.
+ */
+public interface ShipmentTaskBoundaryService {
     /**
      * Retrieves all tasks.
-     * 
+     *
      * @return a collection of all tasks
      */
      List<ShipmentTaskDS> findAll();

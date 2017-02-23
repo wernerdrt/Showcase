@@ -17,6 +17,10 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * Tests for {@link CustomerBoundaryService}.
+ */
+@SuppressWarnings("checkstyle:magicnumber")
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class CustomerBoundaryServiceTest {
@@ -56,7 +60,5 @@ public class CustomerBoundaryServiceTest {
         Page<Customer> customerPage = customerService.findAllCustomers(new PageRequest(0, 10));
         assertEquals(3, customerPage.getTotalElements());
     }
-
-    // TODO: To be extended
 
 }

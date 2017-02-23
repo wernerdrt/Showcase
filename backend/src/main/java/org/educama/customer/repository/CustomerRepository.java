@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * JPA Repository for accessing Customer entities
+ * JPA Repository for accessing Customer entities.
  */
 public interface CustomerRepository extends JpaRepository<Customer, Long> {
 

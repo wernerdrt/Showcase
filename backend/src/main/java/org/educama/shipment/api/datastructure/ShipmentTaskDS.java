@@ -2,8 +2,11 @@ package org.educama.shipment.api.datastructure;
 
 import java.util.Date;
 
+/**
+ * Re-usable data structure used by resources.
+ */
 public class ShipmentTaskDS {
-	
+
     public Date createTime;
     public String trackingId;
     public String taskId;
@@ -11,7 +14,7 @@ public class ShipmentTaskDS {
     public String description;
     public String assignee;
     public String customer;
-    
+
     public ShipmentTaskDS(Date createTime, String trackingId2, String taskId, String name, String description,
                           String assignee, String customer) {
         super();
@@ -22,5 +25,5 @@ public class ShipmentTaskDS {
         this.description = description;
         this.assignee = assignee;
         this.customer = customer;
-	}
+    }
 }

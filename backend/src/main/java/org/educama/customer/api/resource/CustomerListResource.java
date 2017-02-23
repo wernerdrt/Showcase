@@ -4,6 +4,9 @@ import org.educama.common.api.resource.AbstractListResource;
 
 import java.util.Collection;
 
+/**
+ * REST-Resource for a list of customers.
+ */
 public class CustomerListResource extends AbstractListResource {
 
     private final Collection<CustomerResource> customers;

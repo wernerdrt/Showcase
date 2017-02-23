@@ -4,8 +4,10 @@ import org.educama.shipment.api.datastructure.ShipmentTaskDS;
 
 import java.util.Date;
 
+/**
+ * REST-Resource for single shipment task.
+ */
 public class ShipmentTaskResource {
-	
     public Date createTime;
     public String trackingId;
     public String taskId;
@@ -13,7 +15,7 @@ public class ShipmentTaskResource {
     public String description;
     public String assignee;
     public String customer;
-    
+
     public ShipmentTaskResource fromTask(ShipmentTaskDS shipmentTask) {
         this.createTime = shipmentTask.createTime;
         this.trackingId = shipmentTask.trackingId;
@@ -21,7 +23,7 @@ public class ShipmentTaskResource {
         this.name = shipmentTask.name;
         this.description = shipmentTask.description;
         this.assignee = shipmentTask.assignee;
-        this.customer=shipmentTask.customer;
+        this.customer = shipmentTask.customer;
 
         return this;
     }

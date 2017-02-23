@@ -7,6 +7,9 @@ import org.springframework.hateoas.ResourceSupport;
 import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
+/**
+ * REST-Resource for single customer.
+ */
 public class CustomerResource extends ResourceSupport {
 
     @NotNull

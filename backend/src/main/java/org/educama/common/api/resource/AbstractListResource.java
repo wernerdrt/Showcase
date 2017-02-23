@@ -16,7 +16,7 @@ public abstract class AbstractListResource extends ResourceSupport {
     private final long totalElements;
 
     /**
-     * Creates new instance of {@link AbstractListResource}
+     * Creates new instance of {@link AbstractListResource}.
      *
      * @param pageNumber    actual page of the collection.
      * @param pageSize      number of elements per pages of the collection.
