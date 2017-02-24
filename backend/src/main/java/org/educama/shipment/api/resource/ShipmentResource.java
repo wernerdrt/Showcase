@@ -4,7 +4,6 @@ import org.educama.shipment.model.Shipment;
 
 public class ShipmentResource {
 
-    public long id;
     public String trackingId;
     public String customer;
     public String senderAddress;
@@ -17,7 +16,6 @@ public class ShipmentResource {
      * @return a converted ShipmentResource
      */
     public ShipmentResource fromShipment(Shipment shipmentModel) {
-        this.id = shipmentModel.getId();
         this.trackingId = shipmentModel.trackingId;
         this.customer = shipmentModel.customer;
         this.senderAddress = shipmentModel.senderAddress;
