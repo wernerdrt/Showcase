@@ -27,7 +27,7 @@ public class Customer extends AbstractPersistable<Long> implements Identifiable<
     /**
      * Constructor for JPA.
      */
-    public Customer() {
+    protected Customer() {
         //empty
     }
 

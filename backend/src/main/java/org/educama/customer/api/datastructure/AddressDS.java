@@ -20,7 +20,7 @@ public class AddressDS {
     /*
      * For Jackson Parser
      */
-    public AddressDS() {
+    private AddressDS() {
         //empty
     }
 

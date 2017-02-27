@@ -25,7 +25,7 @@ public class Address {
     /**
      * Constructor for JPA.
      */
-    public Address() {
+    protected Address() {
         //empty
     }
 

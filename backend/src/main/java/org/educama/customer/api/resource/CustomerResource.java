@@ -22,7 +22,7 @@ public class CustomerResource extends ResourceSupport {
     /*
      * For Jackson Parser
      */
-    public CustomerResource() {
+    private CustomerResource() {
         //empty
     }
 
