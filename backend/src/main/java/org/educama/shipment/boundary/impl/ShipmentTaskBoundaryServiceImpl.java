@@ -5,7 +5,7 @@ import org.camunda.bpm.engine.TaskService;
 import org.camunda.bpm.engine.runtime.CaseInstance;
 import org.camunda.bpm.engine.task.Task;
 import org.educama.shipment.boundary.ShipmentTaskBoundaryService;
-import org.educama.shipment.boundary.datastructure.ShipmentTaskDS;
+import org.educama.shipment.api.datastructure.ShipmentTaskDS;
 import org.educama.shipment.model.Shipment;
 import org.educama.shipment.repository.ShipmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;

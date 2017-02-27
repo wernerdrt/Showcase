@@ -1,4 +1,4 @@
-package org.educama.shipment.boundary.datastructure;
+package org.educama.shipment.api.datastructure;
 
 import java.util.Date;
 

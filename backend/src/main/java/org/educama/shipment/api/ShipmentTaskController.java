@@ -2,7 +2,7 @@ package org.educama.shipment.api;
 
 import org.educama.shipment.api.resource.ShipmentTaskListResource;
 import org.educama.shipment.boundary.ShipmentTaskBoundaryService;
-import org.educama.shipment.boundary.datastructure.ShipmentTaskDS;
+import org.educama.shipment.api.datastructure.ShipmentTaskDS;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;

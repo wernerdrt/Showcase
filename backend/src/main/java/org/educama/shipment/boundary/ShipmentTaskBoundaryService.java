@@ -1,6 +1,6 @@
 package org.educama.shipment.boundary;
 
-import org.educama.shipment.boundary.datastructure.ShipmentTaskDS;
+import org.educama.shipment.api.datastructure.ShipmentTaskDS;
 
 import java.util.List;
 
