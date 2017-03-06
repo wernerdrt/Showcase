@@ -47,6 +47,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = EducamaApplication.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public class RestApiDocumentation {
 
+    public static final int PORT = 8081;
+
     @Rule
     public final JUnitRestDocumentation restDocumentation = new JUnitRestDocumentation("target/generated-snippets");
 
@@ -81,7 +83,7 @@ public class RestApiDocumentation {
                 preprocessResponse(prettyPrint()));
 
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.context)
-                .apply(documentationConfiguration(this.restDocumentation).uris().withPort(8081))
+                .apply(documentationConfiguration(this.restDocumentation).uris().withPort(PORT))
                 .alwaysDo(this.documentationHandler).build();
 
         // Generic Field Descriptions

@@ -4,10 +4,13 @@ import org.educama.shipment.model.Shipment;
 
 import java.util.Collection;
 
+/**
+ * Boundary service for shipment.
+ */
 public interface ShipmentBoundaryService {
 
     /**
-     * Creates a shipment
+     * Creates a shipment.
      *
      * @param shipment which is to be created as Case
      * @return the created shipment

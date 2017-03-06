@@ -1,11 +1,14 @@
 package org.educama.shipment.api.resource;
 
-import org.educama.shipment.boundary.datastructure.ShipmentTaskDS;
+import org.educama.shipment.api.datastructure.ShipmentTaskDS;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * REST-Resource for list of shipment tasks.
+ */
 public class ShipmentTaskListResource {
 
     public Collection<ShipmentTaskResource> tasks;

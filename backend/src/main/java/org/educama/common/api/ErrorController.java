@@ -11,7 +11,7 @@ import org.springframework.web.context.request.WebRequest;
 
 /**
  * The ErrorController catches all of the exceptions to create a standard HTTP Rest Error to the caller
- * Either in the Error Controller or in the client internationalization of error messages should be handled
+ * Either in the Error Controller or in the client internationalization of error messages should be handled.
  */
 @ControllerAdvice
 public class ErrorController {

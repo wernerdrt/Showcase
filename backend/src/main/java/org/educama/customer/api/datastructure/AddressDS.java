@@ -3,6 +3,9 @@ package org.educama.customer.api.datastructure;
 import org.educama.customer.model.Address;
 import org.hibernate.validator.constraints.NotEmpty;
 
+/**
+ * Re-usable data structure used by resources.
+ */
 public class AddressDS {
 
     @NotEmpty
@@ -20,7 +23,7 @@ public class AddressDS {
     /*
      * For Jackson Parser
      */
-    public AddressDS() {
+    private AddressDS() {
         //empty
     }
 

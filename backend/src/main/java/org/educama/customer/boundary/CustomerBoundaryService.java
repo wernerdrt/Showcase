@@ -7,9 +7,12 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.UUID;
 
+/**
+ * Boundary service for customer.
+ */
 public interface CustomerBoundaryService {
     /**
-     * Creates a customer
+     * Creates a customer.
      *
      * @param name  The name of the customer to be create
      * @param address  The address {@AddressDS} of the customer to be created
@@ -29,7 +32,7 @@ public interface CustomerBoundaryService {
     Customer updateCustomer(UUID uuid, String name, AddressDS address);
 
     /**
-     * Deletes the specified customer (by uuid)
+     * Deletes the specified customer (by uuid).
      *
      * @param uuid uuid of the customer to delete
      */
@@ -54,7 +57,7 @@ public interface CustomerBoundaryService {
     Page<Customer> findSuggestionsForCustomer(String name, Pageable pageable);
 
     /**
-     * Retrieves the customer with the given uuid
+     * Retrieves the customer with the given uuid.
      *
      * @param uuid uuid of the customer
      * @return Customer found

@@ -15,6 +15,9 @@ import java.util.UUID;
 
 import static org.springframework.util.Assert.notNull;
 
+/**
+ * Boundary service implementation for customer.
+ */
 @Service
 public class CustomerBoundaryServiceImpl implements CustomerBoundaryService {
 
@@ -43,8 +46,7 @@ public class CustomerBoundaryServiceImpl implements CustomerBoundaryService {
 
         if (customer == null) {
             throw new ResourceNotFoundException("Customer not found");
-        }
-        else {
+        } else {
             customer.name = name;
             customer.address = address.toAddress();
             return customerRepository.save(customer);
@@ -57,8 +59,7 @@ public class CustomerBoundaryServiceImpl implements CustomerBoundaryService {
         Customer customer = customerRepository.findByUuid(uuid);
         if (customer == null) {
             throw new ResourceNotFoundException("Customer not found");
-        }
-        else {
+        } else {
             customerRepository.delete(customer.getId());
         }
     }
@@ -69,8 +70,7 @@ public class CustomerBoundaryServiceImpl implements CustomerBoundaryService {
         Customer customer = customerRepository.findByUuid(uuid);
         if (customer == null) {
             throw new ResourceNotFoundException("Customer not found");
-        }
-        else {
+        } else {
             return customer;
         }
     }

@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
 /**
- * Customer Entity
+ * This represents the customer entity used for database persistence.
  */
 @Entity
 public class Customer extends AbstractPersistable<Long> implements Identifiable<Long> {
@@ -27,7 +27,7 @@ public class Customer extends AbstractPersistable<Long> implements Identifiable<
     /**
      * Constructor for JPA.
      */
-    public Customer() {
+    protected Customer() {
         //empty
     }
 

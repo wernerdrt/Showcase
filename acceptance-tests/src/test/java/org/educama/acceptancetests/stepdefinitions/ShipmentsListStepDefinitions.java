@@ -6,14 +6,17 @@ import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
 
+/**
+ * Step definitions for the shipment list.
+ */
 public class ShipmentsListStepDefinitions extends GlobalStepDefinitions {
 
     @Steps
     ShipmentsListSteps user;
 
-	/*
+    /*
      * Empty Caselist
-	 */
+     */
     @Given("There are no open shipments")
     public void givenThereAreNoOpenShipments() {
         user.openShipmentsListPage();

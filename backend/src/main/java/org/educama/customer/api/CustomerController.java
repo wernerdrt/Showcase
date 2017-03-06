@@ -20,7 +20,7 @@ import javax.validation.Valid;
 import java.util.UUID;
 
 /**
- * REST-Service to access Customer resources
+ * REST-Service to access Customer resources.
  */
 @RestController
 @RequestMapping(value = CustomerController.CUSTOMER_RESOURCE_PATH, produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -39,7 +39,7 @@ public class CustomerController {
     private CustomerBoundaryService customerService;
 
     /**
-     * Creates the customer if it does not exist
+     * Creates the customer if it does not exist.
      *
      * @param saveCustomerResource
      * @return The newly created customer
@@ -58,7 +58,7 @@ public class CustomerController {
     }
 
     /**
-     * Updates the specified customer
+     * Updates the specified customer.
      *
      * @param saveCustomerResource customer to update
      * @return HttpStatus.OK if updated, otherwise HttpStatus.BAD_REQUEST
@@ -76,7 +76,7 @@ public class CustomerController {
     }
 
     /**
-     * Deletes the specified customer (by uuid)
+     * Deletes the specified customer (by uuid).
      *
      * @param uuid uuid of customer to delete
      */
@@ -87,7 +87,7 @@ public class CustomerController {
     }
 
     /**
-     * Retrieves Customers in a pageable fashion
+     * Retrieves Customers in a pageable fashion.
      *
      * @param pageable parameter for creating pages
      * @return a collection of all customers
@@ -100,7 +100,7 @@ public class CustomerController {
     }
 
     /**
-     * Retrieves Customers in a pageable fashion
+     * Retrieves Customers in a pageable fashion.
      *
      * @id pageable parameter for creating pages
      * @return a collection of all customers
@@ -118,7 +118,7 @@ public class CustomerController {
     }
 
     /**
-     * Finds all customers with the suggested name
+     * Finds all customers with the suggested name.
      *
      * @param term     criteria for suggested names
      * @param pageable parameter for creating pages

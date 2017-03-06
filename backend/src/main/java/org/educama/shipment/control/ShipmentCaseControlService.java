@@ -7,10 +7,13 @@ import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
+/**
+ * Control service for shipments.
+ */
 @Service
 public class ShipmentCaseControlService {
 
-    private final String SHIPMENTCASEKEY = "CaseId_shipment";
+    private static final String SHIPMENTCASEKEY = "CaseId_shipment";
 
     @Autowired
     private CaseService caseService;

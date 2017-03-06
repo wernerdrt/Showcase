@@ -20,10 +20,12 @@ import static org.camunda.bpm.engine.test.assertions.ProcessEngineTests.taskServ
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-
+/**
+ * Tests the CMMN model.
+ */
 public class ShipmentCaseModelTest {
 
-    final String CASE_KEY = "CaseId_shipment";
+    private static final String CASE_KEY = "CaseId_shipment";
 
     CaseInstance caseInstance;
     CaseExecution caseExecution;
@@ -71,7 +73,7 @@ public class ShipmentCaseModelTest {
     }
 
     /**
-     * Helper method because it is not provided by {@link org.camunda.bpm.engine.test.assertions.ProcessEngineTests}
+     * Helper method because it is not provided by {@link org.camunda.bpm.engine.test.assertions.ProcessEngineTests}.
      *
      * @return current CaseService
      */

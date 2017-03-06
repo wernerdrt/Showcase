@@ -5,6 +5,9 @@ import net.serenitybdd.core.pages.PageObject;
 import net.thucydides.core.annotations.DefaultUrl;
 import org.openqa.selenium.WebElement;
 
+/**
+ * Page (see "Page Object Pattern") for the shipment capture.
+ */
 @DefaultUrl("http://localhost:8090/shipments/capture")
 public class ShipmentCapturePage extends PageObject {
 

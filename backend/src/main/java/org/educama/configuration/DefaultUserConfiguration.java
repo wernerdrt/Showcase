@@ -19,6 +19,9 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.lang.invoke.MethodHandles;
 
+/**
+ * The component creates a default user if it does not already exist.
+ */
 @Component
 public class DefaultUserConfiguration {
 

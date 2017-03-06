@@ -7,6 +7,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+
+/**
+ * This represents the shipment entity used for database persistence.
+ */
 @SuppressWarnings("serial")
 @Entity
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = "trackingId")})

@@ -2,6 +2,9 @@ package org.educama.shipment.api.resource;
 
 import org.educama.shipment.model.Shipment;
 
+/**
+ * REST-Resource for single shipment.
+ */
 public class ShipmentResource {
 
     public String trackingId;

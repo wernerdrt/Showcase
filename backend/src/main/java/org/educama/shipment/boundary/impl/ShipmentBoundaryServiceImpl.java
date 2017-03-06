@@ -11,6 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 
+/**
+ * Boundary service implementation for shipments.
+ */
 @Service
 @Transactional(readOnly = true)
 public class ShipmentBoundaryServiceImpl implements ShipmentBoundaryService {

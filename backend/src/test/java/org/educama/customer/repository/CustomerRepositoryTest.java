@@ -20,8 +20,12 @@ import java.util.UUID;
 
 import static org.junit.Assert.*;
 
+/**
+ * Tests for {@link CustomerRepository}.
+ */
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+@SuppressWarnings("checkstyle:magicnumber")
 public class CustomerRepositoryTest {
 
     private static final Pageable PAGEABLE = new PageRequest(0, 10);

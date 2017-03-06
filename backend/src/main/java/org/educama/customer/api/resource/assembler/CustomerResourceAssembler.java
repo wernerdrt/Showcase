@@ -9,6 +9,9 @@ import org.springframework.stereotype.Component;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
+/**
+ * Assembler to build {@link CustomerResource}.
+ */
 @Component
 public class CustomerResourceAssembler {
 
