@@ -1,4 +1,4 @@
-package org.educama.configuration;
+package org.educama.application.lifecycle;
 
 import org.camunda.bpm.engine.AuthorizationService;
 import org.camunda.bpm.engine.FilterService;
@@ -14,16 +14,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.SmartLifecycle;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import java.lang.invoke.MethodHandles;
 
 /**
  * The component creates a default user if it does not already exist.
  */
 @Component
-public class DefaultUserConfiguration {
+public class DefaultUserLifecycleBean implements SmartLifecycle {
 
     @Autowired
     IdentityService identityService;
@@ -37,7 +37,6 @@ public class DefaultUserConfiguration {
     @Autowired
     FilterService filterService;
 
-
     @Value("${org.educama.configuration.adminUser}")
     private String adminUsername;
 
@@ -45,10 +44,21 @@ public class DefaultUserConfiguration {
     private String adminPassword;
 
     private final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+    private boolean running;
 
+    @Override
+    public boolean isAutoStartup() {
+        return true;
+    }
 
-    @PostConstruct
-    protected void init() {
+    @Override
+    public void stop(Runnable runnable) {
+        running = false;
+        runnable.run();
+    }
+
+    @Override
+    public void start() {
         if (userExists(adminUsername)) {
             logger.info("Default user '{}' already exists.", adminUsername);
         } else {
@@ -58,6 +68,21 @@ public class DefaultUserConfiguration {
             grantAuthorizationWithPermissions(adminGroup);
             createAssignedTaskQuery();
         }
+    }
+
+    @Override
+    public void stop() {
+        running = false;
+    }
+
+    @Override
+    public boolean isRunning() {
+        return running;
+    }
+
+    @Override
+    public int getPhase() {
+        return 1;
     }
 
     private boolean userExists(String username) {
@@ -101,4 +126,5 @@ public class DefaultUserConfiguration {
         taskFilter.setQuery(query);
         filterService.saveFilter(taskFilter);
     }
+
 }
