@@ -6,9 +6,9 @@ var gulp = require('gulp');
 
 var autoprefixer = require('autoprefixer');
 var Builder = require('systemjs-builder');
+var browsers = require('./config/build/autoprefixer');
 var bs = require("browser-sync");
 var concat = require('gulp-concat');
-var concatCss = require('gulp-concat-css');
 var cssnano = require('cssnano');
 var del = require('del');
 var ext = require('gulp-ext-replace');
@@ -19,7 +19,6 @@ var inlineNg2Template = require('gulp-inline-ng2-template');
 var uglify = require('gulp-uglify');
 var KarmaServer = require('karma').Server;
 var postcss = require('gulp-postcss');
-var precss = require('precss');
 var remapIstanbul = require('remap-istanbul/lib/gulpRemapIstanbul');
 var rev = require('gulp-rev');
 var revReplace = require('gulp-rev-replace');
@@ -106,8 +105,9 @@ gulp.task('transpile', ['cleanBuildDir', 'cleanDistDir', 'cleanCSS'], function (
 
 // function to compile sass files
 function compileSass() {
-    return gulp.src(sassFiles)
+    return gulp.src(resourceDir + '/styles/main.scss')
         .pipe(sass().on('error', sass.logError))
+        .pipe(postcss([autoprefixer(browsers), cssnano]))
         .pipe(gulp.dest(resourceDir + '/styles/'));
 }
 
@@ -151,16 +151,9 @@ gulp.task('copy-resources', ['transpile', 'sass', 'copy-fonts', 'copy-icons', 'c
         .on('finish', done);
 });
 
-// bundle css files
-gulp.task('bundle-css-files', ['copy-resources'], function (done) {
-    const cssFiles = [
-        resourceDir + '/primeng/font-awesome.min.css',
-        nodeModulesDir + '/primeng/resources/primeng.min.css',
-        nodeModulesDir + '/primeng/resources/themes/omega/theme.css',
-        resourceDir + '/styles/styles.css'
-    ];
-    gulp.src(cssFiles, {base: 'resources/styles'})
-        .pipe(concatCss('style.css'))
+// copy css file
+gulp.task('copy-css-file', ['copy-resources'], function (done) {
+    gulp.src(resourceDir + '/styles/main.css')
         .pipe(gulp.dest(distDir + '/resources/styles'))
         .on('finish', done);
 });
@@ -201,12 +194,12 @@ gulp.task('uglify-bundled-app-files', ['bundle-app-files'], function (done) {
 });
 
 // replace single files with bundled files in index.html
-gulp.task('html-replace', ['bundle-css-files', 'bundle-vendor-files', 'uglify-bundled-app-files'], function (done) {
+gulp.task('html-replace', ['copy-css-file', 'bundle-vendor-files', 'uglify-bundled-app-files'], function (done) {
     gulp.src('index.html')
         .pipe(htmlreplace({
             'libs': 'js/vendor.js',
             'app': 'js/app.js',
-            'css': 'resources/styles/style.css'
+            'css': 'resources/styles/main.css'
         }))
         .pipe(gulp.dest(distDir))
         .on('finish', done);
@@ -237,7 +230,7 @@ gulp.task("delete-unrevisioned-files", ['replace-revisioned-files-in-index-html'
     del(distDir + '/rev-manifest.json');
     del(distDir + '/js/vendor.js');
     del(distDir + '/js/app.js');
-    return del(distDir + '/resources/styles/style.css');
+    return del(distDir + '/resources/styles/main.css');
 });
 
 /**************************************************************
