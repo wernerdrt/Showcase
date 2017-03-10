@@ -133,6 +133,12 @@ gulp.task('copy-icons', ['cleanDistDir'], function (done) {
         .pipe(gulp.dest(distDir + '/resources/icons/')).on('finish', done);
 });
 
+// copy favicon
+gulp.task('copy-favicon', ['cleanDistDir'], function (done) {
+    gulp.src(resourceDir + '/styles/favicon.png')
+        .pipe(gulp.dest(distDir + '/resources/styles/')).on('finish', done);
+});
+
 // copy i18n files
 gulp.task('copy-i18n', ['cleanDistDir'], function (done) {
     gulp.src(resourceDir + '/i18n/*')
@@ -140,7 +146,7 @@ gulp.task('copy-i18n', ['cleanDistDir'], function (done) {
 });
 
 // copy resources
-gulp.task('copy-resources', ['transpile', 'sass', 'copy-fonts', 'copy-icons', 'copy-i18n'], function (done) {
+gulp.task('copy-resources', ['transpile', 'sass', 'copy-fonts', 'copy-icons', 'copy-favicon', 'copy-i18n'], function (done) {
     // copy favorite icon
     gulp.src('*.ico')
         .pipe(gulp.dest(distDir));
