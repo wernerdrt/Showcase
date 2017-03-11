@@ -6,6 +6,8 @@ import {Injectable} from "@angular/core";
 @Injectable()
 export class HttpHelper {
 
+    static readonly BACKEND_RESOURCE_PATH = "/educama/v1/";
+
     /*
      * Provides the base URL used for Rest API calls to the backend.
      */
@@ -21,7 +23,8 @@ export class HttpHelper {
         if(location.host.includes("localhost")) {
             return location.protocol + "//localhost:" + (parseInt(location.port) + 1) + "/educama/v1/"
         } else {
-            return location.protocol + "//educama-backend.mybluemix.net/educama/v1/";
+            // Assuming cloud deployment
+            return location.protocol + "//" + location.host.replace("educama", "educama-backend") + HttpHelper.BACKEND_RESOURCE_PATH;
         }
     }
 }
