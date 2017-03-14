@@ -80,12 +80,13 @@
     "tslint": "4.2.0",
     "typedoc": "0.5.1",
     "typescript": "2.0.6",
-    "uglify": "0.1.5"
+    "uglify": "0.1.5",
+    "@types/node": "7.0.7"
   },
   "repository": {},
   "scripts": {
     "all": "npm run clean && npm install && npm run build && npm run test",
-    "clean": "rm ./node_modules -r",
+    "clean": "rm ./node_modules -rf",
     "build": "gulp build",
     "compile": "gulp compile",
     "serve-dev": "gulp serve-dev",
