@@ -86,7 +86,7 @@
   "repository": {},
   "scripts": {
     "all": "npm run clean && npm install && npm run build && npm run test",
-    "clean": "rm ./node_modules -r",
+    "clean": "rm ./node_modules -rf",
     "build": "gulp build",
     "compile": "gulp compile",
     "serve-dev": "gulp serve-dev",
