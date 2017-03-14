@@ -18,7 +18,6 @@ cache:
   timeout: 604800 #1 week
   directories:
   - "$HOME/.m2"
-  - "frontend/node_modules"
 deploy:
   edge: true
   provider: cloudfoundry
