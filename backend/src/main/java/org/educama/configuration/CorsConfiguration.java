@@ -21,11 +21,8 @@ public class CorsConfiguration {
      */
     @Bean
     public CorsFilter corsFilter(CorsProperties corsProperties) {
-        org.springframework.web.cors.CorsConfiguration config = new org.springframework.web.cors.CorsConfiguration();
-        config.setAllowedOrigins(corsProperties.getAllowedOrigins());
+        org.springframework.web.cors.CorsConfiguration config = corsProperties.getConfig();
         config.setAllowedMethods(corsProperties.getAllowedMethods());
-        config.setAllowCredentials(corsProperties.isAllowCredentials());
-        config.setAllowedHeaders(corsProperties.getAllowedHeaders());
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration(corsProperties.getUrlMapping(), config);
