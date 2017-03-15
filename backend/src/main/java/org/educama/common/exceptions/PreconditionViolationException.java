@@ -3,6 +3,7 @@ package org.educama.common.exceptions;
 /**
  * Exception to throw if precondition is not satisfied.
  */
+@SuppressWarnings("serial")
 public class PreconditionViolationException extends RuntimeException {
 
     private final String messageKey;

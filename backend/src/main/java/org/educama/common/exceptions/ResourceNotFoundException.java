@@ -3,6 +3,7 @@ package org.educama.common.exceptions;
 /**
  * Exception to throw if resource cannot be found.
  */
+@SuppressWarnings("serial")
 public class ResourceNotFoundException extends RuntimeException {
 
     private final String messageKey;

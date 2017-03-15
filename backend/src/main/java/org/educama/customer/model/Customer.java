@@ -11,6 +11,7 @@ import java.util.UUID;
 /**
  * This represents the customer entity used for database persistence.
  */
+@SuppressWarnings("serial")
 @Entity
 public class Customer extends AbstractPersistable<Long> implements Identifiable<Long> {
 
