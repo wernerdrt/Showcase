@@ -3,9 +3,7 @@ set -e # Exit with nonzero exit code if anything fails
 
 START_TIME=$SECONDS
 
-source ./start-xvfb.sh
-
-  # Overwrite default "./mvnw test" so that the integration tests are executed as well.
+# Overwrite default "./mvnw test" so that the integration tests are executed as well.
 ./mvnw verify
 
 ELAPSED_TIME=$(($SECONDS - $START_TIME))
