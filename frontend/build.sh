@@ -5,11 +5,10 @@ START_TIME=$SECONDS
 
 echo -n "NPM Version: " && npm --version
 echo -n "Node Version: " && node --version
+
 npm install
 gulp build
-# To be activated once karma text needs to be executed
-# we might have to configure a headless server beforehand
-# gulp test
+gulp test
 
 echo "Directory content after build:"
 ls -al
