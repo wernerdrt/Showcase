@@ -44,7 +44,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * http://docs.spring.io/spring-restdocs/docs/current/reference/html5
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = EducamaApplication.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@SpringBootTest(classes = EducamaApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class RestApiDocumentation {
 
     public static final int PORT = 8081;
