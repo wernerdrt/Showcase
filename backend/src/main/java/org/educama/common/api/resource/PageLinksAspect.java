@@ -26,7 +26,7 @@ import java.util.Map;
 @Aspect
 public class PageLinksAspect {
     @Around("@annotation(org.educama.common.api.resource.PageLinks) && execution(org.springframework.hateoas.ResourceSupport+ *(..)) && args(page, ..)")
-    public Object pageLinksAdvice(ProceedingJoinPoint joinPoint, Page page) throws Throwable {
+    public Object pageLinksAdvice(ProceedingJoinPoint joinPoint, Page<?> page) throws Throwable {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         Method method = ((MethodSignature) joinPoint.getSignature()).getMethod();
         PageLinks pageLinks = method.getAnnotation(PageLinks.class);
