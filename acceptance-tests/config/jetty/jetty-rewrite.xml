@@ -53,9 +53,9 @@
                         <!-- Added for mainsite js tagging files -->
                         <Call name="addRule">
                             <Arg>
-                                <New class="org.eclipse.jetty.rewrite.handler.RedirectPatternRule">
-                                    <Set name="pattern">/shipments/*</Set>
-                                    <Set name="location">/</Set>
+                                <New class="org.eclipse.jetty.rewrite.handler.RewriteRegexRule">
+                                    <Set name="regex">/(\w+)</Set>
+                                    <Set name="replacement">/?action=$1</Set>
                                 </New>
                             </Arg>
                         </Call>
