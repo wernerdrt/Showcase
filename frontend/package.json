@@ -16,10 +16,6 @@
     "@ngrx/core": "1.2.0",
     "@ngrx/store": "2.1.2",
     "@ngrx/store-devtools": "^3.2.2",
-    "@types/core-js": "0.9.34",
-    "@types/jasmine": "2.5.36",
-    "@types/lodash": "4.14.37",
-    "@types/selenium-webdriver": "2.44.28",
     "core-js": "2.4.1",
     "font-awesome": "^4.7.0",
     "lodash": "^4.17.4",
@@ -34,6 +30,11 @@
     "zone.js": "0.7.4"
   },
   "devDependencies": {
+    "@types/core-js": "0.9.34",
+    "@types/jasmine": "2.5.36",
+    "@types/lodash": "4.14.37",
+    "@types/node": "7.0.7",
+    "@types/selenium-webdriver": "2.44.28",
     "autoprefixer": "6.4.0",
     "browser-sync": "2.17.5",
     "codelyzer": "2.0.0-beta.4",
@@ -80,8 +81,7 @@
     "tslint": "4.2.0",
     "typedoc": "0.5.1",
     "typescript": "2.0.6",
-    "uglify": "0.1.5",
-    "@types/node": "7.0.7"
+    "uglify": "0.1.5"
   },
   "repository": {},
   "scripts": {
