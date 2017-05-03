@@ -3,6 +3,9 @@ package org.educama.airport.model;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.springframework.data.annotation.Id;
 
+/**
+ * Model class for airports.
+ */
 public class Airport {
 
     @Id
@@ -134,14 +137,15 @@ public class Airport {
             return true;
         }
         Airport airport = (Airport) obj;
-        return this.iataCode.equalsIgnoreCase(((Airport) obj).iataCode);
+        return this.id.equalsIgnoreCase(((Airport) obj).id);
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder(17, 1).append(iataCode.toUpperCase())
+        final int initialOddNumber = 17;
+        final int multiplierOddNumber = 1;
+        return new HashCodeBuilder(initialOddNumber, multiplierOddNumber).append(id)
                 .toHashCode();
-
     }
 
     @Override

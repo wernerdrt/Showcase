@@ -1,20 +1,27 @@
 package org.educama.airport.repository;
 
-import java.util.List;
-
 import org.educama.airport.model.Airport;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
+import java.util.List;
+
+/**
+ * Repository interface for airports.
+ */
 public interface AirportRepository extends MongoRepository<Airport, String> {
 
-    public Airport findByName(String name);
+    List<Airport> findByIataCodeIgnoreCase(String iataCode);
 
-    public List<Airport> findByIataCode(String iataCode);
+    List<Airport> findByNameStartingWithIgnoreCase(String name);
 
-    public List<Airport> findByNameLike(String name);
+    List<Airport> findByCityStartingWithIgnoreCase(String city);
 
-    public List<Airport> findByIataCodeLike(String iataCode);
+    List<Airport> findByCountryStartingWithIgnoreCase(String country);
 
-    public List<Airport> findByIcaoCode(String icaoCode);
+    List<Airport> findByIataCodeStartingWithIgnoreCase(String iataCode);
+
+    List<Airport> findByIcaoCodeStartingWithIgnoreCase(String icaoCode);
+
+    List<Airport> findByIcaoCodeIgnoreCase(String icaoCode);
 
 }

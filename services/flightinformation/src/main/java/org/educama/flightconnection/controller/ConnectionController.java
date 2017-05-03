@@ -3,12 +3,16 @@ package org.educama.flightconnection.controller;
 import org.educama.flightconnection.businessservice.ConnectionBusinessService;
 import org.educama.flightconnection.model.Connection;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.List;
 
+/**
+ * Rest controller of the airline resources.
+ */
 @RestController
 public class ConnectionController {
 
@@ -17,7 +21,6 @@ public class ConnectionController {
     @Autowired
     public ConnectionController(ConnectionBusinessService connectionBusinessService) {
         this.connectionBusinessService = connectionBusinessService;
-
     }
 
     /**
@@ -29,8 +32,8 @@ public class ConnectionController {
      * @return The available flight connections.
      */
     @RequestMapping(value = "/connections")
-    public List<Connection> getAllConnectionFromSourceToDestination(@RequestParam(value = "from") String sourceAirportIata, @RequestParam(value = "to") String destinationAirportIata) {
-        return connectionBusinessService.findAllConnectionsFromSourceToDestionation(sourceAirportIata, destinationAirportIata);
+    public Page<Connection> getAllConnectionFromSourceToDestination(@RequestParam(value = "from") String sourceAirportIata, @RequestParam(value = "to") String destinationAirportIata, Pageable pageable) {
+        return connectionBusinessService.findAllConnectionsFromSourceToDestionation(sourceAirportIata, destinationAirportIata, pageable);
     }
 
 
@@ -41,8 +44,8 @@ public class ConnectionController {
      * @param file the import file containing the flight connections data
      */
     @RequestMapping(value = "/connections/import/csv", method = RequestMethod.POST)
-    public @ResponseBody
-    void importConnections(@RequestParam("file") MultipartFile file) throws IOException {
+    @ResponseBody
+    public void importConnections(@RequestParam("file") MultipartFile file) throws IOException {
         connectionBusinessService.clearAndImportConnections(file);
     }
 }

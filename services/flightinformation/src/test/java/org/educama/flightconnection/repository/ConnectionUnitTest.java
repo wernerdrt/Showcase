@@ -6,9 +6,12 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
+/**
+ * Tests the connection model.
+ */
 public class ConnectionUnitTest {
     @Test
-    public void airlineIataCode_isAlwaysConvertedToUppercase() {
+    public void airlineIataCodeIsAlwaysConvertedToUppercase() {
         // Given
         Connection firstConnection = new Connection();
         Connection secondConnection;
@@ -23,7 +26,7 @@ public class ConnectionUnitTest {
     }
 
     @Test
-    public void destinationAirportIataCode_isAlwaysConvertedToUppercase() {
+    public void destinationAirportIataCodeIsAlwaysConvertedToUppercase() {
         // Given
         Connection firstConnection = new Connection();
         Connection secondConnection;
@@ -38,7 +41,7 @@ public class ConnectionUnitTest {
     }
 
     @Test
-    public void sourceAirportIataCode_isAlwaysConvertedToUppercase() {
+    public void sourceAirportIataCodeIsAlwaysConvertedToUppercase() {
         // Given
         Connection firstConnection = new Connection();
         Connection secondConnection;

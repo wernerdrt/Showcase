@@ -1,20 +1,21 @@
 package org.educama.airline.controller;
 
 
-import java.io.IOException;
-import java.util.List;
-
 import org.educama.airline.businessservice.AirlineBusinessService;
 import org.educama.airline.model.Airline;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.*;
+
+/**
+ * Rest controller of the airline resources.
+ */
 @RestController
 public class AirlineController {
 
@@ -27,47 +28,53 @@ public class AirlineController {
     }
 
     /**
-     * Retrieves all airlines
+     * Retrieves all airlines.
      *
-     * @return
+     * @return the airlines
      */
     @RequestMapping("/airlines")
-    public List<Airline> getAirlines() {
-        return airlineBusinessService.findAllAirlines();
+    public Page<Airline> getAirlines(Pageable pageable) {
+        return airlineBusinessService.findAllAirlines(pageable);
     }
 
     /**
-     * Retrieves an airline by its IATA code
+     * Retrieves an airline by its IATA or ICAO code.
      *
-     * @param iataCode the IATA Code
+     * @param airportCode the IATA Code
      * @return the airline.
      */
-    @RequestMapping("/airlines/{iataCode}")
-    public List<Airline> getAirlinesByIataCode(@PathVariable String iataCode) {
-        return airlineBusinessService.findAirlinesByIataCode(iataCode.toUpperCase());
+    @RequestMapping("/airlines/{airportCode}")
+    public List<Airline> getAirlinesByIataCodeOrIcaoCode(@PathVariable String airportCode) {
+        Set<Airline> airlineSet = new HashSet<Airline>();
+        if (StringUtils.isEmpty(airportCode)) {
+            return Collections.emptyList();
+        }
+        airlineSet.addAll(airlineBusinessService.findAirlinesByIataCode(airportCode));
+        airlineSet.addAll(airlineBusinessService.findAirlinesByIcaoCode(airportCode));
+        return new ArrayList<>(airlineSet);
+
     }
 
     /**
-     * Retrieves a list of airlines which IATA code begin with a given term.
+     * Retrieves a list of airlines which name, IATA, ICAO,City, Callsign, or country contains a given term.
      *
-     * @param iataCode the part of the IATA code to be looked up.
+     * @param term the part of the the part of the name, IATA, ICAO, Callsign, or country code to be looked up.
      * @return the list of matching airlines.
      */
     @RequestMapping("/airlines/suggestions")
-    public List<Airline> getAirlinesSuggestionsByIataCode(@RequestParam(value = "term") String iataCode) {
-        return airlineBusinessService.findAirlinesSuggestionsByIataCode(iataCode);
+    public List<Airline> getAirlinesSuggestions(@RequestParam(value = "term") String term) {
+        Set<Airline> airlineSet = new HashSet<Airline>();
+        if (StringUtils.isEmpty(term)) {
+            return Collections.emptyList();
+        }
+        airlineSet.addAll(airlineBusinessService.findAirlinesSuggestionsByName(term));
+        airlineSet.addAll(airlineBusinessService.findAirlinesSuggestionsByIataCode(term));
+        airlineSet.addAll(airlineBusinessService.findAirlinesSuggestionsByIcaoCode(term));
+        airlineSet.addAll(airlineBusinessService.findAirlinesSuggestionsByCallSign(term));
+        airlineSet.addAll(airlineBusinessService.findAirlinesSuggestionsByCountry(term));
 
-    }
+        return new ArrayList<Airline>(airlineSet);
 
-    /**
-     * Retrieves a list of airlines which call ssign contain the given term
-     *
-     * @param callSign the part of the call sign to be looked up
-     * @return the list aof matching airlines.
-     */
-    @RequestMapping("/airlines/suggestions/callsign")
-    public List<Airline> getAirlinesSuggestionsByCallSign(@RequestParam(value = "term") String callSign) {
-        return airlineBusinessService.findAirlinesSuggestionsByCallSign(callSign);
     }
 
     /**
@@ -77,8 +84,8 @@ public class AirlineController {
      * @param file the import file containing the airline data
      */
     @RequestMapping(value = "/airlines/import/csv", method = RequestMethod.POST)
-    public @ResponseBody
-    void importAirlines(@RequestParam("file") MultipartFile file) throws IOException {
+    @ResponseBody
+    public void importAirlines(@RequestParam("file") MultipartFile file) throws IOException {
         airlineBusinessService.clearAndImportAirlines(file);
     }
 }

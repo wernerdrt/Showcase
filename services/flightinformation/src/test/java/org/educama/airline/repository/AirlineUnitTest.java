@@ -6,6 +6,9 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
+/**
+ * Tests the airline model.
+ */
 public class AirlineUnitTest {
 
     Airline firstAirline = new Airline().withName("Air Canada")
@@ -22,19 +25,14 @@ public class AirlineUnitTest {
             .withCallSign("foobar")
             .withCountry("canada");
 
-    @Test
-    public void equals_returnsTrue_whenSameIataCode_irrespectiveOfCase() {
-
-        assertThat(firstAirline.equals(secondAirline)).isTrue();
-    }
 
     @Test
-    public void hashcode_returnSameValue_whenSameIataCode_irrespectiveOfCase() {
+    public void hashcodeReturnSameValueWhenSameIataCodeIrrespectiveOfCase() {
         assertThat(firstAirline.hashCode()).isEqualTo(secondAirline.hashCode());
     }
 
     @Test
-    public void iataCode_isAlwaysConvertedToUppercase() {
+    public void iataCodeIsAlwaysConvertedToUppercase() {
         //Given
         Airline firstAirline = new Airline();
         Airline secondAirline;

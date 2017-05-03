@@ -25,12 +25,15 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+/**
+ * Tests the deserialization from CSV into connection objects.
+ */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = App.class)
 public class ConnectionCsvDeserializerIntTest {
-    private static final String SEPARATOR = ",";
-    private static final String EMPTY = "";
-    private static final Charset CSV_CHARSET = StandardCharsets.ISO_8859_1;
+    private final String separator = ",";
+    private final String empty = "";
+    private final Charset charset = StandardCharsets.ISO_8859_1;
 
 
     @Autowired
@@ -42,21 +45,18 @@ public class ConnectionCsvDeserializerIntTest {
 
     @Before
     public void tearDown() {
-        List<Airport> airports = airportRepository.findByIataCode(getDefaultAirport().getIataCode());
-        List<Airline> airlines = airlineRepository.findByIataCode(getDefaultAirline().getIataCode());
+        List<Airport> airports = airportRepository.findByIataCodeIgnoreCase(getDefaultAirport().getIataCode());
+        List<Airline> airlines = airlineRepository.findByIataCodeIgnoreCase(getDefaultAirline().getIataCode());
         if (!airports.isEmpty()) {
             airportRepository.delete(airports);
         }
         if (!airlines.isEmpty()) {
             airlineRepository.delete(airlines);
         }
-
-
     }
 
-
     @Test
-    public void deserialize_throwsException_whenNodValidCodeShare() throws IOException {
+    public void deserializeThrowsExceptionWhenNodValidCodeShare() throws IOException {
         //Given
         boolean thrown = false;
         final String invalidCodeshare = "Invalid codeshare";
@@ -68,37 +68,29 @@ public class ConnectionCsvDeserializerIntTest {
         connections.add(connection);
 
         StringBuilder builder = new StringBuilder();
-        builder.append(connection.getAirlineIataCode())
-                .append(SEPARATOR)  //ID
-                .append(EMPTY)
-                .append(SEPARATOR)  //airline ID
-                .append(connection.getSourceAirportIataCode())
-                .append(SEPARATOR)
-                .append(EMPTY)
-                .append(SEPARATOR) //source ID
-                .append(connection.getDestinationAirportIataCode())
-                .append(SEPARATOR)
-                .append(EMPTY)
-                .append(SEPARATOR) //destination ID
-                .append(invalidCodeshare)
-                .append(SEPARATOR)
-                .append(connection.getStops())
-                .append(SEPARATOR)
-                .append(EMPTY)
-                .append("\n");     // Equipment
-        //@formatter:on
+        //@formatter:off
+        builder.append(connection.getAirlineIataCode())              .append(separator)  //ID
+                .append(empty)                                       .append(separator)  //airline ID
+                .append(connection.getSourceAirportIataCode())       .append(separator)
+                .append(empty)                                       .append(separator) //source ID
+                .append(connection.getDestinationAirportIataCode())  .append(separator)
+                .append(empty)                                       .append(separator) //destination ID
+                .append(invalidCodeshare)                            .append(separator)
+                .append(connection.getStops())                       .append(separator)
+                .append(empty)                                       .append("\n");     // Equipment
+        //@formatter:ofn
+
         String csvContent = builder.toString();
 
 
         InputStream inputStream = new ByteArrayInputStream(
-                csvContent.getBytes(CSV_CHARSET));
+                csvContent.getBytes(charset));
 
         //When
         try {
             cut.deserialize(inputStream);
-        }
-        // ensure that the proper cell processor what activated to reject the invalid codeshare
-        catch (SuperCsvCellProcessorException e) {
+        } catch (SuperCsvCellProcessorException e) {
+            // ensure that the proper cell processor what activated to reject the invalid codeshare
             thrown = true;
             assertThat(e.getMessage()).containsIgnoringCase(invalidCodeshare);
         }
@@ -108,7 +100,7 @@ public class ConnectionCsvDeserializerIntTest {
     }
 
     @Test
-    public void deserialize_throwsException_whenInvalidAirportCodeLength() throws IOException {
+    public void deserializeThrowsExceptionWhenInvalidAirportCodeLength() throws IOException {
         //Given
         final String invalidAirportCode = "invalid airport code";
         boolean thrown = false;
@@ -119,15 +111,12 @@ public class ConnectionCsvDeserializerIntTest {
         connections.add(connection);
         String csvContent = cut.createCsvContentForConnections(connections);
 
-        InputStream inputStream = new ByteArrayInputStream(
-                csvContent.getBytes(CSV_CHARSET));
+        InputStream inputStream = new ByteArrayInputStream(csvContent.getBytes(charset));
         //When
         try {
             cut.deserialize(inputStream);
-        }
-        //Then: ensure that the proper cell processor what activated to reject the invalid airport code
-        catch (SuperCsvCellProcessorException e) {
-
+        } catch (SuperCsvCellProcessorException e) {
+            //Then: ensure that the proper cell processor what activated to reject the invalid airport code
             thrown = true;
             assertThat(e.getMessage()).containsIgnoringCase(invalidAirportCode);
         }
@@ -136,7 +125,7 @@ public class ConnectionCsvDeserializerIntTest {
     }
 
     @Test
-    public void deserialize_throwsException_whenInvalidAirlineCodeLength() throws IOException {
+    public void deserializeThrowsExceptionWhenInvalidAirlineCodeLength() throws IOException {
         //Given
         final String invalidAirlineCode = "invalid airline code";
         boolean thrown = false;
@@ -146,15 +135,12 @@ public class ConnectionCsvDeserializerIntTest {
         List<Connection> connections = new ArrayList<>();
         connections.add(connection);
         String csvContent = cut.createCsvContentForConnections(connections);
-        InputStream inputStream = new ByteArrayInputStream(
-                csvContent.getBytes(CSV_CHARSET));
+        InputStream inputStream = new ByteArrayInputStream(csvContent.getBytes(charset));
         //When
         try {
             cut.deserialize(inputStream);
-        }
-        //Then: ensure that the proper cell processor what activated to reject the invalid airline code
-        catch (SuperCsvCellProcessorException e) {
-
+        } catch (SuperCsvCellProcessorException e) {
+            //Then: ensure that the proper cell processor what activated to reject the invalid airline code
             thrown = true;
             assertThat(e.getMessage()).containsIgnoringCase(invalidAirlineCode);
         }
@@ -163,7 +149,7 @@ public class ConnectionCsvDeserializerIntTest {
     }
 
     @Test
-    public void deserialize_convertsKnownAirportsIcaoCodeIntoCorrespondingIataCode() throws IOException {
+    public void deserializeConvertsKnownAirportsIcaoCodeIntoCorrespondingIataCode() throws IOException {
         //Given
         Airport airport = getDefaultAirport();
         final String iataCode = airport.getIataCode();
@@ -178,7 +164,7 @@ public class ConnectionCsvDeserializerIntTest {
         String csvContent = cut.createCsvContentForConnections(connections);
 
         InputStream inputStream = new ByteArrayInputStream(
-                csvContent.getBytes(CSV_CHARSET));
+                csvContent.getBytes(charset));
 
         //When
         List<Connection> actualConnections = cut.deserialize(inputStream);
@@ -191,7 +177,7 @@ public class ConnectionCsvDeserializerIntTest {
     }
 
     @Test
-    public void deserialize_doesNotConvertsUnknownAirportsIcaoIntoIataCode() throws IOException {
+    public void deserializeDoesNotConvertsUnknownAirportsIcaoIntoIataCode() throws IOException {
         //Given
         Airport airport = getDefaultAirport();
 
@@ -206,7 +192,7 @@ public class ConnectionCsvDeserializerIntTest {
         String csvContent = cut.createCsvContentForConnections(connections);
 
         InputStream inputStream = new ByteArrayInputStream(
-                csvContent.getBytes(CSV_CHARSET));
+                csvContent.getBytes(charset));
 
         //When
         List<Connection> actualConnections = cut.deserialize(inputStream);
@@ -220,7 +206,7 @@ public class ConnectionCsvDeserializerIntTest {
     }
 
     @Test
-    public void deserialize_doesNotConvertsUnknownAirlinesIcaoIntoIataCode() throws IOException {
+    public void deserializeDoesNotConvertsUnknownAirlinesIcaoIntoIataCode() throws IOException {
         //Given
         Airline airline = getDefaultAirline();
 
@@ -235,7 +221,7 @@ public class ConnectionCsvDeserializerIntTest {
         String csvContent = cut.createCsvContentForConnections(connections);
 
         InputStream inputStream = new ByteArrayInputStream(
-                csvContent.getBytes(CSV_CHARSET));
+                csvContent.getBytes(charset));
 
         //When
         List<Connection> actualConnections = cut.deserialize(inputStream);
@@ -245,11 +231,10 @@ public class ConnectionCsvDeserializerIntTest {
         assertThat(actualConnections.get(0)
                 .getAirlineIataCode()).isEqualTo(unknownIcaoCode
         );
-
     }
 
     @Test
-    public void deserialize_convertsKnownAirlinesIcaoIntoCorrespondingIataCode() throws IOException {
+    public void deserializeConvertsKnownAirlinesIcaoIntoCorrespondingIataCode() throws IOException {
         //Given
         Airline airline = getDefaultAirline();
         final String iataCode = airline.getIataCode();
@@ -264,7 +249,7 @@ public class ConnectionCsvDeserializerIntTest {
         String csvContent = cut.createCsvContentForConnections(connections);
 
         InputStream inputStream = new ByteArrayInputStream(
-                csvContent.getBytes(CSV_CHARSET));
+                csvContent.getBytes(charset));
 
         //When
         List<Connection> actualConnections = cut.deserialize(inputStream);
@@ -273,11 +258,10 @@ public class ConnectionCsvDeserializerIntTest {
         assertThat(actualConnections.size()).isEqualTo(1);
         assertThat(actualConnections.get(0)
                 .getAirlineIataCode()).isEqualTo(iataCode);
-
     }
 
     @Test
-    public void deserialize_createsNewConnectionInstances_WhenValidCsvInput() throws IOException {
+    public void deserializeCreatesNewConnectionInstancesWhenValidCsvInput() throws IOException {
         //Given
         Connection expectedConnection = getDefaultConnection();
 
@@ -286,7 +270,7 @@ public class ConnectionCsvDeserializerIntTest {
         String csvContent = cut.createCsvContentForConnections(connections);
 
         InputStream inputStream = new ByteArrayInputStream(
-                csvContent.getBytes(CSV_CHARSET));
+                csvContent.getBytes(charset));
 
         //When
         List<Connection> actualConnections = cut.deserialize(inputStream);
@@ -297,16 +281,13 @@ public class ConnectionCsvDeserializerIntTest {
         assertThat(actualConnection.getAirlineIataCode()).isEqualTo(expectedConnection.getAirlineIataCode());
         assertThat(actualConnection.getSourceAirportIataCode()).isEqualTo(expectedConnection.getSourceAirportIataCode());
         assertThat(actualConnection.getDestinationAirportIataCode()).isEqualTo(expectedConnection.getDestinationAirportIataCode());
-
-
     }
 
     private Connection getDefaultConnection() {
         return new Connection().withAirlineIataCode("UA")
                 .withSourceAirportIataCode("JFK")
                 .withDestinationAirportIataCode("MUC")
-                .withCodeShare(true)
-                .withStops(0);
+                .withCodeShare(true);
     }
 
     private Airport getDefaultAirport() {

@@ -1,9 +1,7 @@
 package org.educama.airport.datafeed;
 
-import org.educama.airport.datafeed.AirportCsvDeserializer;
 import org.educama.airport.model.Airport;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -13,16 +11,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertTrue;
 
-
+/**
+ * Tests deserialization from CSV into airports objects.
+ */
 public class AirportCsvDeserializerIntTest {
     private static final String SEPARATOR = ",";
     private static final String EMPTY = "";
     private AirportCsvDeserializer cut = new AirportCsvDeserializer();
 
-
     @Test
-    public void deserialize_createsNewAirportsInstances_WhenValidCsvInput() throws IOException {
+    public void deserializeCreatesNewAirportsInstancesWhenValidCsvInput() throws IOException {
         //Given
         final String name1 = "Los Angeles International Airport";
         final String city1 = "Los Angeles";
@@ -32,7 +32,6 @@ public class AirportCsvDeserializerIntTest {
         final double latitude1 = 33.94250107;
         final double longitude1 = -118.4079971;
 
-
         final String name2 = "Frankfurt am Main International Airport";
         final String city2 = "Frankfurt";
         final String country2 = "Germany";
@@ -40,7 +39,6 @@ public class AirportCsvDeserializerIntTest {
         final String icao2 = "EDDF";
         final double latitude2 = 50.0333333;
         final double longitude2 = 8.5705556;
-
 
         Airport firstAirport = new Airport().withName(name1)
                 .withCity(city1)
@@ -71,8 +69,16 @@ public class AirportCsvDeserializerIntTest {
 
         //Then
         assertThat(actualAirports.size()).isEqualTo(2);
-        assertThat(actualAirports.contains(firstAirport));
-        assertThat(actualAirports.contains(secondAirport));
+        assertTrue(actualAirports.stream()
+                .filter(a -> a.getIataCode()
+                        .equals(firstAirport.getIataCode()))
+                .findFirst()
+                .isPresent());
+        assertTrue(actualAirports.stream()
+                .filter(a -> a.getIataCode()
+                        .equals(secondAirport.getIataCode()))
+                .findFirst()
+                .isPresent());
     }
 
     private String createValidCsvContentForAirports(List<Airport> airports) {
@@ -86,12 +92,12 @@ public class AirportCsvDeserializerIntTest {
                     .append(airport.getIataCode())   .append(SEPARATOR)
                     .append(airport.getIcaoCode())   .append(SEPARATOR)
                     .append(airport.getLatitude())   .append(SEPARATOR)
-                    .append(EMPTY)                    .append(SEPARATOR) //Altidude
-                    .append(EMPTY)                    .append(SEPARATOR) //Timezone
-                    .append(EMPTY)                    .append(SEPARATOR) //DST
-                    .append(EMPTY)                    .append(SEPARATOR) //database time
-                    .append(EMPTY)                    .append(SEPARATOR) //type
-                    .append(EMPTY)                    .append(SEPARATOR) //source
+                    .append(EMPTY)                   .append(SEPARATOR) //Altidude
+                    .append(EMPTY)                   .append(SEPARATOR) //Timezone
+                    .append(EMPTY)                   .append(SEPARATOR) //DST
+                    .append(EMPTY)                   .append(SEPARATOR) //database time
+                    .append(EMPTY)                   .append(SEPARATOR) //type
+                    .append(EMPTY)                   .append(SEPARATOR) //source
                     .append(airport.getLongitude())  .append("\n");
             //@formatter:on
         }

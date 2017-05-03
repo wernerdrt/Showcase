@@ -1,15 +1,5 @@
 package org.educama.airline.businessservice;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.educama.airline.businessservice.AirlineBusinessService;
 import org.educama.airline.datafeed.AirlineCsvDeserializer;
 import org.educama.airline.model.Airline;
 import org.educama.airline.repository.AirlineRepository;
@@ -18,8 +8,21 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+/**
+ * Tests the airline business service.
+ */
 @RunWith(MockitoJUnitRunner.class)
 public class AirlineBusinessServiceUnitTest {
 
@@ -31,6 +34,8 @@ public class AirlineBusinessServiceUnitTest {
 
     @Mock
     InputStream inputStream;
+    @Mock
+    Pageable pageable;
 
     @Mock
     AirlineCsvDeserializer airlineCsvDeserializer;
@@ -41,30 +46,29 @@ public class AirlineBusinessServiceUnitTest {
     @InjectMocks
     private AirlineBusinessService cut;
 
-    private final String iataLowerCase = "ana";
+    private final String iata = "ana";
 
-    private final String iataUpperCase = "ANA";
 
     @Test
-    public void findAirlinesByIataCode_retrievesAirlines_irrespectiveOfTheCaseOfIATA() {
+    public void findAirlinesByIataCodeRetrievesAirlinesIrrespectiveOfTheCaseOfIATA() {
 
         // When
-        cut.findAirlinesByIataCode(iataLowerCase);
+        cut.findAirlinesByIataCode(iata);
 
         // Then
-        verify(airlineRepository).findByIataCode(iataUpperCase);
+        verify(airlineRepository).findByIataCodeIgnoreCase(iata);
     }
 
     @Test
-    public void findAirlinesSuggestionsByIataCode_retrievesAirlinses_irrespectiveOfTheCaseOfIATA() {
+    public void findAirlinesSuggestionsByIataCodeRetrievesAirlinsesIrrespectiveOfTheCaseOfIATA() {
         // When
-        cut.findAirlinesSuggestionsByIataCode(iataLowerCase);
+        cut.findAirlinesSuggestionsByIataCode(iata);
         // Then
-        verify(airlineRepository).findByIataCodeLike(iataUpperCase);
+        verify(airlineRepository).findByIataCodeStartingWithIgnoreCase(iata);
     }
 
     @Test
-    public void findAirlinesSuggestionsByIataCode_returnsAnEmptyList_whenNoTermSpecified() {
+    public void findAirlinesSuggestionsByIataCodeReturnsAnEmptyListWhenNoTermSpecified() {
         // When
         List<Airline> suggestions = cut.findAirlinesSuggestionsByIataCode(null);
         // Then
@@ -77,7 +81,7 @@ public class AirlineBusinessServiceUnitTest {
     }
 
     @Test
-    public void findAirlinesSuggestionsByCallsign_returnsAnEmptyList_whenNoTermSpecified() {
+    public void findAirlinesSuggestionsByCallsignReturnsAnEmptyListWhenNoTermSpecified() {
         // When
         List<Airline> suggestions = cut.findAirlinesSuggestionsByCallSign(null);
         // Then
@@ -90,43 +94,43 @@ public class AirlineBusinessServiceUnitTest {
     }
 
     @Test
-    public void findAirlinesSuggestionsByIataCode_truncatesTheResultSet_whenMoreThanMaximumFound() {
+    public void findAirlinesSuggestionsByIataCodeTruncatesTheResultSetWhenMoreThanMaximumFound() {
         // Given
         final String term = "iata";
 
         List<Airline> airlines = new ArrayList<>();
-        for (int i = 1; i <= AirlineBusinessService.maxSuggestions + 2; i++) {
+        for (int i = 1; i <= AirlineBusinessService.MAX_SUGGESTIONS + 2; i++) {
 
             airlines.add(new Airline().withIataCode(term + i));
         }
-        when(airlineRepository.findByIataCodeLike(term.toUpperCase())).thenReturn(airlines);
+        when(airlineRepository.findByIataCodeStartingWithIgnoreCase(term)).thenReturn(airlines);
 
         // When
         List<Airline> suggestions = cut.findAirlinesSuggestionsByIataCode(term);
         // Then
-        assertThat(suggestions.size()).isEqualTo(AirlineBusinessService.maxSuggestions);
+        assertThat(suggestions.size()).isEqualTo(AirlineBusinessService.MAX_SUGGESTIONS);
     }
 
     @Test
-    public void findAirlinesSuggestionsByCallSign_truncatesTheResultSet_whenMoreThanMaximumFound() {
+    public void findAirlinesSuggestionsByCallSignTruncatesTheResultSetWhenMoreThanMaximumFound() {
         // Given
         final String term = "callSign";
 
         List<Airline> airlines = new ArrayList<>();
-        for (int i = 1; i <= AirlineBusinessService.maxSuggestions + 2; i++) {
+        for (int i = 1; i <= AirlineBusinessService.MAX_SUGGESTIONS + 2; i++) {
 
             airlines.add(new Airline().withIataCode(term + i));
         }
-        when(airlineRepository.findByCallSignLike(term.toUpperCase())).thenReturn(airlines);
+        when(airlineRepository.findByCallSignStartingWithIgnoreCase(term)).thenReturn(airlines);
 
         // When
         List<Airline> suggestions = cut.findAirlinesSuggestionsByCallSign(term);
         // Then
-        assertThat(suggestions.size()).isEqualTo(AirlineBusinessService.maxSuggestions);
+        assertThat(suggestions.size()).isEqualTo(AirlineBusinessService.MAX_SUGGESTIONS);
     }
 
     @Test
-    public void importAirlines_replacesTheContentOfRepository() throws IOException {
+    public void importAirlinesReplacesTheContentOfRepository() throws IOException {
         // Given
         when(file.getInputStream()).thenReturn(inputStream);
         when(airlineCsvDeserializer.deserialize(inputStream)).thenReturn(airlines);
@@ -141,13 +145,13 @@ public class AirlineBusinessServiceUnitTest {
     }
 
     @Test
-    public void findAllAirlines_returnsAllAirlines() {
+    public void findAllAirlinesReturnsAllAirlines() {
 
         // When
-        cut.findAllAirlines();
+        cut.findAllAirlines(pageable);
 
         // Then
-        verify(airlineRepository).findAll();
+        verify(airlineRepository).findAll(pageable);
     }
 
 }

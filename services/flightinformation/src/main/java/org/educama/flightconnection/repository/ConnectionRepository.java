@@ -1,14 +1,17 @@
 package org.educama.flightconnection.repository;
 
 import org.educama.flightconnection.model.Connection;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import java.util.List;
-
+/**
+ * The Repository interface for connections.
+ */
 public interface ConnectionRepository extends MongoRepository<Connection, String> {
-    public List<Connection> findBySourceAirportIataCodeAndDestinationAirportIataCode(String sourceIataCode, String destinationAirportIataCode);
+    Page<Connection> findBySourceAirportIataCodeAndDestinationAirportIataCode(String sourceIataCode, String destinationAirportIataCode, Pageable pageable);
 
-    public List<Connection> findBySourceAirportIataCode(String sourceIataCode);
+    Page<Connection> findBySourceAirportIataCodeIgnoreCase(String sourceIataCode, Pageable pageable);
 
-    public List<Connection> findBydestinationAirportIataCode(String destinationIataCode);
+    Page<Connection> findBydestinationAirportIataCodeIgnoreCase(String destinationIataCode, Pageable pageable);
 }

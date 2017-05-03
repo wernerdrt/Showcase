@@ -1,9 +1,7 @@
 package org.educama.airline.datafeed;
 
-import org.educama.airline.datafeed.AirlineCsvDeserializer;
 import org.educama.airline.model.Airline;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -13,8 +11,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertTrue;
 
-
+/**
+ * Tests deserialization from CSV into airlines objects.
+ */
 public class AirlineCsvDeserializerIntTest {
     private static final String SEPARATOR = ",";
     private static final String EMPTY = "";
@@ -22,7 +23,7 @@ public class AirlineCsvDeserializerIntTest {
 
 
     @Test
-    public void deserialize_createsNewAirlinesInstances_WhenValidCsvInput() throws IOException {
+    public void deserializeCreatesNewAirlinesInstancesWhenValidCsvInput() throws IOException {
         //Given
         final String name1 = "Air Canada";
         final String alias1 = "";
@@ -68,8 +69,17 @@ public class AirlineCsvDeserializerIntTest {
 
         //Then
         assertThat(actualAirlines.size()).isEqualTo(2);
-        assertThat(actualAirlines.contains(firstAirline));
-        assertThat(actualAirlines.contains(secondAirline));
+
+        assertTrue(actualAirlines.stream()
+                .filter(a -> a.getIataCode()
+                        .equals(firstAirline.getIataCode()))
+                .findFirst()
+                .isPresent());
+        assertThat(actualAirlines.stream()
+                .filter(a -> a.getIataCode()
+                        .equals(secondAirline.getIataCode()))
+                .findFirst()
+                .isPresent());
     }
 
     private String createValidCsvContentForAirlines(List<Airline> airlines) {

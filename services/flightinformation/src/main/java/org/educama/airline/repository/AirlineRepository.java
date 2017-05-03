@@ -5,16 +5,22 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.List;
 
+/**
+ * Repository interface for airlines.
+ */
 public interface AirlineRepository extends MongoRepository<Airline, String> {
-    public Airline findByName(String name);
 
-    public List<Airline> findByIataCode(String iataCode);
+    List<Airline> findByIataCodeIgnoreCase(String iataCode);
 
-    public List<Airline> findByIcaoCode(String icaoCode);
+    List<Airline> findByIcaoCodeIgnoreCase(String icaoCode);
 
-    public List<Airline> findByNameLike(String name);
+    List<Airline> findByNameStartingWithIgnoreCase(String name);
 
-    public List<Airline> findByIataCodeLike(String iataCode);
+    List<Airline> findByIataCodeStartingWithIgnoreCase(String iataCode);
 
-    public List<Airline> findByCallSignLike(String callSign);
+    List<Airline> findByIcaoCodeStartingWithIgnoreCase(String icaoCode);
+
+    List<Airline> findByCallSignStartingWithIgnoreCase(String callSign);
+
+    List<Airline> findByCountryStartingWithIgnoreCase(String callSign);
 }

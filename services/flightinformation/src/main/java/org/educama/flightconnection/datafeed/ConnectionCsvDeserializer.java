@@ -2,8 +2,8 @@ package org.educama.flightconnection.datafeed;
 
 
 import org.educama.airline.businessservice.AirlineBusinessService;
-import org.educama.airport.businessservice.AirportBusinessService;
 import org.educama.airline.model.Airline;
+import org.educama.airport.businessservice.AirportBusinessService;
 import org.educama.airport.model.Airport;
 import org.educama.flightconnection.model.Connection;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,14 +23,16 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 
+/**
+ * Deserializes the CSV inputstreams containing connections data into connection Objects.
+ */
 @Component
 public class ConnectionCsvDeserializer {
-    private String CODESHARE_YES = "Y";
-    private String CODESHARE_NO = "";
-    private String SEPARATOR = ",";
-    private String EMPTY = "";
+    private final String codeshareYes = "Y";
+    private final String codeshareNo = "";
+    private final String separator = ",";
+    private final String empty = "";
 
     private AirportBusinessService airportBusinessService;
 
@@ -65,17 +67,17 @@ public class ConnectionCsvDeserializer {
     public String createCsvContentForConnections(List<Connection> connections) {
         StringBuilder builder = new StringBuilder();
         for (Connection connection : connections) {
-            String codeShare = connection.isCodeshare() ? CODESHARE_YES : CODESHARE_NO;
+            String codeShare = connection.isCodeshare() ? codeshareYes : codeshareNo;
             //@formatter:off
-            builder.append(connection.getAirlineIataCode())               .append(SEPARATOR)  //ID
-                    .append(EMPTY)                                        .append(SEPARATOR)  //airline ID
-                    .append(connection.getSourceAirportIataCode())        .append(SEPARATOR)
-                    .append(EMPTY)                                        .append(SEPARATOR) //source ID
-                    .append(connection.getDestinationAirportIataCode())   .append(SEPARATOR)
-                    .append(EMPTY)                                        .append(SEPARATOR) //destination ID
-                    .append(codeShare)            .append(SEPARATOR)
-                    .append(connection.getStops())                        .append(SEPARATOR)
-                    .append(EMPTY)                                        .append("\n");     // Equipment
+            builder.append(connection.getAirlineIataCode())               .append(separator)  //ID
+                    .append(empty)                                        .append(separator)  //airline ID
+                    .append(connection.getSourceAirportIataCode())        .append(separator)
+                    .append(empty)                                        .append(separator) //source ID
+                    .append(connection.getDestinationAirportIataCode())   .append(separator)
+                    .append(empty)                                        .append(separator) //destination ID
+                    .append(codeShare)                                    .append(separator)
+                    .append(connection.getStops())                        .append(separator)
+                    .append(empty)                                        .append("\n");     //Equipment
             //@formatter:on
         }
         return builder.toString();
@@ -84,29 +86,30 @@ public class ConnectionCsvDeserializer {
     private CellProcessor[] getCellProcessors() {
         return new CellProcessor[]{
                 //@formatter:off
-                new Optional(new ParseAirlinesIataCode())    , //airline
-                null                                         , //airline ID
-                new Optional(new ParseAirportIataCode())     , //source airport
-                null                                         , //source airport ID
-                new Optional(new ParseAirportIataCode())     , //destination airport
-                null                                         , //destination airport ID
-                new Optional(new ParseCodeShare())           , //codeShare
-                new Optional(new ParseInt())                 , //stops
-                null                                         , //equipment
-                //@formatter:ons
+                new Optional(new ParseAirlinesIataCode()), //airline
+                null,                                      //airline ID
+                new Optional(new ParseAirportIataCode()),  //source airport
+                null,                                      //source airport ID
+                new Optional(new ParseAirportIataCode()),  //destination airport
+                null,                                      //destination airport ID
+                new Optional(new ParseCodeShare()),        //codeShare
+                new Optional(new ParseInt()),              //stops
+                null,                                      //equipment
+                 //@formatter:on
         };
-
     }
 
-    //custom CellProcessor for parsing the codeshares
+    /**
+     * custom CellProcessor for parsing the codeshares.
+     */
     private class ParseCodeShare extends CellProcessorAdaptor {
 
 
-        public ParseCodeShare() {
+        ParseCodeShare() {
             super();
         }
 
-        public ParseCodeShare(CellProcessorAdaptor next) {
+        ParseCodeShare(CellProcessorAdaptor next) {
             super(next);
         }
 
@@ -114,10 +117,10 @@ public class ConnectionCsvDeserializer {
         public Object execute(Object value, CsvContext context) {
             validateInputNotNull(value, context);
 
-            if (CODESHARE_YES.equalsIgnoreCase((String) value)) {
+            if (codeshareYes.equalsIgnoreCase((String) value)) {
                 return next.execute(Boolean.TRUE, context);
             } else {
-                if (CODESHARE_NO.equalsIgnoreCase((String) value)) {
+                if (codeshareNo.equalsIgnoreCase((String) value)) {
                     return next.execute(Boolean.FALSE, context);
                 }
             }
@@ -127,16 +130,19 @@ public class ConnectionCsvDeserializer {
         }
     }
 
-    //custom CellProcessor for parsing the airports codes
+
+    /**
+     * Custom CellProcessor for parsing the airports codes.
+     */
     private class ParseAirportIataCode extends CellProcessorAdaptor {
         private static final int AIRPORT_IATACODE_LENGTH = 3;
         private static final int AIRPORT_ICAOCODE_LENGTH = 4;
 
-        public ParseAirportIataCode() {
+        ParseAirportIataCode() {
             super();
         }
 
-        public ParseAirportIataCode(CellProcessorAdaptor next) {
+        ParseAirportIataCode(CellProcessorAdaptor next) {
             super(next);
         }
 
@@ -165,19 +171,20 @@ public class ConnectionCsvDeserializer {
                     String.format("Could not parse '%s' neither as an IATA nor as an IACAO code for Airports", value),
                     context, this);
         }
-
     }
 
-    //custom CellProcessor for parsing the airlines codes
+    /**
+     * custom CellProcessor for parsing the airlines codes.
+     */
     private class ParseAirlinesIataCode extends CellProcessorAdaptor {
         private static final int AIRLINE_IATACODE_LENGTH = 2;
         private static final int AIRLINE_ICAOCODE_LENGTH = 3;
 
-        public ParseAirlinesIataCode() {
+        ParseAirlinesIataCode() {
             super();
         }
 
-        public ParseAirlinesIataCode(CellProcessorAdaptor next) {
+        ParseAirlinesIataCode(CellProcessorAdaptor next) {
             super(next);
         }
 
@@ -206,6 +213,5 @@ public class ConnectionCsvDeserializer {
                     String.format("Could not parse '%s' neither as an IATA nor as an IACAO code for Airlines", value),
                     context, this);
         }
-
     }
 }

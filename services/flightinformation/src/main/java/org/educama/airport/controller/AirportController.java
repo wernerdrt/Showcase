@@ -1,19 +1,20 @@
 package org.educama.airport.controller;
 
-import java.io.IOException;
-import java.util.List;
-
 import org.educama.airport.businessservice.AirportBusinessService;
 import org.educama.airport.model.Airport;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.*;
+
+/**
+ * Rest controller of the airport resources.
+ */
 @RestController
 public class AirportController {
 
@@ -31,32 +32,46 @@ public class AirportController {
      * @return the airports
      */
     @RequestMapping("/airports")
-    public List<Airport> getAirports() {
-        return airportBusinessService.findAllAirports();
+    public Page<Airport> getAirports(Pageable pageable) {
+        return airportBusinessService.findAllAirports(pageable);
     }
 
     /**
-     * Retrieves an airport by its IATA code
+     * Retrieves an airport by its IATA or ICAO code.
      *
-     * @param iataCode the IATA Code
+     * @param airportCode the IATA Code
      * @return the airport.
      */
-    @RequestMapping("/airports/{iataCode}")
-    public List<Airport> getAirportByIataCode(@PathVariable String iataCode) {
-        return airportBusinessService.findAirportByIataCode(iataCode.toUpperCase());
+    @RequestMapping("/airports/{airportCode}")
+    public List<Airport> getAirportByIataCodeOrIcaoCode(@PathVariable String airportCode) {
+        Set<Airport> airportSet = new HashSet<Airport>();
+        if (StringUtils.isEmpty(airportCode)) {
+            return Collections.emptyList();
+        }
+        airportSet.addAll(airportBusinessService.findAirportByIataCode(airportCode));
+        airportSet.addAll(airportBusinessService.findAirportByIcaoCode(airportCode));
+        return new ArrayList<>(airportSet);
+
     }
 
     /**
-     * Retrieves the a list of airports which IATA code begin with a given term.
+     * Retrieves the a list of airports which name, city,country, IATA, or ICAO,City, Callsign,  contains a given term.
      *
-     * @param iataCode the part of the IATA code to be looked up.
+     * @param term the part of the IATA code to be looked up.
      * @return the list of matching airports.
      */
     @RequestMapping("/airports/suggestions")
-    public List<Airport> getAirportSuggestions(@RequestParam(value = "term") String iataCode) {
-        List<Airport> suggestions = airportBusinessService.findAirportsSuggestionsByIataCode(iataCode);
-
-        return suggestions;
+    public List<Airport> getAirportSuggestions(@RequestParam(value = "term") String term) {
+        Set<Airport> airportSet = new HashSet<Airport>();
+        if (StringUtils.isEmpty(term)) {
+            return Collections.emptyList();
+        }
+        airportSet.addAll(airportBusinessService.findAirportsSuggestionsByName(term));
+        airportSet.addAll(airportBusinessService.findAirportsSuggestionsByCity(term));
+        airportSet.addAll(airportBusinessService.findAirportsSuggestionsByCountry(term));
+        airportSet.addAll(airportBusinessService.findAirportsSuggestionsByIataCode(term));
+        airportSet.addAll(airportBusinessService.findAirportsSuggestionsByIcaoCode(term));
+        return new ArrayList<>(airportSet);
     }
 
     /**
@@ -66,8 +81,8 @@ public class AirportController {
      * @param file the import file containing the airport data
      */
     @RequestMapping(value = "/airports/import/csv", method = RequestMethod.POST)
-    public @ResponseBody
-    void importAirports(@RequestParam("file") MultipartFile file) throws IOException {
+    @ResponseBody
+    public void importAirports(@RequestParam("file") MultipartFile file) throws IOException {
         airportBusinessService.clearAndImportAirports(file);
     }
 }

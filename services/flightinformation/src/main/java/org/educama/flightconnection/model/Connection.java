@@ -3,6 +3,9 @@ package org.educama.flightconnection.model;
 
 import org.springframework.data.annotation.Id;
 
+/**
+ * Model class for connections.
+ */
 public class Connection {
     @Id
     private String id;
@@ -13,7 +16,6 @@ public class Connection {
     private boolean codeshare;
     // Number of stops on this flight
     private int stops;
-
 
     public String getAirlineIataCode() {
         return airlineIataCode;
