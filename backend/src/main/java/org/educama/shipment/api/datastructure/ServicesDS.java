@@ -1,6 +1,5 @@
 package org.educama.shipment.api.datastructure;
 
-import javax.validation.constraints.NotNull;
 import org.educama.shipment.model.Services;
 
 /**
@@ -8,25 +7,18 @@ import org.educama.shipment.model.Services;
  */
 public class ServicesDS {
 
-    @NotNull
     public boolean preCarriage;
 
-    @NotNull
     public boolean exportInsurance;
 
-    @NotNull
     public boolean exportCustomsClearance;
 
-    @NotNull
     public boolean flight;
 
-    @NotNull
     public boolean importInsurance;
 
-    @NotNull
     public boolean importCustomsClearance;
 
-    @NotNull
     public boolean onCarriage;
 
     /*
