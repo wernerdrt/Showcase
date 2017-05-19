@@ -58,6 +58,8 @@ System.config(
 
             // reactive extensions for angular
             '@ngrx/core': 'node_modules/@ngrx/core/bundles/core.min.umd.js',
+            '@ngrx/effects': 'node_modules/@ngrx/effects/bundles/effects.umd.js',
+            '@ngrx/effects/testing': 'node_modules/@ngrx/effects/testing/index.js',
             '@ngrx/store': 'node_modules/@ngrx/store/bundles/store.min.umd.js',
 
             // other libraries

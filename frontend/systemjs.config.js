@@ -20,6 +20,7 @@
         // reactive extensions for angular
         '@ngrx/core': 'node_modules/@ngrx/core/bundles/core.min.umd.js',
         '@ngrx/store': 'node_modules/@ngrx/store/bundles/store.min.umd.js',
+        '@ngrx/effects': 'node_modules/@ngrx/effects/bundles/effects.umd.js',
         '@ngrx/store-devtools': 'node_modules/@ngrx/store-devtools/bundles/store-devtools.min.umd.js',
 
         // other libraries

@@ -1,13 +1,8 @@
 import {Action, ActionReducer} from "@ngrx/store";
 import * as actions from "./customer-capture-page.actions";
-import {CustomerResource} from "../api/resources/customer.resource";
-
-export interface CustomerCaptureSlice {
-    customer?: CustomerResource;
-}
-
-export const CUSTOMER_CAPTURE_SLICE_INITIAL_STATE = {
-};
+import {CustomerResource} from "../../api/resources/customer.resource";
+import {CUSTOMER_CAPTURE_SLICE_INITIAL_STATE} from "./customer-capture-page.initial-state";
+import {CustomerCaptureSlice} from "./customer-capture-page.slice";
 
 export const CUSTOMER_CAPTURE_PAGE_REDUCER: ActionReducer<CustomerCaptureSlice> = (state: CustomerCaptureSlice = CUSTOMER_CAPTURE_SLICE_INITIAL_STATE, action: Action) => {
     switch (action.type) {
@@ -16,8 +11,10 @@ export const CUSTOMER_CAPTURE_PAGE_REDUCER: ActionReducer<CustomerCaptureSlice> 
             return Object.assign({}, state, {
                 customer: action.payload
             });
-        case actions.RESET_CUSTOMER_CAPTURE_SLICE:
+
+        case actions.INITIALIZE_CUSTOMER_CAPTURE_SLICE:
             return CUSTOMER_CAPTURE_SLICE_INITIAL_STATE;
+
         default:
             return state;
     }

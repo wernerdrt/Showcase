@@ -1,24 +1,20 @@
 import {ActionReducer, combineReducers} from "@ngrx/store";
 import {
-    ShipmentListSlice,
+    SHIPMENT_LIST_PAGE_REDUCER,
     SHIPMENT_LIST_SLICE_INITIAL_STATE,
-    SHIPMENT_LIST_PAGE_REDUCER
+    ShipmentListSlice
 } from "./shipment/reducer/shipment-list-page.reducer";
 import {
     TASK_LIST_PAGE_REDUCER,
     TASK_LIST_SLICE_INITIAL_STATE,
     TaskListSlice
-}
-from "./shipment/reducer/task-list-page.reducer";
-import {
-    CustomerListSlice,
-    CUSTOMER_LIST_SLICE_INITIAL_STATE,
-    CUSTOMER_LIST_PAGE_REDUCER
-} from "./customer/reducer/customer-list-page.reducer";
-import {
-    CUSTOMER_CAPTURE_SLICE_INITIAL_STATE,
-    CUSTOMER_CAPTURE_PAGE_REDUCER, CustomerCaptureSlice
-} from "./customer/reducer/customer-capture-page.reducer";
+} from "./shipment/reducer/task-list-page.reducer";
+import {CUSTOMER_LIST_PAGE_REDUCER} from "./customer/customer-list/store/customer-list-page.reducer";
+import {CUSTOMER_CAPTURE_PAGE_REDUCER} from "./customer/customer-capture/reducer/customer-capture-page.reducer";
+import {CustomerListSlice} from "./customer/customer-list/store/customer-list-page.slice";
+import {CUSTOMER_LIST_SLICE_INITIAL_STATE} from "./customer/customer-list/store/customer-list-page.initial-state";
+import {CustomerCaptureSlice} from "./customer/customer-capture/reducer/customer-capture-page.slice";
+import {CUSTOMER_CAPTURE_SLICE_INITIAL_STATE} from "./customer/customer-capture/reducer/customer-capture-page.initial-state";
 
 export interface State {
     shipmentListSlice: ShipmentListSlice;
