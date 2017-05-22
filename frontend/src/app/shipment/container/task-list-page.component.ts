@@ -1,8 +1,7 @@
-import {Component, OnInit, OnDestroy} from "@angular/core";
+import {Component, OnDestroy, OnInit} from "@angular/core";
 import {Store} from "@ngrx/store";
 import {Observable, Subscription} from "rxjs";
 import * as actions from "../reducer/task-list-page.actions";
-import {ErrorService} from "../../common/error/services/error.service";
 import {TaskService} from "../api/task.service";
 import {TaskListSlice} from "../reducer/task-list-page.reducer";
 import {TaskListModel, TaskListRowModel} from "./task-list-page.model";
@@ -25,8 +24,7 @@ export class TaskListPageComponent implements OnInit, OnDestroy{
 
     public selectedTask: TaskResource = new TaskResource();
 
-    constructor(private _errorService: ErrorService,
-                private _taskService: TaskService,
+    constructor(private _taskService: TaskService,
                 private _store: Store<State>) {
 
         this.taskListSlice = this._store.select(state => state.taskListSlice);
@@ -40,17 +38,6 @@ export class TaskListPageComponent implements OnInit, OnDestroy{
 
     public ngOnDestroy() {
         this.taskListSliceSubscription.unsubscribe();
-    }
-
-    // ***************************************************
-    // Event Handler
-    // ***************************************************
-
-    /*
-     * Handles the error events from components
-     */
-    public onErrorEvent(errorMessage: string) {
-        this._errorService.showError(errorMessage);
     }
 
     // ***************************************************

@@ -3,7 +3,6 @@ import {Router} from "@angular/router";
 import {Store} from "@ngrx/store";
 import {Observable, Subscription} from "rxjs";
 import * as actions from "../reducer/shipment-list-page.actions";
-import {ErrorService} from "../../common/error/services/error.service";
 import {ShipmentService} from "../api/shipment.service";
 import {ShipmentListSlice} from "../reducer/shipment-list-page.reducer";
 import {ShipmentListModel, ShipmentListRowModel} from "./shipment-list-page.model";
@@ -26,8 +25,7 @@ export class ShipmentListPageComponent implements OnInit, OnDestroy {
 
     public selectedShipment: ShipmentResource = new ShipmentResource();
 
-    constructor(private _errorService: ErrorService,
-                private _router: Router,
+    constructor(private _router: Router,
                 private _shipmentService: ShipmentService,
                 private _store: Store<State>) {
 
@@ -47,13 +45,6 @@ export class ShipmentListPageComponent implements OnInit, OnDestroy {
     // ***************************************************
     // Event Handler
     // ***************************************************
-
-    /*
-     * Handles the error events from components
-     */
-    public onErrorEvent(errorMessage: string) {
-        this._errorService.showError(errorMessage);
-    }
 
     /*
      * Navigate to the shipment capture page
