@@ -1,7 +1,6 @@
 package org.educama.shipment.model;
 
 import javax.persistence.Embeddable;
-import javax.validation.constraints.NotNull;
 
 /**
  * This represents the address entity used for database persistence.
@@ -9,25 +8,18 @@ import javax.validation.constraints.NotNull;
 @Embeddable
 public class Services {
 
-    @NotNull
     public boolean preCarriage;
 
-    @NotNull
     public boolean exportInsurance;
 
-    @NotNull
     public boolean exportCustomsClearance;
 
-    @NotNull
     public boolean flight;
 
-    @NotNull
     public boolean importInsurance;
 
-    @NotNull
     public boolean importCustomsClearance;
 
-    @NotNull
     public boolean onCarriage;
 
     /**

@@ -1,6 +1,5 @@
 package org.educama.shipment.api.datastructure;
 
-import javax.validation.constraints.NotNull;
 import org.educama.shipment.model.Cargo;
 
 /**
@@ -8,25 +7,21 @@ import org.educama.shipment.model.Cargo;
  */
 public class CargoDS {
 
-    @NotNull
-    public int numberPackages;
+    public Integer numberPackages;
 
-    @NotNull
-    public double totalWeight;
+    public Double totalWeight;
 
-    @NotNull
-    public double totalCapacity;
+    public Double totalCapacity;
 
-    @NotNull
     public String cargoDescription;
 
-    @NotNull
-    public boolean dangerousGoods;
+    public Boolean dangerousGoods;
+
     /*
      * For Jackson Parser
      */
     private CargoDS() {
-        //empty
+        // empty
     }
 
     public CargoDS(Cargo cargo) {
@@ -36,7 +31,7 @@ public class CargoDS {
         this.cargoDescription = cargo.cargoDescription;
     }
 
-    public CargoDS(int numberPackages, double totalWeight, double totalCapacity, String description, boolean dangerousGoods) {
+    public CargoDS(Integer numberPackages, Double totalWeight, Double totalCapacity, String cargoDescription, Boolean dangerousGoods) {
         this.numberPackages = numberPackages;
         this.totalWeight = totalWeight;
         this.totalCapacity = totalCapacity;

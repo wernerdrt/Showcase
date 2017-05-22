@@ -22,6 +22,7 @@ import javax.validation.constraints.NotNull;
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = "trackingId")})
 public class Shipment extends AbstractPersistable<Long> {
 
+    @NotNull
     @Column(unique = true)
     public String trackingId;
 

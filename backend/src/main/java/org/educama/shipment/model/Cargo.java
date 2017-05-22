@@ -1,7 +1,6 @@
 package org.educama.shipment.model;
 
 import javax.persistence.Embeddable;
-import javax.validation.constraints.NotNull;
 
 /**
  * This represents the address entity used for database persistence.
@@ -9,29 +8,25 @@ import javax.validation.constraints.NotNull;
 @Embeddable
 public class Cargo {
 
-    @NotNull
-    public int numberPackages;
+    public Integer numberPackages;
 
-    @NotNull
-    public double totalWeight;
+    public Double totalWeight;
 
-    @NotNull
-    public double totalCapacity;
+    public Double totalCapacity;
 
-    @NotNull
     public String cargoDescription;
 
-    @NotNull
-    public boolean dangerousGoods;
+    public Boolean dangerousGoods;
 
     /**
      * Constructor for JPA.
      */
     public Cargo() {
-        //empty
+        // empty
     }
 
-    public Cargo(int numberPackages, double totalWeight, double totalCapacity, String cargoDescription, boolean dangerousGoods) {
+    public Cargo(Integer numberPackages, Double totalWeight, Double totalCapacity, String cargoDescription,
+            Boolean dangerousGoods) {
         this.numberPackages = numberPackages;
         this.totalWeight = totalWeight;
         this.totalCapacity = totalCapacity;
@@ -39,4 +34,3 @@ public class Cargo {
         this.dangerousGoods = dangerousGoods;
     }
 }
-
