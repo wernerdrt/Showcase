@@ -1,8 +1,16 @@
 package org.educama.customer.repository;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.util.List;
+import java.util.UUID;
+
+import javax.validation.ConstraintViolationException;
+
 import org.educama.customer.model.Address;
 import org.educama.customer.model.Customer;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,12 +21,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import javax.validation.ConstraintViolationException;
-import java.util.List;
-import java.util.UUID;
-
-import static org.junit.Assert.*;
 
 /**
  * Tests for {@link CustomerRepository}.
@@ -39,7 +41,8 @@ public class CustomerRepositoryTest {
 
     @Before
     public void createTestData() {
-        this.deleteTestData();
+        customerRepository.deleteAll();
+
         Address address = new Address("Königstraße", "38", "70013", "Stuttgart");
 
         Customer customer = new Customer("Marty Maredo", address);
@@ -50,15 +53,6 @@ public class CustomerRepositoryTest {
 
         customer = new Customer("Mat Maredo", address);
         this.uuidCustomer3 = customerRepository.save(customer).uuid;
-    }
-
-    @After
-    public void deleteTestData() {
-        List<Customer> allCustomers = customerRepository.findAll();
-        for (Customer customer : allCustomers) {
-            customer.address = null;
-            customerRepository.delete(customer);
-        }
     }
 
     @Test
@@ -88,7 +82,7 @@ public class CustomerRepositoryTest {
 
     @Test
     public void shouldPageThroughCustomers() {
-        String[] names = new String[]{"Marty Maredo", "Marge Maredo", "Mat Maredo"};
+        String[] names = new String[] {"Marty Maredo", "Marge Maredo", "Mat Maredo"};
         int loopCount = 0;
         Pageable pageable = new PageRequest(0 /* first */, 2 /* one at a time */);
         Page<Customer> page = null;

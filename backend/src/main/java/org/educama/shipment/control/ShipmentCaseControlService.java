@@ -1,19 +1,18 @@
 package org.educama.shipment.control;
 
+import java.util.UUID;
+
 import org.camunda.bpm.engine.CaseService;
 import org.camunda.bpm.engine.runtime.CaseInstance;
+import org.educama.shipment.cmmn.ShipmentCaseConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.UUID;
 
 /**
  * Control service for shipments.
  */
 @Service
 public class ShipmentCaseControlService {
-
-    private static final String SHIPMENTCASEKEY = "CaseId_shipment";
 
     @Autowired
     private CaseService caseService;
@@ -25,7 +24,7 @@ public class ShipmentCaseControlService {
      */
     public CaseInstance create() {
         String businessKey = UUID.randomUUID().toString();
-        CaseInstance caseInstance = caseService.createCaseInstanceByKey(SHIPMENTCASEKEY, businessKey);
+        CaseInstance caseInstance = caseService.createCaseInstanceByKey(ShipmentCaseConstants.SHIPMENTCASEKEY, businessKey);
 
         return caseInstance;
     }
