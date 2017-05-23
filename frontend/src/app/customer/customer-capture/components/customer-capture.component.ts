@@ -8,6 +8,7 @@ import {Store} from "@ngrx/store";
 import {State} from "../../../app.reducers";
 import {SaveCustomerAction} from "../reducer/customer-capture-page.actions";
 import {Router} from "@angular/router";
+import {CustomerCaptureSlice} from "../reducer/customer-capture-page.slice";
 
 @Component({
     selector: "educama-customer-capture",
@@ -22,6 +23,7 @@ export class CustomerCaptureComponent implements OnInit, DoCheck, OnDestroy {
     public editorMode: EditorMode;
 
     public customer: CustomerResource;
+    public saving: boolean = false;
 
     private _isInitialized:boolean = false;
 
@@ -31,7 +33,7 @@ export class CustomerCaptureComponent implements OnInit, DoCheck, OnDestroy {
 
         this.customerCaptureSliceSubscription = this._store
             .select(state => state.customerCaptureSlice)
-            .subscribe(customerCaptureSlice => this.customer = customerCaptureSlice.customer);
+            .subscribe(customerCaptureSlice => this.updateModel(customerCaptureSlice));
     }
 
     public ngOnInit() {
@@ -88,6 +90,11 @@ export class CustomerCaptureComponent implements OnInit, DoCheck, OnDestroy {
             this.customerCaptureForm.get("postalcode").value,
             this.customerCaptureForm.get("city").value);
         this._store.dispatch(new SaveCustomerAction(customer));
+    }
+
+    public updateModel(customerCaptureSlice: CustomerCaptureSlice): void {
+        this.customer = customerCaptureSlice.customer;
+        this.saving = customerCaptureSlice.saving;
     }
 
 }

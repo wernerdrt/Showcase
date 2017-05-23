@@ -15,6 +15,21 @@ export const CUSTOMER_CAPTURE_PAGE_REDUCER: ActionReducer<CustomerCaptureSlice> 
         case actions.INITIALIZE_CUSTOMER_CAPTURE_SLICE:
             return CUSTOMER_CAPTURE_SLICE_INITIAL_STATE;
 
+        case actions.POST_CUSTOMER:
+            return Object.assign({}, state, {
+                saving: true
+            });
+
+        case actions.POST_CUSTOMER_SUCCESSFUL:
+            return Object.assign({}, state, {
+                saving: false
+            });
+
+        case actions.POST_CUSTOMER_SUCCESSFUL:
+            return Object.assign({}, state, {
+                saving: false
+            });
+
         default:
             return state;
     }
