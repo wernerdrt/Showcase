@@ -1,4 +1,6 @@
+<p-blockUI [blocked]="customersLoading" [target]="customerlist"></p-blockUI>
 <p-dataTable
+        #customerlist
         id="customer-list-component_customer-table"
         [emptyMessage]="emptyListMessage"
         [lazy]="true"

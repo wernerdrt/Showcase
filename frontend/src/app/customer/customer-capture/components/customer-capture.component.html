@@ -1,11 +1,14 @@
 <h1 *ngIf="editorMode === 0">{{'CUSTOMER-CAPTURE-COMPONENT_TITLE-CREATE' | translate}}</h1>
 <h1 *ngIf="editorMode === 1">{{'CUSTOMER-CAPTURE-COMPONENT_TITLE-UPDATE' | translate}}</h1>
 
+<p-blockUI [blocked]="saving" [target]="panelAddress"></p-blockUI>
+<p-blockUI [blocked]="saving" [target]="panelCustomer"></p-blockUI>
+
 <div class="customer-capture-component">
 
     <form name="form" [formGroup]="customerCaptureForm" class="customer-capture-form">
 
-        <p-panel class="panel-customer" header="{{'CUSTOMER-RESOURCE' | translate}}">
+        <p-panel class="panel-customer" header="{{'CUSTOMER-RESOURCE' | translate}}" #panelCustomer>
             <div class="ui-g ui-fluid">
                 <div class="ui-g-12 ui-md-6">
                     <label class="ui-g-12 ui-md-3">{{'CUSTOMER-RESOURCE_NAME' | translate}}</label>
@@ -20,7 +23,7 @@
             </div>
         </p-panel>
 
-        <p-panel class="panel-address" header="{{'CUSTOMER-RESOURCE_ADDRESS' | translate}}">
+        <p-panel class="panel-address" header="{{'CUSTOMER-RESOURCE_ADDRESS' | translate}}" #panelAddress>
             <div class="ui-g ui-fluid">
                 <div class="ui-g-12 ui-md-6">
                     <label class="ui-g-12 ui-md-3">{{'CUSTOMER-RESOURCE_ADDRESS-STREET' | translate}}</label>
@@ -53,12 +56,12 @@
                         label="{{'GENERIC_CANCEL' | translate}}" icon="fa-close"></button>
             </div>
             <div class="ui-g-12 ui-md-3 ui-lg-2" *ngIf="editorMode === 1">
-                <button id="customer-capture-component_save-button" pButton type="button" (click)="createCustomer()"
+                <button id="customer-capture-component_save-button" pButton type="button" (click)="saveCustomer()"
                         label="{{'GENERIC_SAVE' | translate}}" icon="fa-check"
                         [disabled]="!customerCaptureForm.valid"></button>
             </div>
             <div class="ui-g-12 ui-md-3 ui-lg-2" *ngIf="editorMode === 0">
-                <button id="customer-capture-component_create-button" pButton type="button" (click)="createCustomer()"
+                <button id="customer-capture-component_create-button" pButton type="button" (click)="saveCustomer()"
                         label="{{'GENERIC_CREATE' | translate}}" icon="fa-check"
                         [disabled]="!customerCaptureForm.valid"></button>
             </div>
