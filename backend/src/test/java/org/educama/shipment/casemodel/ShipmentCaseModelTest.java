@@ -19,6 +19,7 @@ import org.educama.customer.model.Address;
 import org.educama.customer.model.Customer;
 import org.educama.customer.repository.CustomerRepository;
 import org.educama.enums.ClientType;
+import org.educama.shipment.cmmn.CaseModelHandler;
 import org.educama.shipment.cmmn.ShipmentCaseConstants;
 import org.educama.shipment.model.Cargo;
 import org.educama.shipment.model.Services;
@@ -49,6 +50,9 @@ public class ShipmentCaseModelTest extends AbstractProcessEngineRuleTest {
 
     @Autowired
     CustomerRepository customerRepository;
+
+    @Autowired
+    CaseModelHandler caseModelHandler;
 
     @Before
     public void setup() {
@@ -96,19 +100,65 @@ public class ShipmentCaseModelTest extends AbstractProcessEngineRuleTest {
 
         // Milestone 'Shipment order completed' not reached?
         assertTrue(processEngine().getCaseService().createCaseExecutionQuery()
-                .activityId(ShipmentCaseConstants.PLAN_ITEM_MILESTONE_SHIPMENT_ORDER_COMPLETED).caseInstanceBusinessKey(shipment.trackingId)
-                .singleResult().isAvailable());
+                .activityId(ShipmentCaseConstants.PLAN_ITEM_MILESTONE_SHIPMENT_ORDER_COMPLETED)
+                .caseInstanceBusinessKey(shipment.trackingId).singleResult().isAvailable());
 
         // Task 'Complete shipment order' available?
         assertTrue(processEngine().getCaseService().createCaseExecutionQuery()
-                .activityId(ShipmentCaseConstants.PLAN_ITEM_HUMAN_TASK_COMPLETE_SHIPMENT_ORDER).caseInstanceBusinessKey(shipment.trackingId)
-                .active().singleResult().isActive());
+                .activityId(ShipmentCaseConstants.PLAN_ITEM_HUMAN_TASK_COMPLETE_SHIPMENT_ORDER)
+                .caseInstanceBusinessKey(shipment.trackingId).active().singleResult().isActive());
 
         // Stage 'Process shipment order' is not enabled?
         assertFalse(processEngine().getCaseService().createCaseExecutionQuery()
-                .activityId(ShipmentCaseConstants.PLAN_ITEM_STAGE_PROCESS_SHIPMENT_ORDER).caseInstanceBusinessKey(shipment.trackingId)
-                .singleResult().isEnabled());
+                .activityId(ShipmentCaseConstants.PLAN_ITEM_STAGE_PROCESS_SHIPMENT_ORDER)
+                .caseInstanceBusinessKey(shipment.trackingId).singleResult().isEnabled());
+    }
 
+    @Test
+    public void testCaseInitializationWithIncompleteDataWithModelUpdate() {
+        Shipment shipment = shipmentRepository.findOne(this.shipmentId);
+        shipment.trackingId = UUID.randomUUID().toString();
+        shipmentRepository.save(shipment);
+
+        CaseInstance caseInstance = processEngine().getCaseService()
+                .createCaseInstanceByKey(ShipmentCaseConstants.SHIPMENTCASEKEY, shipment.trackingId);
+        this.caseInstanceId = caseInstance.getId();
+
+        showCaseOverview(caseInstance);
+
+        // Case Instance active?
+        assertTrue(caseInstance.isActive());
+
+        // Milestone 'Shipment order completed' not reached?
+        assertTrue(processEngine().getCaseService().createCaseExecutionQuery()
+                .activityId(ShipmentCaseConstants.PLAN_ITEM_MILESTONE_SHIPMENT_ORDER_COMPLETED)
+                .caseInstanceBusinessKey(shipment.trackingId).singleResult().isAvailable());
+
+        // Task 'Complete shipment order' active?
+        assertTrue(processEngine().getCaseService().createCaseExecutionQuery()
+                .activityId(ShipmentCaseConstants.PLAN_ITEM_HUMAN_TASK_COMPLETE_SHIPMENT_ORDER)
+                .caseInstanceBusinessKey(shipment.trackingId).active().singleResult().isActive());
+
+        // Stage 'Process shipment order' is not enabled?
+        assertFalse(processEngine().getCaseService().createCaseExecutionQuery()
+                .activityId(ShipmentCaseConstants.PLAN_ITEM_STAGE_PROCESS_SHIPMENT_ORDER)
+                .caseInstanceBusinessKey(shipment.trackingId).singleResult().isEnabled());
+
+        Shipment shipment2 = shipmentRepository.findOne(this.shipmentId);
+        shipment2.shipmentCargo = new Cargo(1, 2.0, 123.0, "Don't Panic!", true);
+        shipmentRepository.save(shipment2);
+
+        // evaluate
+        System.out.println("CREATING...");
+        caseModelHandler.reevaluateModel(shipment.trackingId);
+
+        // print
+        showCaseOverview(caseInstance);
+
+        // Stage 'Process shipment order' is active?
+        assertTrue(processEngine().getCaseService().createCaseExecutionQuery()
+                .activityId(ShipmentCaseConstants.PLAN_ITEM_STAGE_PROCESS_SHIPMENT_ORDER)
+                .caseInstanceBusinessKey(shipment.trackingId).singleResult().isActive());
     }
 
     @Test
@@ -118,8 +168,8 @@ public class ShipmentCaseModelTest extends AbstractProcessEngineRuleTest {
         shipment.trackingId = UUID.randomUUID().toString();
         shipmentRepository.save(shipment);
 
-        CaseInstance caseInstance = processEngine().getCaseService().createCaseInstanceByKey(ShipmentCaseConstants.SHIPMENTCASEKEY,
-                shipment.trackingId);
+        CaseInstance caseInstance = processEngine().getCaseService()
+                .createCaseInstanceByKey(ShipmentCaseConstants.SHIPMENTCASEKEY, shipment.trackingId);
         this.caseInstanceId = caseInstance.getId();
 
         // Case Instance active?
@@ -129,24 +179,24 @@ public class ShipmentCaseModelTest extends AbstractProcessEngineRuleTest {
 
         // Milestone reached and stage activated?
         assertNull(processEngine().getCaseService().createCaseExecutionQuery()
-                .activityId(ShipmentCaseConstants.PLAN_ITEM_MILESTONE_SHIPMENT_ORDER_COMPLETED).caseInstanceBusinessKey(shipment.trackingId)
-                .singleResult());
+                .activityId(ShipmentCaseConstants.PLAN_ITEM_MILESTONE_SHIPMENT_ORDER_COMPLETED)
+                .caseInstanceBusinessKey(shipment.trackingId).singleResult());
 
         // Stage "PlanItem_Stage_ProcessShipmentOrder" automatically active with
         // the input data?
         assertTrue(processEngine().getCaseService().createCaseExecutionQuery()
-                .activityId(ShipmentCaseConstants.PLAN_ITEM_STAGE_PROCESS_SHIPMENT_ORDER).caseInstanceBusinessKey(shipment.trackingId)
-                .singleResult().isActive());
+                .activityId(ShipmentCaseConstants.PLAN_ITEM_STAGE_PROCESS_SHIPMENT_ORDER)
+                .caseInstanceBusinessKey(shipment.trackingId).singleResult().isActive());
 
         // Task 'PlanItem_HumanTask_ChangeShipmentOrder' enabled? -> Manual Task
         assertTrue(processEngine().getCaseService().createCaseExecutionQuery()
-                .activityId(ShipmentCaseConstants.PLAN_ITEM_HUMAN_TASK_CHANGE_SHIPMENT_ORDER).caseInstanceBusinessKey(shipment.trackingId)
-                .singleResult().isEnabled());
+                .activityId(ShipmentCaseConstants.PLAN_ITEM_HUMAN_TASK_CHANGE_SHIPMENT_ORDER)
+                .caseInstanceBusinessKey(shipment.trackingId).singleResult().isEnabled());
 
         // Stage 'PlanItem_HumanTask_CreateInvoice' is available?
         assertFalse(processEngine().getCaseService().createCaseExecutionQuery()
-                .activityId(ShipmentCaseConstants.PLAN_ITEM_HUMAN_TASK_CREATE_INVOICE).caseInstanceBusinessKey(shipment.trackingId)
-                .singleResult().isAvailable());
+                .activityId(ShipmentCaseConstants.PLAN_ITEM_HUMAN_TASK_CREATE_INVOICE)
+                .caseInstanceBusinessKey(shipment.trackingId).singleResult().isAvailable());
     }
 
     @Test
@@ -155,32 +205,32 @@ public class ShipmentCaseModelTest extends AbstractProcessEngineRuleTest {
         shipment.trackingId = UUID.randomUUID().toString();
         shipmentRepository.save(shipment);
 
-        CaseInstance caseInstance = processEngine().getCaseService().createCaseInstanceByKey(ShipmentCaseConstants.SHIPMENTCASEKEY,
-                shipment.trackingId);
+        CaseInstance caseInstance = processEngine().getCaseService()
+                .createCaseInstanceByKey(ShipmentCaseConstants.SHIPMENTCASEKEY, shipment.trackingId);
         this.caseInstanceId = caseInstance.getId();
 
         showCaseOverview(caseInstance);
 
         // Milestone reached and stage activated?
         assertTrue(processEngine().getCaseService().createCaseExecutionQuery()
-                .activityId(ShipmentCaseConstants.PLAN_ITEM_MILESTONE_SHIPMENT_ORDER_COMPLETED).caseInstanceBusinessKey(shipment.trackingId)
-                .singleResult().isAvailable());
+                .activityId(ShipmentCaseConstants.PLAN_ITEM_MILESTONE_SHIPMENT_ORDER_COMPLETED)
+                .caseInstanceBusinessKey(shipment.trackingId).singleResult().isAvailable());
 
         // Stage "PlanItem_Stage_ProcessShipmentOrder" automatically active with
         // the input data?
         assertTrue(processEngine().getCaseService().createCaseExecutionQuery()
-                .activityId(ShipmentCaseConstants.PLAN_ITEM_STAGE_PROCESS_SHIPMENT_ORDER).caseInstanceBusinessKey(shipment.trackingId)
-                .singleResult().isAvailable());
+                .activityId(ShipmentCaseConstants.PLAN_ITEM_STAGE_PROCESS_SHIPMENT_ORDER)
+                .caseInstanceBusinessKey(shipment.trackingId).singleResult().isAvailable());
 
         // Task 'PlanItem_HumanTask_ChangeShipmentOrder' enabled? -> Manual Task
         assertNull(processEngine().getCaseService().createCaseExecutionQuery()
-                .activityId(ShipmentCaseConstants.PLAN_ITEM_HUMAN_TASK_CHANGE_SHIPMENT_ORDER).caseInstanceBusinessKey(shipment.trackingId)
-                .singleResult());
+                .activityId(ShipmentCaseConstants.PLAN_ITEM_HUMAN_TASK_CHANGE_SHIPMENT_ORDER)
+                .caseInstanceBusinessKey(shipment.trackingId).singleResult());
 
         // Stage 'PlanItem_HumanTask_CreateInvoice' is available?
         assertNull(processEngine().getCaseService().createCaseExecutionQuery()
-                .activityId(ShipmentCaseConstants.PLAN_ITEM_HUMAN_TASK_CREATE_INVOICE).caseInstanceBusinessKey(shipment.trackingId)
-                .singleResult());
+                .activityId(ShipmentCaseConstants.PLAN_ITEM_HUMAN_TASK_CREATE_INVOICE)
+                .caseInstanceBusinessKey(shipment.trackingId).singleResult());
     }
 
     /**
@@ -201,23 +251,24 @@ public class ShipmentCaseModelTest extends AbstractProcessEngineRuleTest {
 
         caseExecutionList.stream().filter(caseExecution -> caseExecution.getId() == caseInstance.getId())
                 .forEach(caseExecution -> System.out.println("Case Instance : " + caseExecution.getActivityName() + " ["
-                        + caseExecution.getActivityType() + "]" + " - CaseExecutionId: " + caseExecution.getId()));
+                        + caseExecution.getActivityType() + ", " + caseExecution.getActivityId() + "]"
+                        + " - CaseExecutionId: " + caseExecution.getId()));
 
         caseExecutionList.stream().filter(caseExecution -> caseExecution.isActive())
                 .forEach(caseExecution -> System.out.println("Running ('active'): " + caseExecution.getActivityName()
-                        + " [" + caseExecution.getActivityType() + "]" + " - CaseExecutionId: "
-                        + caseExecution.getId()));
+                        + " [" + caseExecution.getActivityType() + ", " + caseExecution.getActivityId() + "]"
+                        + " - CaseExecutionId: " + caseExecution.getId()));
 
         caseExecutionList.stream().filter(caseExecution -> caseExecution.isEnabled())
                 .forEach(caseExecution -> System.out.println("Possible to start ('enabled'): "
-                        + caseExecution.getActivityName() + " [" + caseExecution.getActivityType() + "]"
-                        + " - CaseExecutionId: " + caseExecution.getId()));
+                        + caseExecution.getActivityName() + " [" + caseExecution.getActivityType() + ", "
+                        + caseExecution.getActivityId() + "]" + " - CaseExecutionId: " + caseExecution.getId()));
 
         caseExecutionList.stream().filter(c -> c.isAvailable())
                 .filter(c -> c.getActivityType().compareTo("milestone") != 0)
                 .forEach(caseExecution -> System.out.println("Impossible to start ('available'): "
-                        + caseExecution.getActivityName() + " [" + caseExecution.getActivityType() + "]"
-                        + " - CaseExecutionId: " + caseExecution.getId()));
+                        + caseExecution.getActivityName() + " [" + caseExecution.getActivityType() + ", "
+                        + caseExecution.getActivityId() + "]" + " - CaseExecutionId: " + caseExecution.getId()));
 
         caseExecutionList.stream().filter(c -> c.isAvailable())
                 .filter(c -> c.getActivityType().compareTo("milestone") == 0)

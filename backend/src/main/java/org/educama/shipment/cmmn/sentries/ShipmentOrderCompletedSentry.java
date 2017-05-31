@@ -28,7 +28,6 @@ public class ShipmentOrderCompletedSentry {
 
         LOGGER.debug("Shipment is complete: " + isShipmentComplete);
         return isShipmentComplete;
-
     }
 
 }

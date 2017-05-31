@@ -11,6 +11,8 @@ public final class ShipmentCaseConstants {
 
     public static final String SHIPMENTCASEKEY = "ShipmentCase";
 
+    public static final String SHIPMENT_CASE_PLAN_MODEL = "shipmentCasePlanModel";
+
     // Human Tasks
     public static final String PLAN_ITEM_HUMAN_TASK_CREATE_INVOICE = "PlanItem_HumanTask_CreateInvoice";
     public static final String PLAN_ITEM_HUMAN_TASK_CHANGE_SHIPMENT_ORDER = "PlanItem_HumanTask_ChangeShipmentOrder";
@@ -22,4 +24,6 @@ public final class ShipmentCaseConstants {
     // Milestones
     public static final String PLAN_ITEM_MILESTONE_SHIPMENT_ORDER_COMPLETED = "PlanItem_Milestone_ShipmentOrderCompleted";
 
+    // Variables
+    public static final String VARIABLE_LAST_EVALUATE_DATE = "lastEvaluateDate";
 }
