@@ -4,9 +4,9 @@ import org.camunda.bpm.engine.runtime.CaseInstance;
 import org.educama.common.exceptions.ResourceNotFoundException;
 import org.educama.shipment.api.resource.ShipmentResource;
 import org.educama.shipment.boundary.ShipmentBoundaryService;
-import org.educama.shipment.cmmn.CaseModelHandler;
 import org.educama.shipment.control.ShipmentCaseControlService;
 import org.educama.shipment.model.Shipment;
+import org.educama.shipment.process.ShipmentCaseEvaluator;
 import org.educama.shipment.repository.ShipmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,14 +28,14 @@ public class ShipmentBoundaryServiceImpl implements ShipmentBoundaryService {
     private ShipmentCaseControlService shipmentCaseControlService;
 
     @Autowired
-    private CaseModelHandler caseModelHandler;
+    private ShipmentCaseEvaluator caseModelHandler;
 
     @Override
     public Shipment createShipment(Shipment shipment) {
         CaseInstance caseInstance = shipmentCaseControlService.create();
         shipment.trackingId = caseInstance.getBusinessKey();
         Shipment createdShipment = shipmentRepository.save(shipment);
-        caseModelHandler.reevaluateModel(shipment.trackingId);
+        caseModelHandler.reevaluateCase(shipment.trackingId);
         return createdShipment;
     }
 
@@ -60,7 +60,7 @@ public class ShipmentBoundaryServiceImpl implements ShipmentBoundaryService {
             shipment = saveShipmentResource;
             shipment.trackingId = trackingId;
             shipmentRepository.save(shipment);
-            caseModelHandler.reevaluateModel(shipment.trackingId);
+            caseModelHandler.reevaluateCase(shipment.trackingId);
             ShipmentResource convertedShipment = new ShipmentResource().fromShipment(shipment);
             return convertedShipment;
         }

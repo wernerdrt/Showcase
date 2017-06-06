@@ -1,4 +1,4 @@
-package org.educama.shipment.cmmn;
+package org.educama.shipment.process;
 
 /**
  * This class contains all model constants of the case diagram ShipmentCase.cmmn

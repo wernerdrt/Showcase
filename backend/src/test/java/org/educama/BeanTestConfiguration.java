@@ -1,6 +1,6 @@
 package org.educama;
 
-import org.educama.shipment.cmmn.sentries.ShipmentOrderCompletedSentry;
+import org.educama.shipment.process.sentries.ShipmentOrderCompletedSentry;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

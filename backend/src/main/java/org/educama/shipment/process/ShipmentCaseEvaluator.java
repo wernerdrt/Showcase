@@ -1,4 +1,4 @@
-package org.educama.shipment.cmmn;
+package org.educama.shipment.process;
 
 import java.util.Date;
 
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
  * This class handles the reevaluation of the case model.
  */
 @Component
-public class CaseModelHandler {
+public class ShipmentCaseEvaluator {
 
     @Autowired
     private CaseService caseService;
@@ -19,7 +19,7 @@ public class CaseModelHandler {
      * In the camunda api it is not possible to reevaluate the model. This will
      * be done with saving and updating a case variable.
      */
-    public void reevaluateModel(String trackingId) {
+    public void reevaluateCase(String trackingId) {
         String caseInstanceId = caseService.createCaseExecutionQuery()
                 .activityId(ShipmentCaseConstants.SHIPMENT_CASE_PLAN_MODEL).caseInstanceBusinessKey(trackingId)
                 .singleResult().getId();

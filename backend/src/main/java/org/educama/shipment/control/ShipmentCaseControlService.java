@@ -4,7 +4,7 @@ import java.util.UUID;
 
 import org.camunda.bpm.engine.CaseService;
 import org.camunda.bpm.engine.runtime.CaseInstance;
-import org.educama.shipment.cmmn.ShipmentCaseConstants;
+import org.educama.shipment.process.ShipmentCaseConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

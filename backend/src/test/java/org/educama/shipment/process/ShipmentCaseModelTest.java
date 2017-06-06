@@ -1,4 +1,4 @@
-package org.educama.shipment.casemodel;
+package org.educama.shipment.process;
 
 import static org.camunda.bpm.engine.test.assertions.bpmn.AbstractAssertions.processEngine;
 import static org.junit.Assert.assertFalse;
@@ -19,8 +19,6 @@ import org.educama.customer.model.Address;
 import org.educama.customer.model.Customer;
 import org.educama.customer.repository.CustomerRepository;
 import org.educama.enums.ClientType;
-import org.educama.shipment.cmmn.CaseModelHandler;
-import org.educama.shipment.cmmn.ShipmentCaseConstants;
 import org.educama.shipment.model.Cargo;
 import org.educama.shipment.model.Services;
 import org.educama.shipment.model.Shipment;
@@ -52,7 +50,7 @@ public class ShipmentCaseModelTest extends AbstractProcessEngineRuleTest {
     CustomerRepository customerRepository;
 
     @Autowired
-    CaseModelHandler caseModelHandler;
+    ShipmentCaseEvaluator caseModelHandler;
 
     @Before
     public void setup() {
@@ -150,7 +148,7 @@ public class ShipmentCaseModelTest extends AbstractProcessEngineRuleTest {
 
         // evaluate
         System.out.println("CREATING...");
-        caseModelHandler.reevaluateModel(shipment.trackingId);
+        caseModelHandler.reevaluateCase(shipment.trackingId);
 
         // print
         showCaseOverview(caseInstance);

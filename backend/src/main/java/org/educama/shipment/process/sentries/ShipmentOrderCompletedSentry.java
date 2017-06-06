@@ -1,4 +1,4 @@
-package org.educama.shipment.cmmn.sentries;
+package org.educama.shipment.process.sentries;
 
 import org.educama.shipment.model.Shipment;
 import org.educama.shipment.repository.ShipmentRepository;
