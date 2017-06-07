@@ -29,7 +29,7 @@ public class ShipmentTaskController {
      */
     @RequestMapping(method = RequestMethod.GET)
     public ShipmentTaskListResource getTasks() {
-        List <ShipmentTaskDS> tasks = shipmentTaskBoundaryService.findAll();
+        List <ShipmentTaskDS> tasks = shipmentTaskBoundaryService.findAllActive();
         ShipmentTaskListResource taskList = new ShipmentTaskListResource().fromTaskCollection(tasks);
         return taskList;
     }

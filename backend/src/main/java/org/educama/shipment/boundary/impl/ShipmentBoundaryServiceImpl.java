@@ -35,7 +35,6 @@ public class ShipmentBoundaryServiceImpl implements ShipmentBoundaryService {
         CaseInstance caseInstance = shipmentCaseControlService.create();
         shipment.trackingId = caseInstance.getBusinessKey();
         Shipment createdShipment = shipmentRepository.save(shipment);
-        caseModelHandler.reevaluateCase(shipment.trackingId);
         return createdShipment;
     }
 
@@ -60,7 +59,12 @@ public class ShipmentBoundaryServiceImpl implements ShipmentBoundaryService {
             shipment = saveShipmentResource;
             shipment.trackingId = trackingId;
             shipmentRepository.save(shipment);
-            caseModelHandler.reevaluateCase(shipment.trackingId);
+            // case model should only be reevaluated if all data is complete
+            if (shipment.shipmentCargo.dangerousGoods != null && shipment.shipmentCargo.cargoDescription != null
+                    && shipment.shipmentCargo.numberPackages != null && shipment.shipmentCargo.totalCapacity != null
+                    && shipment.shipmentCargo.totalWeight != null) {
+                caseModelHandler.reevaluateCase(shipment.trackingId);
+            }
             ShipmentResource convertedShipment = new ShipmentResource().fromShipment(shipment);
             return convertedShipment;
         }
