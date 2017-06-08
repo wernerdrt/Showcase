@@ -56,15 +56,13 @@ public class ShipmentBoundaryServiceImpl implements ShipmentBoundaryService {
         if (shipment == null) {
             throw new ResourceNotFoundException("Shipment not found");
         } else {
-            shipment = saveShipmentResource;
-            shipment.trackingId = trackingId;
-            shipmentRepository.save(shipment);
-            // case model should only be reevaluated if all data is complete
-            if (shipment.shipmentCargo.dangerousGoods != null && shipment.shipmentCargo.cargoDescription != null
-                    && shipment.shipmentCargo.numberPackages != null && shipment.shipmentCargo.totalCapacity != null
-                    && shipment.shipmentCargo.totalWeight != null) {
-                caseModelHandler.reevaluateCase(shipment.trackingId);
-            }
+            shipment.customerTypeEnum = saveShipmentResource.customerTypeEnum;
+            shipment.receiver = saveShipmentResource.receiver;
+            shipment.sender = saveShipmentResource.sender;
+            shipment.shipmentCargo = saveShipmentResource.shipmentCargo;
+            shipment.shipmentServices = saveShipmentResource.shipmentServices;
+            shipment = shipmentRepository.saveAndFlush(shipment);
+            caseModelHandler.reevaluateCase(shipment.trackingId);
             ShipmentResource convertedShipment = new ShipmentResource().fromShipment(shipment);
             return convertedShipment;
         }
