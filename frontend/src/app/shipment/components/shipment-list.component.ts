@@ -1,4 +1,4 @@
-import {Component, Input, Output} from "@angular/core";
+import {Component, Input, Output, EventEmitter} from "@angular/core";
 import {ShipmentResource} from "../api/resources/shipment.resource";
 import {TranslateService} from "ng2-translate";
 
@@ -20,4 +20,11 @@ export class ShipmentListComponent {
         _translateService.get("GENERIC_NO-RECORDS-FOUND")
             .subscribe(value => this.emptyListMessage = value);
     }
+    public onRowSelect(event: Event) {
+        this.shipmentSelectedEvent.emit(this.selectedShipment.trackingId);
+    }
+
+    @Output()
+    public shipmentSelectedEvent: EventEmitter<string> = new EventEmitter();
+
 }
