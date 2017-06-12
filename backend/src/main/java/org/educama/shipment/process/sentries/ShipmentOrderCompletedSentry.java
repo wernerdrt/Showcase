@@ -22,9 +22,11 @@ public class ShipmentOrderCompletedSentry {
         LOGGER.debug("evaluating shipment status with id: '" + trackingId + "'");
         Shipment shipment = shipmentRepository.findOneBytrackingId(trackingId);
 
-        boolean isShipmentComplete = (shipment != null && shipment.shipmentCargo.dangerousGoods != null
-                && shipment.shipmentCargo.cargoDescription != null && shipment.shipmentCargo.numberPackages != null
-                && shipment.shipmentCargo.totalCapacity != null && shipment.shipmentCargo.totalWeight != null);
+        boolean isShipmentComplete = (shipment != null
+                && shipment.shipmentCargo.cargoDescription != null
+                && shipment.shipmentCargo.numberPackages != null
+                && shipment.shipmentCargo.totalCapacity != null
+                && shipment.shipmentCargo.totalWeight != null);
 
         LOGGER.debug("Shipment is complete: " + isShipmentComplete);
         return isShipmentComplete;

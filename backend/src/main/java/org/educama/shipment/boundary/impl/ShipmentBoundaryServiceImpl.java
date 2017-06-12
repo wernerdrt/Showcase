@@ -1,6 +1,5 @@
 package org.educama.shipment.boundary.impl;
 
-import org.camunda.bpm.engine.runtime.CaseInstance;
 import org.educama.common.exceptions.ResourceNotFoundException;
 import org.educama.shipment.api.resource.ShipmentResource;
 import org.educama.shipment.boundary.ShipmentBoundaryService;
@@ -13,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
+import java.util.UUID;
 
 /**
  * Boundary service implementation for shipments.
@@ -32,9 +32,9 @@ public class ShipmentBoundaryServiceImpl implements ShipmentBoundaryService {
 
     @Override
     public Shipment createShipment(Shipment shipment) {
-        CaseInstance caseInstance = shipmentCaseControlService.create();
-        shipment.trackingId = caseInstance.getBusinessKey();
-        Shipment createdShipment = shipmentRepository.save(shipment);
+        shipment.trackingId = UUID.randomUUID().toString();
+        Shipment createdShipment = shipmentRepository.saveAndFlush(shipment);
+        shipmentCaseControlService.create(shipment.trackingId);
         return createdShipment;
     }
 
