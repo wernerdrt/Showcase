@@ -14,5 +14,5 @@ public interface ShipmentTaskBoundaryService {
      *
      * @return a collection of all tasks
      */
-     List<ShipmentTaskDS> findAll();
+     List<ShipmentTaskDS> findAllActive();
 }

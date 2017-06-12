@@ -6,6 +6,7 @@ import org.educama.shipment.api.resource.ShipmentResource;
 import org.educama.shipment.boundary.ShipmentBoundaryService;
 import org.educama.shipment.control.ShipmentCaseControlService;
 import org.educama.shipment.model.Shipment;
+import org.educama.shipment.process.ShipmentCaseEvaluator;
 import org.educama.shipment.repository.ShipmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,9 @@ public class ShipmentBoundaryServiceImpl implements ShipmentBoundaryService {
 
     @Autowired
     private ShipmentCaseControlService shipmentCaseControlService;
+
+    @Autowired
+    private ShipmentCaseEvaluator caseModelHandler;
 
     @Override
     public Shipment createShipment(Shipment shipment) {
@@ -55,6 +59,12 @@ public class ShipmentBoundaryServiceImpl implements ShipmentBoundaryService {
             shipment = saveShipmentResource;
             shipment.trackingId = trackingId;
             shipmentRepository.save(shipment);
+            // case model should only be reevaluated if all data is complete
+            if (shipment.shipmentCargo.dangerousGoods != null && shipment.shipmentCargo.cargoDescription != null
+                    && shipment.shipmentCargo.numberPackages != null && shipment.shipmentCargo.totalCapacity != null
+                    && shipment.shipmentCargo.totalWeight != null) {
+                caseModelHandler.reevaluateCase(shipment.trackingId);
+            }
             ShipmentResource convertedShipment = new ShipmentResource().fromShipment(shipment);
             return convertedShipment;
         }

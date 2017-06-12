@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cmmn:definitions xmlns:dc="http://www.omg.org/spec/CMMN/20151109/DC" xmlns:di="http://www.omg.org/spec/CMMN/20151109/DI" xmlns:cmmndi="http://www.omg.org/spec/CMMN/20151109/CMMNDI" xmlns:cmmn="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camunda="http://camunda.org/schema/1.0/cmmn" id="Test" targetNamespace="http://bpmn.io/schema/cmmn" exporter="Camunda Modeler" exporterVersion="1.8.0">
+  <cmmn:case id="ShipmentCase" name="Shipment">
+    <cmmn:casePlanModel id="shipmentCasePlanModel" name="Shipment">
+      <cmmn:planItem id="PlanItem_Milestone_ShipmentOrderCompleted" definitionRef="Milestone_ShipmentOrderCompleted">
+        <cmmn:entryCriterion id="AEntryCriterion_ShipmentOrderComplete" sentryRef="Sentry_ShipmentOrderComplete" />
+      </cmmn:planItem>
+      <cmmn:planItem id="PlanItem_Stage_ProcessShipmentOrder" name="Process Shipment Order" definitionRef="Stage_ProcessShipmentOrder">
+        <cmmn:entryCriterion id="EntryCriterion_ProcessShipmentOrder" sentryRef="Sentry_ProcessShipmentOrder" />
+      </cmmn:planItem>
+      <cmmn:planItem id="PlanItem_HumanTask_CompleteShipmentOrder" definitionRef="HumanTask_CompleteShipmentOrder">
+        <cmmn:itemControl id="PlanItemControl_0raid7j">
+          <cmmn:repetitionRule id="RepetitionRule_1ha41do" />
+        </cmmn:itemControl>
+        <cmmn:entryCriterion id="EntryCriterion_16faceb" sentryRef="Sentry_15qu688" />
+        <cmmn:exitCriterion id="ExitCriterion_1nr4ibo" sentryRef="Sentry_00t17n7" />
+      </cmmn:planItem>
+      <cmmn:sentry id="Sentry_ShipmentOrderComplete">
+        <cmmn:ifPart id="IfPart_19babex">
+          <cmmn:condition id="Expression_0zzna63">${shipmentOrderCompletedSentry.shipmentOrderCompleted(execution.getBusinessKey()) == true}</cmmn:condition>
+        </cmmn:ifPart>
+      </cmmn:sentry>
+      <cmmn:sentry id="Sentry_ProcessShipmentOrder">
+        <cmmn:planItemOnPart id="PlanItemOnPart_0y935m1" sourceRef="PlanItem_Milestone_ShipmentOrderCompleted">        <cmmn:standardEvent>occur</cmmn:standardEvent>
+</cmmn:planItemOnPart>
+      </cmmn:sentry>
+      <cmmn:sentry id="Sentry_00t17n7">
+        <cmmn:planItemOnPart id="PlanItemOnPart_0v9rz21" sourceRef="PlanItem_Milestone_ShipmentOrderCompleted">        <cmmn:standardEvent>occur</cmmn:standardEvent>
+</cmmn:planItemOnPart>
+      </cmmn:sentry>
+      <cmmn:sentry id="Sentry_15qu688">
+        <cmmn:ifPart id="IfPart_1sqasfp">
+          <cmmn:condition id="Expression_0ywrbxr">${shipmentOrderCompletedSentry.shipmentOrderCompleted(execution.getBusinessKey()) == false}</cmmn:condition>
+        </cmmn:ifPart>
+      </cmmn:sentry>
+      <cmmn:milestone id="Milestone_ShipmentOrderCompleted" name="Shipment order complete" />
+      <cmmn:stage id="Stage_ProcessShipmentOrder" name="Process Shipment Order">
+        <cmmn:planItem id="PlanItem_HumanTask_ChangeShipmentOrder" definitionRef="HumanTask_ChangeShipmentOrder">
+          <cmmn:itemControl id="PlanItemControl_1sb6n7s">
+            <cmmn:repetitionRule id="RepetitionRule_1ime2n8" />
+            <cmmn:manualActivationRule id="ManualActivationRule_0vdih87" />
+          </cmmn:itemControl>
+        </cmmn:planItem>
+        <cmmn:planItem id="PlanItem_HumanTask_CreateInvoice" definitionRef="HumanTask_CreateInvoice">
+          <cmmn:itemControl id="PlanItemControl_0nkimrp">
+            <cmmn:repetitionRule id="RepetitionRule_0dj1cq4" />
+          </cmmn:itemControl>
+          <cmmn:entryCriterion id="EntryCriterion_CreateInvoice" sentryRef="Sentry_1dwwg6q" />
+        </cmmn:planItem>
+        <cmmn:sentry id="Sentry_1dwwg6q" />
+        <cmmn:humanTask id="HumanTask_ChangeShipmentOrder" name="Change shipment order" camunda:assignee="educama" />
+        <cmmn:humanTask id="HumanTask_CreateInvoice" name="Create invoice" camunda:assignee="educama" />
+      </cmmn:stage>
+      <cmmn:humanTask id="HumanTask_CompleteShipmentOrder" name="Complete shipment order" camunda:assignee="educama">
+        <cmmn:extensionElements />
+      </cmmn:humanTask>
+    </cmmn:casePlanModel>
+  </cmmn:case>
+  <cmmn:case id="Case_0abv4zj">
+    <cmmn:casePlanModel id="CasePlanModel_0xe818e" name="shipment">
+      <cmmn:planItem id="createShipmentCase" name="createShipment" definitionRef="HumanTask_1cfxd1r">
+        <cmmn:itemControl id="PlanItemControl_1d1v9fz">
+          <cmmn:requiredRule id="RequiredRule_0rdgb72" />
+          <cmmn:manualActivationRule id="ManualActivationRule_12cc3np" />
+        </cmmn:itemControl>
+      </cmmn:planItem>
+      <cmmn:humanTask id="HumanTask_1cfxd1r" name="create" />
+    </cmmn:casePlanModel>
+  </cmmn:case>
+  <cmmndi:CMMNDI>
+    <cmmndi:CMMNDiagram id="ShipmentCase_Diagram" name="Educama Shipment">
+      <cmmndi:Size xsi:type="dc:Dimension" width="500" height="500" />
+      <cmmndi:CMMNShape id="DI_CasePlanModel_1" cmmnElementRef="shipmentCasePlanModel">
+        <dc:Bounds x="114" y="60" width="779" height="369" />
+        <cmmndi:CMMNLabel />
+      </cmmndi:CMMNShape>
+      <cmmndi:CMMNShape id="CasePlanModel_0xe818e_di" cmmnElementRef="CasePlanModel_0xe818e">
+        <dc:Bounds x="10061" y="339" width="400" height="250" />
+        <cmmndi:CMMNLabel />
+      </cmmndi:CMMNShape>
+      <cmmndi:CMMNShape id="PlanItem_10c9159_di" cmmnElementRef="createShipmentCase">
+        <dc:Bounds x="10157" y="382" width="100" height="80" />
+        <cmmndi:CMMNLabel />
+      </cmmndi:CMMNShape>
+      <cmmndi:CMMNShape id="PlanItem_12ixm7g_di" cmmnElementRef="PlanItem_Milestone_ShipmentOrderCompleted">
+        <dc:Bounds x="160" y="150" width="100" height="40" />
+        <cmmndi:CMMNLabel />
+      </cmmndi:CMMNShape>
+      <cmmndi:CMMNShape id="EntryCriterion_0ja1jbz_di" cmmnElementRef="AEntryCriterion_ShipmentOrderComplete">
+        <dc:Bounds x="150" y="156" width="20" height="28" />
+        <cmmndi:CMMNLabel />
+      </cmmndi:CMMNShape>
+      <cmmndi:CMMNShape id="PlanItem_1h02ki2_di" cmmnElementRef="PlanItem_Stage_ProcessShipmentOrder">
+        <dc:Bounds x="468" y="91" width="372" height="161" />
+        <cmmndi:CMMNLabel />
+      </cmmndi:CMMNShape>
+      <cmmndi:CMMNShape id="PlanItem_16ml5tr_di" cmmnElementRef="PlanItem_HumanTask_ChangeShipmentOrder">
+        <dc:Bounds x="504" y="140" width="100" height="80" />
+        <cmmndi:CMMNLabel />
+      </cmmndi:CMMNShape>
+      <cmmndi:CMMNShape id="PlanItem_04hhun6_di" cmmnElementRef="PlanItem_HumanTask_CompleteShipmentOrder">
+        <dc:Bounds x="160" y="242" width="100" height="80" />
+        <cmmndi:CMMNLabel />
+      </cmmndi:CMMNShape>
+      <cmmndi:CMMNShape id="EntryCriterion_11kche9_di" cmmnElementRef="EntryCriterion_CreateInvoice">
+        <dc:Bounds x="676" y="163" width="20" height="28" />
+        <cmmndi:CMMNLabel />
+      </cmmndi:CMMNShape>
+      <cmmndi:CMMNShape id="PlanItem_1yicbw8_di" cmmnElementRef="PlanItem_HumanTask_CreateInvoice">
+        <dc:Bounds x="686" y="140" width="100" height="80" />
+        <cmmndi:CMMNLabel />
+      </cmmndi:CMMNShape>
+      <cmmndi:CMMNShape id="EntryCriterion_11uszip_di" cmmnElementRef="EntryCriterion_ProcessShipmentOrder">
+        <dc:Bounds x="458" y="156" width="20" height="28" />
+        <cmmndi:CMMNLabel />
+      </cmmndi:CMMNShape>
+      <cmmndi:CMMNShape id="ExitCriterion_0qvsot5_di" cmmnElementRef="ExitCriterion_1nr4ibo">
+        <dc:Bounds x="250" y="267" width="20" height="28" />
+        <cmmndi:CMMNLabel />
+      </cmmndi:CMMNShape>
+      <cmmndi:CMMNEdge id="PlanItemOnPart_0v9rz21_di" cmmnElementRef="PlanItemOnPart_0v9rz21" targetCMMNElementRef="ExitCriterion_1nr4ibo" isStandardEventVisible="true">
+        <di:waypoint xsi:type="dc:Point" x="260" y="170" />
+        <di:waypoint xsi:type="dc:Point" x="292" y="170" />
+        <di:waypoint xsi:type="dc:Point" x="292" y="281" />
+        <di:waypoint xsi:type="dc:Point" x="270" y="281" />
+        <cmmndi:CMMNLabel>
+          <dc:Bounds x="298" y="226" width="34" height="12" />
+        </cmmndi:CMMNLabel>
+      </cmmndi:CMMNEdge>
+      <cmmndi:CMMNEdge id="PlanItemOnPart_0y935m1_di" cmmnElementRef="PlanItemOnPart_0y935m1" targetCMMNElementRef="EntryCriterion_ProcessShipmentOrder" isStandardEventVisible="true">
+        <di:waypoint xsi:type="dc:Point" x="260" y="170" />
+        <di:waypoint xsi:type="dc:Point" x="362" y="170" />
+        <di:waypoint xsi:type="dc:Point" x="362" y="170" />
+        <di:waypoint xsi:type="dc:Point" x="458" y="170" />
+        <cmmndi:CMMNLabel>
+          <dc:Bounds x="346" y="151" width="34" height="12" />
+        </cmmndi:CMMNLabel>
+      </cmmndi:CMMNEdge>
+      <cmmndi:CMMNShape id="EntryCriterion_16faceb_di" cmmnElementRef="EntryCriterion_16faceb">
+        <dc:Bounds x="150" y="268" width="20" height="28" />
+        <cmmndi:CMMNLabel />
+      </cmmndi:CMMNShape>
+    </cmmndi:CMMNDiagram>
+  </cmmndi:CMMNDI>
+</cmmn:definitions>
