@@ -29,5 +29,6 @@ deploy:
   api: https://api.ng.bluemix.net
   organization: '"NovaTec Consulting GmbH"'
   space: Educama-Development
+  manifest: manifests/development.yml
   on:
     repo: Educama/Showcase
