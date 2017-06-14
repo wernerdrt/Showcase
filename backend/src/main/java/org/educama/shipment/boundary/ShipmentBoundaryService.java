@@ -40,4 +40,5 @@ public interface ShipmentBoundaryService {
      * @return returns the  updated shipment as a resource
      */
     ShipmentResource updateShipment(String trackingId, Shipment saveShipmentResource);
+
 }
