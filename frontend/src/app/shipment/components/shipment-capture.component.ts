@@ -1,30 +1,42 @@
-import {Component, Output, OnInit, EventEmitter} from "@angular/core";
+import {Component, Output, OnInit, EventEmitter, DoCheck, Input} from "@angular/core";
 import {FormGroup, FormBuilder, Validators} from "@angular/forms";
 import {CustomerService} from "../../customer/api/customer.service";
 import {CustomerResource} from "../../customer/api/resources/customer.resource";
-import {Router} from "@angular/router";
+import {Router, ActivatedRoute} from "@angular/router";
 import {ShipmentResource} from "../api/resources/shipment.resource";
 import {ShipmentService} from "../api/shipment.service";
 import {Cargo} from "../api/datastructures/cargo.datastructure";
 import {ShipmentServices} from "../api/datastructures/services.datastructure";
+import {EditorMode} from "../../common/ui/enums/editor-mode.enum";
+import {SaveShipmentEvent} from "./events/save-shipment.event";
 
 @Component({
     selector: "educama-shipment-capture",
     templateUrl: "./shipment-capture.component.html"
 })
-export class ShipmentCaptureComponent implements OnInit {
+export class ShipmentCaptureComponent implements OnInit, DoCheck {
+
+    @Input()
+    public shipment: ShipmentResource;
 
     @Output()
     public createShipmentCancellationEvent = new EventEmitter();
 
+    @Output()
+    public saveShipmentEvent: EventEmitter<SaveShipmentEvent> = new EventEmitter<SaveShipmentEvent>();
+
     public shipmentCaptureForm: FormGroup;
     public customerSuggestions: CustomerResource[];
+
+    public editorMode: EditorMode;
+    private _isInitialized:boolean = false;
 
     public senderStreet: string;
     public senderStreetNo: string;
     public senderZipCode: string;
     public senderCity: string;
     public senderUUID: string;
+    public trackingId: string;
 
     public receiverStreet: string;
     public receiverStreetNo: string;
@@ -46,8 +58,7 @@ export class ShipmentCaptureComponent implements OnInit {
 
     constructor(private _formBuilder: FormBuilder,
                 private _customerService: CustomerService,
-                private _router: Router,
-                private _shipmentService: ShipmentService) {
+                private _router: Router) {
     }
 
     public ngOnInit() {
@@ -68,6 +79,43 @@ export class ShipmentCaptureComponent implements OnInit {
             onCarriage: [""],
             customerTypeEnum: [""],
         });
+    }
+
+    public ngDoCheck() {
+
+        // Determine editor mode based on existence of a passed in shipment
+        this.editorMode = this.shipment ? EditorMode.update : EditorMode.create;
+
+        if (this.editorMode === EditorMode.update && !this._isInitialized) {
+            this.shipmentCaptureForm.get("cargoDescription").setValue(this.shipment.shipmentCargo.cargoDescription);
+            this.shipmentCaptureForm.get("flight").setValue(this.shipment.shipmentServices.flight);
+            this.shipmentCaptureForm.get("numberPackages").setValue(this.shipment.shipmentCargo.numberPackages);
+            this.shipmentCaptureForm.get("totalWeight").setValue(this.shipment.shipmentCargo.totalWeight);
+            this.shipmentCaptureForm.get("totalCapacity").setValue(this.shipment.shipmentCargo.totalCapacity);
+            this.shipmentCaptureForm.get("dangerousGoods").setValue(this.shipment.shipmentCargo.dangerousGoods);
+            this.shipmentCaptureForm.get("preCarriage").setValue(this.shipment.shipmentServices.preCarriage);
+            this.shipmentCaptureForm.get("exportInsurance").setValue(this.shipment.shipmentServices.exportInsurance);
+            this.shipmentCaptureForm.get("exportCustomsClearance").setValue(this.shipment.shipmentServices.exportCustomsClearance);
+            this.shipmentCaptureForm.get("importInsurance").setValue(this.shipment.shipmentServices.importInsurance);
+            this.shipmentCaptureForm.get("importCustomsClearance").setValue(this.shipment.shipmentServices.importCustomsClearance);
+            this.shipmentCaptureForm.get("onCarriage").setValue(this.shipment.shipmentServices.onCarriage);
+            this.shipmentCaptureForm.get("customerTypeEnum").setValue(this.shipment.customerTypeEnum);
+            this.shipmentCaptureForm.get("sender").setValue(this.shipment.sender.name);
+            this.shipmentCaptureForm.get("receiver").setValue(this.shipment.receiver.name);
+
+            this.senderUUID = this.shipment.sender.uuid;
+            this.senderStreet = this.shipment.sender.address.street;
+            this.senderStreetNo = this.shipment.sender.address.streetNo;
+            this.senderCity = this.shipment.sender.address.city;
+            this.senderZipCode = this.shipment.sender.address.zipCode;
+            this.receiverUUID = this.shipment.sender.uuid;
+            this.receiverStreet = this.shipment.receiver.address.street;
+            this.receiverStreetNo = this.shipment.receiver.address.streetNo;
+            this.receiverCity = this.shipment.receiver.address.city;
+            this.receiverZipCode = this.shipment.receiver.address.zipCode;
+
+            this._isInitialized = true;
+        }
     }
 
     // ***************************************************
@@ -98,7 +146,7 @@ export class ShipmentCaptureComponent implements OnInit {
         this.senderStreetNo = sender.address.streetNo;
         this.senderZipCode = sender.address.zipCode;
         this.senderCity = sender.address.city;
-        this.senderUUID = sender.uuid
+        this.senderUUID = sender.uuid;
     }
 
     public cancel() {
@@ -134,9 +182,12 @@ export class ShipmentCaptureComponent implements OnInit {
         shipment.uuidSender = this.senderUUID;
         shipment.uuidReceiver = this.receiverUUID;
 
-        this._shipmentService.createShipment(shipment).subscribe(shipment => {
-            this._router.navigate(["/shipments"]);
-        });
+        this.saveShipmentEvent.emit(
+            new SaveShipmentEvent(
+                shipment.uuidSender, shipment.uuidReceiver, shipment.shipmentCargo,
+                shipment.shipmentServices, shipment.customerTypeEnum, shipment.trackingId
+            )
+        );
 
     }
 }

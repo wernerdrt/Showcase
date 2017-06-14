@@ -71,5 +71,4 @@ export class CustomerService {
         let pageSizeText = (pageSize) ? "&size=" + pageSize : "&size=10";
         return this._restClientService.get(this.CUSTOMER_SUGGESTIONS_RESOURCE_PATH + "?term=" + term + pageNumberText + pageSizeText);
     }
-
 }

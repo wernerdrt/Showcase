@@ -37,4 +37,18 @@ export class ShipmentService {
         return this._restClientService.get(this.SHIPMENT_RESOURCE_PATH);
     }
 
+    /*
+     * Update a shipment
+     * @param shipment The Shipment to be updated
+     * @return An observable of a shipment
+     */
+    public updateShipment(trackingId: string, shipment: ShipmentResource): Observable<ShipmentResource> {
+        return this._restClientService.put(this.SHIPMENT_RESOURCE_PATH + "/" + trackingId, JSON.stringify(shipment));
+    }
+    /*
+     * Find a single shipment
+     */
+    public findShipmentbyId(trackingid: string): Observable<ShipmentResource> {
+        return this._restClientService.get(this.SHIPMENT_RESOURCE_PATH + "/" + trackingid);
+    }
 }
