@@ -187,20 +187,6 @@ public class RestApiDocumentation {
                 this.documentationHandler.document(
                         requestFields(fieldWithPath("uuidSender").description("the UUID of the sender"),
                                 fieldWithPath("uuidReceiver").description("the UUID of the receiver"),
-                                fieldWithPath("sender").description("The sender of the shipment with address and name"),
-                                fieldWithPath("sender.name").description("The name of the sender"),
-                                fieldWithPath("sender.address").description("The address of the sender"),
-                                fieldWithPath("sender.address.street").description("The street of the sender's address"),
-                                fieldWithPath("sender.address.streetNo").description("The street number of the sender's address"),
-                                fieldWithPath("sender.address.zipCode").description("The zip code of the sender's address"),
-                                fieldWithPath("sender.address.city").description("The city of the sender's address"),
-                                fieldWithPath("receiver").description("The receiver of the shipment with address and name"),
-                                fieldWithPath("receiver.name").description("The name of the receiver"),
-                                fieldWithPath("receiver.address").description("The address of the receiver"),
-                                fieldWithPath("receiver.address.street").description("The street of the receiver's address"),
-                                fieldWithPath("receiver.address.streetNo").description("The street number of the receiver's address"),
-                                fieldWithPath("receiver.address.zipCode").description("The zip code of the receiver's address"),
-                                fieldWithPath("receiver.address.city").description("The city of the receiver's address"),
                                 fieldWithPath("customerTypeEnum").description("Tells wether the sender or receiver is the customer of the shipment"),
                                 fieldWithPath("shipmentCargo").description("Includes cargo information about the shipment"),
                                 fieldWithPath("shipmentCargo.numberPackages").description("The number of packages of the cargo"),
@@ -218,6 +204,7 @@ public class RestApiDocumentation {
                                 fieldWithPath("shipmentServices.onCarriage").description("Is true if additional actions have to take place after the shipment")),
                         responseFields(fieldDescriptorShipmentResource)));
 }
+
     @Test
     public void listShipmentTest() throws Exception {
         createShipment();
@@ -352,15 +339,11 @@ public class RestApiDocumentation {
     }
 
     private Map<String, Object>  createShipmentResourceHashMap() throws Exception {
-        Map<String, Object> sender = createCustomerResourceHashMap("Hans Kümmerle");
-        Map<String, Object> receiver = createCustomerResourceHashMap("Albert Stein");
         String uuidSender = createCustomer("Herbert Hollig");
         String uuidReceiver = createCustomer("Herbert Hollig");
         Map<String, Object> shipment = new LinkedHashMap<>();
         shipment.put("uuidSender", uuidSender);
         shipment.put("uuidReceiver", uuidReceiver);
-        shipment.put("sender", sender);
-        shipment.put("receiver", receiver);
         shipment.put("customerTypeEnum", "RECEIVER");
 
         Map<String, Object> cargo = new LinkedHashMap<>();
