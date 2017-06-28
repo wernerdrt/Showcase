@@ -2,10 +2,10 @@ package org.educama.shipment.api.resource;
 
 import java.util.UUID;
 
-import org.educama.customer.model.Customer;
+
 import org.educama.enums.ClientType;
-import org.educama.shipment.model.Cargo;
-import org.educama.shipment.model.Services;
+import org.educama.shipment.api.datastructure.CargoDS;
+import org.educama.shipment.api.datastructure.ServicesDS;
 import org.educama.shipment.model.Shipment;
 
 /**
@@ -16,10 +16,8 @@ public class SaveShipmentResource {
     public String trackingId;
     public UUID uuidSender;
     public UUID uuidReceiver;
-    public Customer sender;
-    public Customer receiver;
-    public Cargo shipmentCargo;
-    public Services shipmentServices;
+    public CargoDS shipmentCargo;
+    public ServicesDS shipmentServices;
     public ClientType customerTypeEnum;
 
     /**
@@ -30,10 +28,8 @@ public class SaveShipmentResource {
     public Shipment toShipment() {
         Shipment toConvert = new Shipment();
         toConvert.trackingId = trackingId;
-        toConvert.sender = sender;
-        toConvert.receiver = receiver;
-        toConvert.shipmentCargo = shipmentCargo;
-        toConvert.shipmentServices = shipmentServices;
+        toConvert.shipmentCargo = shipmentCargo.toCargo();
+        toConvert.shipmentServices = shipmentServices.toServices();
         toConvert.customerTypeEnum = customerTypeEnum;
 
         return toConvert;

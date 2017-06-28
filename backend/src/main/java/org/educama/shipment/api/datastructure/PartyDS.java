@@ -23,4 +23,14 @@ public class PartyDS {
         this.address = new AddressDS(customer.address);
     }
 
+    public PartyDS(String name, UUID uuid, AddressDS address) {
+        this.uuid = uuid;
+        this.name = name;
+        this.address = address;
+    }
+
+    public Customer toCustomer() {
+        return new Customer(this.uuid, this.name, this.address.toAddress());
+    }
+
 }
