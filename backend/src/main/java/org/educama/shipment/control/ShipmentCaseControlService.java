@@ -1,7 +1,5 @@
 package org.educama.shipment.control;
 
-import java.util.UUID;
-
 import org.camunda.bpm.engine.CaseService;
 import org.camunda.bpm.engine.runtime.CaseInstance;
 import org.educama.shipment.process.ShipmentCaseConstants;
@@ -22,10 +20,8 @@ public class ShipmentCaseControlService {
      *
      * @return the new CaseInstance
      */
-    public CaseInstance create() {
-        String businessKey = UUID.randomUUID().toString();
+    public CaseInstance create(String businessKey) {
         CaseInstance caseInstance = caseService.createCaseInstanceByKey(ShipmentCaseConstants.SHIPMENTCASEKEY, businessKey);
-
         return caseInstance;
     }
 }

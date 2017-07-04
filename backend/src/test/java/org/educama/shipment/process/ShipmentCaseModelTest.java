@@ -1,16 +1,9 @@
 package org.educama.shipment.process;
 
-import static org.camunda.bpm.engine.test.assertions.bpmn.AbstractAssertions.processEngine;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
-import java.util.List;
-import java.util.UUID;
-
 import org.camunda.bpm.engine.CaseService;
 import org.camunda.bpm.engine.runtime.CaseExecution;
 import org.camunda.bpm.engine.runtime.CaseInstance;
+import org.camunda.bpm.engine.task.Task;
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.spring.boot.starter.test.helper.AbstractProcessEngineRuleTest;
 import org.educama.BeanTestConfiguration;
@@ -30,6 +23,12 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.List;
+import java.util.UUID;
+
+import static org.camunda.bpm.engine.test.assertions.bpmn.AbstractAssertions.processEngine;
+import static org.junit.Assert.*;
 
 /**
  * Tests the CMMN model.
@@ -82,38 +81,7 @@ public class ShipmentCaseModelTest extends AbstractProcessEngineRuleTest {
     }
 
     @Test
-    public void testCaseInitializationWithIncompleteData() {
-        Shipment shipment = shipmentRepository.findOne(this.shipmentId);
-        shipment.trackingId = UUID.randomUUID().toString();
-        shipmentRepository.save(shipment);
-
-        CaseInstance caseInstance = processEngine().getCaseService()
-                .createCaseInstanceByKey(ShipmentCaseConstants.SHIPMENTCASEKEY, shipment.trackingId);
-        this.caseInstanceId = caseInstance.getId();
-
-        showCaseOverview(caseInstance);
-
-        // Case Instance active?
-        assertTrue(caseInstance.isActive());
-
-        // Milestone 'Shipment order completed' not reached?
-        assertTrue(processEngine().getCaseService().createCaseExecutionQuery()
-                .activityId(ShipmentCaseConstants.PLAN_ITEM_MILESTONE_SHIPMENT_ORDER_COMPLETED)
-                .caseInstanceBusinessKey(shipment.trackingId).singleResult().isAvailable());
-
-        // Task 'Complete shipment order' available?
-        assertTrue(processEngine().getCaseService().createCaseExecutionQuery()
-                .activityId(ShipmentCaseConstants.PLAN_ITEM_HUMAN_TASK_COMPLETE_SHIPMENT_ORDER)
-                .caseInstanceBusinessKey(shipment.trackingId).active().singleResult().isActive());
-
-        // Stage 'Process shipment order' is not enabled?
-        assertFalse(processEngine().getCaseService().createCaseExecutionQuery()
-                .activityId(ShipmentCaseConstants.PLAN_ITEM_STAGE_PROCESS_SHIPMENT_ORDER)
-                .caseInstanceBusinessKey(shipment.trackingId).singleResult().isEnabled());
-    }
-
-    @Test
-    public void testCaseInitializationWithIncompleteDataWithModelUpdate() {
+    public void testCaseInitializationWithIncompleteShipmentData() {
         Shipment shipment = shipmentRepository.findOne(this.shipmentId);
         shipment.trackingId = UUID.randomUUID().toString();
         shipmentRepository.save(shipment);
@@ -141,10 +109,54 @@ public class ShipmentCaseModelTest extends AbstractProcessEngineRuleTest {
         assertFalse(processEngine().getCaseService().createCaseExecutionQuery()
                 .activityId(ShipmentCaseConstants.PLAN_ITEM_STAGE_PROCESS_SHIPMENT_ORDER)
                 .caseInstanceBusinessKey(shipment.trackingId).singleResult().isEnabled());
+    }
+
+    @Test
+    public void testCaseInitializationWithIncompleteShipmentDataWithModelUpdate() {
+        Shipment shipment = shipmentRepository.findOne(this.shipmentId);
+        shipment.trackingId = UUID.randomUUID().toString();
+        shipmentRepository.save(shipment);
+
+        CaseInstance caseInstance = processEngine().getCaseService()
+                .createCaseInstanceByKey(ShipmentCaseConstants.SHIPMENTCASEKEY, shipment.trackingId);
+        this.caseInstanceId = caseInstance.getId();
+
+        showCaseOverview(caseInstance);
+
+        // Case Instance active?
+        assertTrue(caseInstance.isActive());
+
+        // Milestone 'Shipment order completed' not reached?
+        assertTrue(processEngine().getCaseService().createCaseExecutionQuery()
+                .activityId(ShipmentCaseConstants.PLAN_ITEM_MILESTONE_SHIPMENT_ORDER_COMPLETED)
+                .caseInstanceBusinessKey(shipment.trackingId)
+                .singleResult()
+                .isAvailable());
+
+        // Task 'Complete shipment order' active?
+        CaseExecution completeShipmentOrderCaseExecution = processEngine().getCaseService().createCaseExecutionQuery()
+                .activityId(ShipmentCaseConstants.PLAN_ITEM_HUMAN_TASK_COMPLETE_SHIPMENT_ORDER)
+                .caseInstanceBusinessKey(shipment.trackingId)
+                .active()
+                .singleResult();
+        assertTrue(completeShipmentOrderCaseExecution.isActive());
+
+        // Stage 'Process shipment order' is not enabled?
+        assertFalse(processEngine().getCaseService().createCaseExecutionQuery()
+                .activityId(ShipmentCaseConstants.PLAN_ITEM_STAGE_PROCESS_SHIPMENT_ORDER)
+                .caseInstanceBusinessKey(shipment.trackingId)
+                .singleResult()
+                .isEnabled());
 
         Shipment shipment2 = shipmentRepository.findOne(this.shipmentId);
         shipment2.shipmentCargo = new Cargo(1, 2.0, 123.0, "Don't Panic!", true);
         shipmentRepository.save(shipment2);
+
+        // Complete task 'Complete shipment order'
+        Task task = processEngine().getTaskService().createTaskQuery()
+                .caseExecutionId(completeShipmentOrderCaseExecution.getId())
+                .singleResult();
+        processEngine().getTaskService().complete(task.getId());
 
         // evaluate
         System.out.println("CREATING...");
@@ -152,6 +164,11 @@ public class ShipmentCaseModelTest extends AbstractProcessEngineRuleTest {
 
         // print
         showCaseOverview(caseInstance);
+
+        // Task 'Complete shipment order' completed?
+        assertNull(processEngine().getCaseService().createCaseExecutionQuery()
+                .activityId(ShipmentCaseConstants.PLAN_ITEM_HUMAN_TASK_COMPLETE_SHIPMENT_ORDER)
+                .caseInstanceBusinessKey(shipment.trackingId).singleResult());
 
         // Stage 'Process shipment order' is active?
         assertTrue(processEngine().getCaseService().createCaseExecutionQuery()

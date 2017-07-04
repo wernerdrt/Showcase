@@ -1,18 +1,20 @@
 package org.educama.shipment.boundary.impl;
 
-import org.camunda.bpm.engine.runtime.CaseInstance;
+import org.camunda.bpm.engine.ProcessEngine;
 import org.educama.common.exceptions.ResourceNotFoundException;
 import org.educama.shipment.api.resource.ShipmentResource;
 import org.educama.shipment.boundary.ShipmentBoundaryService;
 import org.educama.shipment.control.ShipmentCaseControlService;
 import org.educama.shipment.model.Shipment;
 import org.educama.shipment.process.ShipmentCaseEvaluator;
+import org.educama.shipment.process.tasks.CompleteShipmentOrderTask;
 import org.educama.shipment.repository.ShipmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
+import java.util.UUID;
 
 /**
  * Boundary service implementation for shipments.
@@ -21,20 +23,31 @@ import java.util.Collection;
 @Transactional(readOnly = true)
 public class ShipmentBoundaryServiceImpl implements ShipmentBoundaryService {
 
-    @Autowired
+    private CompleteShipmentOrderTask completeShipmentOrderTask;
+
     private ShipmentRepository shipmentRepository;
 
-    @Autowired
     private ShipmentCaseControlService shipmentCaseControlService;
 
+    private ShipmentCaseEvaluator shipmentCaseEvaluator;
+
     @Autowired
-    private ShipmentCaseEvaluator caseModelHandler;
+    public ShipmentBoundaryServiceImpl(CompleteShipmentOrderTask completeShipmentOrderTask,
+                                       ShipmentRepository shipmentRepository,
+                                       ShipmentCaseControlService shipmentCaseControlService,
+                                       ShipmentCaseEvaluator shipmentCaseEvaluator,
+                                       ProcessEngine processEngine) {
+        this.completeShipmentOrderTask = completeShipmentOrderTask;
+        this.shipmentRepository = shipmentRepository;
+        this.shipmentCaseControlService = shipmentCaseControlService;
+        this.shipmentCaseEvaluator = shipmentCaseEvaluator;
+    }
 
     @Override
     public Shipment createShipment(Shipment shipment) {
-        CaseInstance caseInstance = shipmentCaseControlService.create();
-        shipment.trackingId = caseInstance.getBusinessKey();
-        Shipment createdShipment = shipmentRepository.save(shipment);
+        shipment.trackingId = UUID.randomUUID().toString();
+        Shipment createdShipment = shipmentRepository.saveAndFlush(shipment);
+        shipmentCaseControlService.create(shipment.trackingId);
         return createdShipment;
     }
 
@@ -62,10 +75,15 @@ public class ShipmentBoundaryServiceImpl implements ShipmentBoundaryService {
             shipment.shipmentCargo = saveShipmentResource.shipmentCargo;
             shipment.shipmentServices = saveShipmentResource.shipmentServices;
             shipment = shipmentRepository.saveAndFlush(shipment);
-            caseModelHandler.reevaluateCase(shipment.trackingId);
+
+            if (completeShipmentOrderTask.isActive(trackingId) && completeShipmentOrderTask.canBeCompleted(trackingId)) {
+                completeShipmentOrderTask.complete(trackingId);
+                shipmentCaseEvaluator.reevaluateCase(trackingId);
+            }
+
             ShipmentResource convertedShipment = new ShipmentResource().fromShipment(shipment);
             return convertedShipment;
         }
-
     }
+
 }

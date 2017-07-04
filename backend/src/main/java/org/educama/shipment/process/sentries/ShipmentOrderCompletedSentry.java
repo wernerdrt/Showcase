@@ -1,7 +1,6 @@
 package org.educama.shipment.process.sentries;
 
-import org.educama.shipment.model.Shipment;
-import org.educama.shipment.repository.ShipmentRepository;
+import org.educama.shipment.control.ShipmentControlService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,19 +14,15 @@ public class ShipmentOrderCompletedSentry {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ShipmentOrderCompletedSentry.class);
 
+    private ShipmentControlService shipmentControlService;
+
     @Autowired
-    ShipmentRepository shipmentRepository;
+    public ShipmentOrderCompletedSentry(ShipmentControlService shipmentBoundaryService) {
+        this.shipmentControlService = shipmentBoundaryService;
+    }
 
     public Boolean shipmentOrderCompleted(String trackingId) {
-        LOGGER.debug("evaluating shipment status with id: '" + trackingId + "'");
-        Shipment shipment = shipmentRepository.findOneBytrackingId(trackingId);
-
-        boolean isShipmentComplete = (shipment != null && shipment.shipmentCargo.dangerousGoods != null
-                && shipment.shipmentCargo.cargoDescription != null && shipment.shipmentCargo.numberPackages != null
-                && shipment.shipmentCargo.totalCapacity != null && shipment.shipmentCargo.totalWeight != null);
-
-        LOGGER.debug("Shipment is complete: " + isShipmentComplete);
-        return isShipmentComplete;
+        return shipmentControlService.isShipmentOrderComplete(trackingId);
     }
 
 }

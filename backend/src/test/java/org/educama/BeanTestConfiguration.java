@@ -1,5 +1,6 @@
 package org.educama;
 
+import org.educama.shipment.control.ShipmentControlService;
 import org.educama.shipment.process.sentries.ShipmentOrderCompletedSentry;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,8 +13,8 @@ import org.springframework.context.annotation.Configuration;
 public class BeanTestConfiguration {
 
     @Bean
-    public ShipmentOrderCompletedSentry shipmentOrderCompletedSentry() {
-        return new ShipmentOrderCompletedSentry();
+    public ShipmentOrderCompletedSentry shipmentOrderCompletedSentry(ShipmentControlService shipmentBoundaryService) {
+        return new ShipmentOrderCompletedSentry(shipmentBoundaryService);
     }
 
 }
