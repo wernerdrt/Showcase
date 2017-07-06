@@ -55,23 +55,17 @@ public class AirportController {
     }
 
     /**
-     * Retrieves the a list of airports which name, city,country, IATA, or ICAO,City, Callsign,  contains a given term.
+     * Retrieves a list of airports where the name, IATA Code or ICAO Code starts with a given term.
      *
-     * @param term the part of the IATA code to be looked up.
+     * @param term the term to look up
      * @return the list of matching airports.
      */
     @RequestMapping("/airports/suggestions")
     public List<Airport> getAirportSuggestions(@RequestParam(value = "term") String term) {
-        Set<Airport> airportSet = new HashSet<Airport>();
         if (StringUtils.isEmpty(term)) {
             return Collections.emptyList();
         }
-        airportSet.addAll(airportBusinessService.findAirportsSuggestionsByName(term));
-        airportSet.addAll(airportBusinessService.findAirportsSuggestionsByCity(term));
-        airportSet.addAll(airportBusinessService.findAirportsSuggestionsByCountry(term));
-        airportSet.addAll(airportBusinessService.findAirportsSuggestionsByIataCode(term));
-        airportSet.addAll(airportBusinessService.findAirportsSuggestionsByIcaoCode(term));
-        return new ArrayList<>(airportSet);
+        return airportBusinessService.findAirportSuggestionsBySearchTerm(term);
     }
 
     /**

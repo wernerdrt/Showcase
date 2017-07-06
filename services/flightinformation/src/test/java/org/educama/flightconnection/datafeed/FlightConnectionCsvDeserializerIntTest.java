@@ -6,7 +6,7 @@ import org.educama.airline.model.Airline;
 import org.educama.airline.repository.AirlineRepository;
 import org.educama.airport.model.Airport;
 import org.educama.airport.repository.AirportRepository;
-import org.educama.flightconnection.model.Connection;
+import org.educama.flightconnection.model.FlightConnection;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,7 +30,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = App.class)
-public class ConnectionCsvDeserializerIntTest {
+public class FlightConnectionCsvDeserializerIntTest {
     private final String separator = ",";
     private final String empty = "";
     private final Charset charset = StandardCharsets.ISO_8859_1;
@@ -60,23 +60,23 @@ public class ConnectionCsvDeserializerIntTest {
         //Given
         boolean thrown = false;
         final String invalidCodeshare = "Invalid codeshare";
-        final Connection connection = new Connection().withAirlineIataCode("LH")
+        final FlightConnection flightConnection = new FlightConnection().withAirlineIataCode("LH")
                 .withSourceAirportIataCode("FRA")
                 .withDestinationAirportIataCode("LAX")
                 .withStops(0);
-        List<Connection> connections = new ArrayList<>();
-        connections.add(connection);
+        List<FlightConnection> flightConnections = new ArrayList<>();
+        flightConnections.add(flightConnection);
 
         StringBuilder builder = new StringBuilder();
         //@formatter:off
-        builder.append(connection.getAirlineIataCode())              .append(separator)  //ID
+        builder.append(flightConnection.getAirlineIataCode())              .append(separator)  //ID
                 .append(empty)                                       .append(separator)  //airline ID
-                .append(connection.getSourceAirportIataCode())       .append(separator)
+                .append(flightConnection.getSourceAirportIataCode())       .append(separator)
                 .append(empty)                                       .append(separator) //source ID
-                .append(connection.getDestinationAirportIataCode())  .append(separator)
+                .append(flightConnection.getDestinationAirportIataCode())  .append(separator)
                 .append(empty)                                       .append(separator) //destination ID
                 .append(invalidCodeshare)                            .append(separator)
-                .append(connection.getStops())                       .append(separator)
+                .append(flightConnection.getStops())                       .append(separator)
                 .append(empty)                                       .append("\n");     // Equipment
         //@formatter:ofn
 
@@ -104,12 +104,12 @@ public class ConnectionCsvDeserializerIntTest {
         //Given
         final String invalidAirportCode = "invalid airport code";
         boolean thrown = false;
-        Connection connection = getDefaultConnection();
-        connection.setSourceAirportIataCode(invalidAirportCode);
+        FlightConnection flightConnection = getDefaultConnection();
+        flightConnection.setSourceAirportIataCode(invalidAirportCode);
 
-        List<Connection> connections = new ArrayList<>();
-        connections.add(connection);
-        String csvContent = cut.createCsvContentForConnections(connections);
+        List<FlightConnection> flightConnections = new ArrayList<>();
+        flightConnections.add(flightConnection);
+        String csvContent = cut.createCsvContentForConnections(flightConnections);
 
         InputStream inputStream = new ByteArrayInputStream(csvContent.getBytes(charset));
         //When
@@ -129,12 +129,12 @@ public class ConnectionCsvDeserializerIntTest {
         //Given
         final String invalidAirlineCode = "invalid airline code";
         boolean thrown = false;
-        Connection connection = getDefaultConnection();
-        connection.setDestinationAirportIataCode(invalidAirlineCode);
+        FlightConnection flightConnection = getDefaultConnection();
+        flightConnection.setDestinationAirportIataCode(invalidAirlineCode);
 
-        List<Connection> connections = new ArrayList<>();
-        connections.add(connection);
-        String csvContent = cut.createCsvContentForConnections(connections);
+        List<FlightConnection> flightConnections = new ArrayList<>();
+        flightConnections.add(flightConnection);
+        String csvContent = cut.createCsvContentForConnections(flightConnections);
         InputStream inputStream = new ByteArrayInputStream(csvContent.getBytes(charset));
         //When
         try {
@@ -156,22 +156,22 @@ public class ConnectionCsvDeserializerIntTest {
         final String icaoCode = airport.getIcaoCode();
         airportRepository.save(airport);
 
-        Connection connection = getDefaultConnection();
-        connection.setSourceAirportIataCode(icaoCode);
+        FlightConnection flightConnection = getDefaultConnection();
+        flightConnection.setSourceAirportIataCode(icaoCode);
 
-        List<Connection> connections = new ArrayList<>();
-        connections.add(connection);
-        String csvContent = cut.createCsvContentForConnections(connections);
+        List<FlightConnection> flightConnections = new ArrayList<>();
+        flightConnections.add(flightConnection);
+        String csvContent = cut.createCsvContentForConnections(flightConnections);
 
         InputStream inputStream = new ByteArrayInputStream(
                 csvContent.getBytes(charset));
 
         //When
-        List<Connection> actualConnections = cut.deserialize(inputStream);
+        List<FlightConnection> actualFlightConnections = cut.deserialize(inputStream);
 
         //Then
-        assertThat(actualConnections.size()).isEqualTo(1);
-        assertThat(actualConnections.get(0)
+        assertThat(actualFlightConnections.size()).isEqualTo(1);
+        assertThat(actualFlightConnections.get(0)
                 .getSourceAirportIataCode()).isEqualTo(iataCode);
 
     }
@@ -184,22 +184,22 @@ public class ConnectionCsvDeserializerIntTest {
         final String unknownIcaoCode = "IZZZ";
         airportRepository.save(airport);
 
-        Connection connection = getDefaultConnection();
-        connection.setSourceAirportIataCode(unknownIcaoCode);
+        FlightConnection flightConnection = getDefaultConnection();
+        flightConnection.setSourceAirportIataCode(unknownIcaoCode);
 
-        List<Connection> connections = new ArrayList<>();
-        connections.add(connection);
-        String csvContent = cut.createCsvContentForConnections(connections);
+        List<FlightConnection> flightConnections = new ArrayList<>();
+        flightConnections.add(flightConnection);
+        String csvContent = cut.createCsvContentForConnections(flightConnections);
 
         InputStream inputStream = new ByteArrayInputStream(
                 csvContent.getBytes(charset));
 
         //When
-        List<Connection> actualConnections = cut.deserialize(inputStream);
+        List<FlightConnection> actualFlightConnections = cut.deserialize(inputStream);
 
         //Then
-        assertThat(actualConnections.size()).isEqualTo(1);
-        assertThat(actualConnections.get(0)
+        assertThat(actualFlightConnections.size()).isEqualTo(1);
+        assertThat(actualFlightConnections.get(0)
                 .getSourceAirportIataCode()).isEqualTo(unknownIcaoCode
         );
 
@@ -213,22 +213,22 @@ public class ConnectionCsvDeserializerIntTest {
         final String unknownIcaoCode = "IZZ";
         airlineRepository.save(airline);
 
-        Connection connection = getDefaultConnection();
-        connection.setAirlineIataCode(unknownIcaoCode);
+        FlightConnection flightConnection = getDefaultConnection();
+        flightConnection.setAirlineIataCode(unknownIcaoCode);
 
-        List<Connection> connections = new ArrayList<>();
-        connections.add(connection);
-        String csvContent = cut.createCsvContentForConnections(connections);
+        List<FlightConnection> flightConnections = new ArrayList<>();
+        flightConnections.add(flightConnection);
+        String csvContent = cut.createCsvContentForConnections(flightConnections);
 
         InputStream inputStream = new ByteArrayInputStream(
                 csvContent.getBytes(charset));
 
         //When
-        List<Connection> actualConnections = cut.deserialize(inputStream);
+        List<FlightConnection> actualFlightConnections = cut.deserialize(inputStream);
 
         //Then
-        assertThat(actualConnections.size()).isEqualTo(1);
-        assertThat(actualConnections.get(0)
+        assertThat(actualFlightConnections.size()).isEqualTo(1);
+        assertThat(actualFlightConnections.get(0)
                 .getAirlineIataCode()).isEqualTo(unknownIcaoCode
         );
     }
@@ -241,50 +241,50 @@ public class ConnectionCsvDeserializerIntTest {
         final String icaoCode = airline.getIcaoCode();
         airlineRepository.save(airline);
 
-        Connection connection = getDefaultConnection();
-        connection.setAirlineIataCode(icaoCode);
+        FlightConnection flightConnection = getDefaultConnection();
+        flightConnection.setAirlineIataCode(icaoCode);
 
-        List<Connection> connections = new ArrayList<>();
-        connections.add(connection);
-        String csvContent = cut.createCsvContentForConnections(connections);
+        List<FlightConnection> flightConnections = new ArrayList<>();
+        flightConnections.add(flightConnection);
+        String csvContent = cut.createCsvContentForConnections(flightConnections);
 
         InputStream inputStream = new ByteArrayInputStream(
                 csvContent.getBytes(charset));
 
         //When
-        List<Connection> actualConnections = cut.deserialize(inputStream);
+        List<FlightConnection> actualFlightConnections = cut.deserialize(inputStream);
 
         //Then
-        assertThat(actualConnections.size()).isEqualTo(1);
-        assertThat(actualConnections.get(0)
+        assertThat(actualFlightConnections.size()).isEqualTo(1);
+        assertThat(actualFlightConnections.get(0)
                 .getAirlineIataCode()).isEqualTo(iataCode);
     }
 
     @Test
     public void deserializeCreatesNewConnectionInstancesWhenValidCsvInput() throws IOException {
         //Given
-        Connection expectedConnection = getDefaultConnection();
+        FlightConnection expectedFlightConnection = getDefaultConnection();
 
-        List<Connection> connections = new ArrayList<>();
-        connections.add(expectedConnection);
-        String csvContent = cut.createCsvContentForConnections(connections);
+        List<FlightConnection> flightConnections = new ArrayList<>();
+        flightConnections.add(expectedFlightConnection);
+        String csvContent = cut.createCsvContentForConnections(flightConnections);
 
         InputStream inputStream = new ByteArrayInputStream(
                 csvContent.getBytes(charset));
 
         //When
-        List<Connection> actualConnections = cut.deserialize(inputStream);
+        List<FlightConnection> actualFlightConnections = cut.deserialize(inputStream);
 
         //Then
-        assertThat(actualConnections.size()).isEqualTo(1);
-        Connection actualConnection = actualConnections.get(0);
-        assertThat(actualConnection.getAirlineIataCode()).isEqualTo(expectedConnection.getAirlineIataCode());
-        assertThat(actualConnection.getSourceAirportIataCode()).isEqualTo(expectedConnection.getSourceAirportIataCode());
-        assertThat(actualConnection.getDestinationAirportIataCode()).isEqualTo(expectedConnection.getDestinationAirportIataCode());
+        assertThat(actualFlightConnections.size()).isEqualTo(1);
+        FlightConnection actualFlightConnection = actualFlightConnections.get(0);
+        assertThat(actualFlightConnection.getAirlineIataCode()).isEqualTo(expectedFlightConnection.getAirlineIataCode());
+        assertThat(actualFlightConnection.getSourceAirportIataCode()).isEqualTo(expectedFlightConnection.getSourceAirportIataCode());
+        assertThat(actualFlightConnection.getDestinationAirportIataCode()).isEqualTo(expectedFlightConnection.getDestinationAirportIataCode());
     }
 
-    private Connection getDefaultConnection() {
-        return new Connection().withAirlineIataCode("UA")
+    private FlightConnection getDefaultConnection() {
+        return new FlightConnection().withAirlineIataCode("UA")
                 .withSourceAirportIataCode("JFK")
                 .withDestinationAirportIataCode("MUC")
                 .withCodeShare(true);
