@@ -13,7 +13,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Service class for Airports.
@@ -50,58 +49,11 @@ public class AirportBusinessService {
         return airportRepository.findByIcaoCodeIgnoreCase(icaoCode);
     }
 
-    public List<Airport> findAirportsSuggestionsByIataCode(String iataCode) {
-        if (StringUtils.isEmpty(iataCode)) {
+    public List<Airport> findAirportSuggestionsBySearchTerm(String term) {
+        if (StringUtils.isEmpty(term)) {
             return Collections.emptyList();
         }
-
-        List<Airport> suggestions = airportRepository.findByIataCodeStartingWithIgnoreCase(iataCode);
-
-        return suggestions.stream()
-                .limit(MAX_SUGGESTIONS)
-                .collect(Collectors.toList());
-    }
-
-    public List<Airport> findAirportsSuggestionsByIcaoCode(String icaoCode) {
-        if (StringUtils.isEmpty(icaoCode)) {
-            return Collections.emptyList();
-        }
-
-        List<Airport> suggestions = airportRepository.findByIcaoCodeStartingWithIgnoreCase(icaoCode);
-
-        return suggestions.stream()
-                .limit(MAX_SUGGESTIONS)
-                .collect(Collectors.toList());
-    }
-
-    public List<Airport> findAirportsSuggestionsByName(String name) {
-        if (StringUtils.isEmpty(name)) {
-            return Collections.emptyList();
-        }
-        List<Airport> suggestions = airportRepository.findByNameStartingWithIgnoreCase(name);
-        return suggestions.stream()
-                .limit(MAX_SUGGESTIONS)
-                .collect(Collectors.toList());
-    }
-
-    public List<Airport> findAirportsSuggestionsByCity(String city) {
-        if (StringUtils.isEmpty(city)) {
-            return Collections.emptyList();
-        }
-        List<Airport> suggestions = airportRepository.findByCityStartingWithIgnoreCase(city);
-        return suggestions.stream()
-                .limit(MAX_SUGGESTIONS)
-                .collect(Collectors.toList());
-    }
-
-    public List<Airport> findAirportsSuggestionsByCountry(String country) {
-        if (StringUtils.isEmpty(country)) {
-            return Collections.emptyList();
-        }
-        List<Airport> suggestions = airportRepository.findByCountryStartingWithIgnoreCase(country);
-        return suggestions.stream()
-                .limit(MAX_SUGGESTIONS)
-                .collect(Collectors.toList());
+        return airportRepository.findBySearchTerm(term);
     }
 
     public void clearAndImportAirports(MultipartFile file) throws IOException {

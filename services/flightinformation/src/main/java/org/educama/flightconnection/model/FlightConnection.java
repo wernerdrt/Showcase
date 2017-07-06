@@ -6,7 +6,7 @@ import org.springframework.data.annotation.Id;
 /**
  * Model class for connections.
  */
-public class Connection {
+public class FlightConnection {
     @Id
     private String id;
     private String airlineIataCode;
@@ -58,34 +58,34 @@ public class Connection {
     }
 
 
-    public Connection withAirlineIataCode(String airlineIataCode) {
+    public FlightConnection withAirlineIataCode(String airlineIataCode) {
         this.setAirlineIataCode(airlineIataCode);
         return this;
     }
 
-    public Connection withDestinationAirportIataCode(String destinationAirportIataCode) {
+    public FlightConnection withDestinationAirportIataCode(String destinationAirportIataCode) {
         this.setDestinationAirportIataCode(destinationAirportIataCode);
         return this;
     }
 
-    public Connection withSourceAirportIataCode(String sourceAirportIataCode) {
+    public FlightConnection withSourceAirportIataCode(String sourceAirportIataCode) {
         this.setSourceAirportIataCode(sourceAirportIataCode);
         return this;
     }
 
-    public Connection withCodeShare(boolean codeShare) {
+    public FlightConnection withCodeShare(boolean codeShare) {
         this.setCodeshare(codeShare);
         return this;
     }
 
-    public Connection withStops(int stops) {
+    public FlightConnection withStops(int stops) {
         this.setStops(stops);
         return this;
     }
 
     @Override
     public String toString() {
-        return String.format("Connection[id=%s, from='%s', to='%s',airline='%s']", id, sourceAirportIataCode, destinationAirportIataCode, airlineIataCode);
+        return String.format("FlightConnection[id=%s, from='%s', to='%s',airline='%s']", id, sourceAirportIataCode, destinationAirportIataCode, airlineIataCode);
     }
 
 

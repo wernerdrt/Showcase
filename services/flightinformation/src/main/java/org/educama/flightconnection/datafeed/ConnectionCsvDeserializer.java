@@ -5,7 +5,7 @@ import org.educama.airline.businessservice.AirlineBusinessService;
 import org.educama.airline.model.Airline;
 import org.educama.airport.businessservice.AirportBusinessService;
 import org.educama.airport.model.Airport;
-import org.educama.flightconnection.model.Connection;
+import org.educama.flightconnection.model.FlightConnection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.supercsv.cellprocessor.CellProcessorAdaptor;
@@ -44,39 +44,39 @@ public class ConnectionCsvDeserializer {
         this.airlineBusinessService = airlineBusinessService;
     }
 
-    public List<Connection> deserialize(InputStream in) throws IOException {
+    public List<FlightConnection> deserialize(InputStream in) throws IOException {
         InputStreamReader inputStreamReader = new InputStreamReader(in);
         ICsvBeanReader csvBeanReader = new CsvBeanReader(inputStreamReader, CsvPreference.STANDARD_PREFERENCE);
         final String[] header = {"airlineIataCode", null, "sourceAirportIataCode", null, "destinationAirportIataCode", null, "codeshare", "stops", null};
-        Connection connection = null;
-        List<Connection> connections = new ArrayList<>();
+        FlightConnection flightConnection = null;
+        List<FlightConnection> flightConnections = new ArrayList<>();
         try {
 
-            while ((connection = csvBeanReader.read(Connection.class, header, getCellProcessors())) != null) {
-                System.out.println("deserialized " + connection);
-                connections.add(connection);
+            while ((flightConnection = csvBeanReader.read(FlightConnection.class, header, getCellProcessors())) != null) {
+                System.out.println("deserialized " + flightConnection);
+                flightConnections.add(flightConnection);
             }
         } finally {
             if (csvBeanReader != null) {
                 csvBeanReader.close();
             }
         }
-        return connections;
+        return flightConnections;
     }
 
-    public String createCsvContentForConnections(List<Connection> connections) {
+    public String createCsvContentForConnections(List<FlightConnection> flightConnections) {
         StringBuilder builder = new StringBuilder();
-        for (Connection connection : connections) {
-            String codeShare = connection.isCodeshare() ? codeshareYes : codeshareNo;
+        for (FlightConnection flightConnection : flightConnections) {
+            String codeShare = flightConnection.isCodeshare() ? codeshareYes : codeshareNo;
             //@formatter:off
-            builder.append(connection.getAirlineIataCode())               .append(separator)  //ID
+            builder.append(flightConnection.getAirlineIataCode())               .append(separator)  //ID
                     .append(empty)                                        .append(separator)  //airline ID
-                    .append(connection.getSourceAirportIataCode())        .append(separator)
+                    .append(flightConnection.getSourceAirportIataCode())        .append(separator)
                     .append(empty)                                        .append(separator) //source ID
-                    .append(connection.getDestinationAirportIataCode())   .append(separator)
+                    .append(flightConnection.getDestinationAirportIataCode())   .append(separator)
                     .append(empty)                                        .append(separator) //destination ID
                     .append(codeShare)                                    .append(separator)
-                    .append(connection.getStops())                        .append(separator)
+                    .append(flightConnection.getStops())                        .append(separator)
                     .append(empty)                                        .append("\n");     //Equipment
             //@formatter:on
         }

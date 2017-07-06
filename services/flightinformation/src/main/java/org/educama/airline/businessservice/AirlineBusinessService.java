@@ -13,7 +13,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Service class for airlines.
@@ -51,64 +50,12 @@ public class AirlineBusinessService {
         return airlineRepository.findByIcaoCodeIgnoreCase(icaoCode);
     }
 
-    public List<Airline> findAirlinesSuggestionsByName(String name) {
-        if (StringUtils.isEmpty(name)) {
-            return Collections.emptyList();
-        }
-        List<Airline> suggestions = airlineRepository.findByNameStartingWithIgnoreCase(name);
-
-        return suggestions.stream()
-                .limit(MAX_SUGGESTIONS)
-                .collect(Collectors.toList());
-    }
-
-    public List<Airline> findAirlinesSuggestionsByIataCode(String iataCode) {
-        if (StringUtils.isEmpty(iataCode)) {
+    public List<Airline> findAirlineSuggestionsBySearchTerm(String term) {
+        if (StringUtils.isEmpty(term)) {
             return Collections.emptyList();
         }
 
-        List<Airline> suggestions = airlineRepository.findByIataCodeStartingWithIgnoreCase(iataCode);
-
-        return suggestions.stream()
-                .limit(MAX_SUGGESTIONS)
-                .collect(Collectors.toList());
-    }
-
-    public List<Airline> findAirlinesSuggestionsByIcaoCode(String icaoCode) {
-        if (StringUtils.isEmpty(icaoCode)) {
-            return Collections.emptyList();
-        }
-
-        List<Airline> suggestions = airlineRepository.findByIcaoCodeStartingWithIgnoreCase(icaoCode);
-
-        return suggestions.stream()
-                .limit(MAX_SUGGESTIONS)
-                .collect(Collectors.toList());
-    }
-
-
-    public List<Airline> findAirlinesSuggestionsByCallSign(String callSign) {
-        if (StringUtils.isEmpty(callSign)) {
-            return Collections.emptyList();
-        }
-
-        List<Airline> suggestions = airlineRepository.findByCallSignStartingWithIgnoreCase(callSign);
-
-        return suggestions.stream()
-                .limit(MAX_SUGGESTIONS)
-                .collect(Collectors.toList());
-    }
-
-    public List<Airline> findAirlinesSuggestionsByCountry(String country) {
-        if (StringUtils.isEmpty(country)) {
-            return Collections.emptyList();
-        }
-
-        List<Airline> suggestions = airlineRepository.findByCountryStartingWithIgnoreCase(country);
-
-        return suggestions.stream()
-                .limit(MAX_SUGGESTIONS)
-                .collect(Collectors.toList());
+        return airlineRepository.findBySearchTerm(term);
     }
 
     public void clearAndImportAirlines(MultipartFile file) throws IOException {

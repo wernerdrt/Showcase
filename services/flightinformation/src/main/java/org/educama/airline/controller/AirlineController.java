@@ -56,25 +56,18 @@ public class AirlineController {
     }
 
     /**
-     * Retrieves a list of airlines which name, IATA, ICAO,City, Callsign, or country contains a given term.
+     * Retrieves a list of airlines which name, IATA Code or ICAO Code starts with the given term.
      *
-     * @param term the part of the the part of the name, IATA, ICAO, Callsign, or country code to be looked up.
+     * @param term the term to look up
      * @return the list of matching airlines.
      */
     @RequestMapping("/airlines/suggestions")
     public List<Airline> getAirlinesSuggestions(@RequestParam(value = "term") String term) {
-        Set<Airline> airlineSet = new HashSet<Airline>();
         if (StringUtils.isEmpty(term)) {
             return Collections.emptyList();
         }
-        airlineSet.addAll(airlineBusinessService.findAirlinesSuggestionsByName(term));
-        airlineSet.addAll(airlineBusinessService.findAirlinesSuggestionsByIataCode(term));
-        airlineSet.addAll(airlineBusinessService.findAirlinesSuggestionsByIcaoCode(term));
-        airlineSet.addAll(airlineBusinessService.findAirlinesSuggestionsByCallSign(term));
-        airlineSet.addAll(airlineBusinessService.findAirlinesSuggestionsByCountry(term));
 
-        return new ArrayList<Airline>(airlineSet);
-
+        return airlineBusinessService.findAirlineSuggestionsBySearchTerm(term);
     }
 
     /**

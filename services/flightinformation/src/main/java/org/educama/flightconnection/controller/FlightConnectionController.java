@@ -1,7 +1,7 @@
 package org.educama.flightconnection.controller;
 
-import org.educama.flightconnection.businessservice.ConnectionBusinessService;
-import org.educama.flightconnection.model.Connection;
+import org.educama.flightconnection.businessservice.FlightConnectionBusinessService;
+import org.educama.flightconnection.model.FlightConnection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,13 +14,13 @@ import java.io.IOException;
  * Rest controller of the airline resources.
  */
 @RestController
-public class ConnectionController {
+public class FlightConnectionController {
 
-    ConnectionBusinessService connectionBusinessService;
+    FlightConnectionBusinessService flightConnectionBusinessService;
 
     @Autowired
-    public ConnectionController(ConnectionBusinessService connectionBusinessService) {
-        this.connectionBusinessService = connectionBusinessService;
+    public FlightConnectionController(FlightConnectionBusinessService flightConnectionBusinessService) {
+        this.flightConnectionBusinessService = flightConnectionBusinessService;
     }
 
     /**
@@ -32,8 +32,8 @@ public class ConnectionController {
      * @return The available flight connections.
      */
     @RequestMapping(value = "/connections")
-    public Page<Connection> getAllConnectionFromSourceToDestination(@RequestParam(value = "from") String sourceAirportIata, @RequestParam(value = "to") String destinationAirportIata, Pageable pageable) {
-        return connectionBusinessService.findAllConnectionsFromSourceToDestionation(sourceAirportIata, destinationAirportIata, pageable);
+    public Page<FlightConnection> getAllConnectionFromSourceToDestination(@RequestParam(value = "from") String sourceAirportIata, @RequestParam(value = "to") String destinationAirportIata, Pageable pageable) {
+        return flightConnectionBusinessService.findAllConnectionsFromSourceToDestionation(sourceAirportIata, destinationAirportIata, pageable);
     }
 
 
@@ -46,6 +46,6 @@ public class ConnectionController {
     @RequestMapping(value = "/connections/import/csv", method = RequestMethod.POST)
     @ResponseBody
     public void importConnections(@RequestParam("file") MultipartFile file) throws IOException {
-        connectionBusinessService.clearAndImportConnections(file);
+        flightConnectionBusinessService.clearAndImportConnections(file);
     }
 }

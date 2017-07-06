@@ -1,6 +1,6 @@
 package org.educama.flightconnection.businessservice;
 
-import org.educama.flightconnection.repository.ConnectionRepository;
+import org.educama.flightconnection.repository.FlightConnectionRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -16,13 +16,13 @@ import static org.mockito.Mockito.verify;
  * Tests the connection business service.
  */
 @RunWith(MockitoJUnitRunner.class)
-public class ConnectionBusinessServiceUnitTest {
+public class FlightFlightConnectionBusinessServiceUnitTest {
     Pageable pageable;
     @Mock
-    ConnectionRepository connectionRepository;
+    FlightConnectionRepository flightConnectionRepository;
 
     @InjectMocks
-    ConnectionBusinessService cut;
+    FlightConnectionBusinessService cut;
 
     public void setUp() {
         final int page = 0;
@@ -56,7 +56,7 @@ public class ConnectionBusinessServiceUnitTest {
         //When
         cut.findFlightConnection(sourceAirport, destinationAirport, pageable);
         //Then
-        verify(connectionRepository).findBySourceAirportIataCodeAndDestinationAirportIataCode(sourceAirport.toUpperCase(), destinationAirport, pageable);
+        verify(flightConnectionRepository).findBySourceAirportIataCodeAndDestinationAirportIataCode(sourceAirport.toUpperCase(), destinationAirport, pageable);
     }
 
     @Test
@@ -66,7 +66,7 @@ public class ConnectionBusinessServiceUnitTest {
 
         cut.findAllConnectionsFromSourceToDestionation(source, null, pageable);
         //Then
-        verify(connectionRepository).findBySourceAirportIataCodeIgnoreCase(source.toUpperCase(), pageable);
+        verify(flightConnectionRepository).findBySourceAirportIataCodeIgnoreCase(source.toUpperCase(), pageable);
 
     }
 
@@ -77,7 +77,7 @@ public class ConnectionBusinessServiceUnitTest {
         //When
         cut.findAllConnectionsFromSourceToDestionation(null, destination, pageable);
         //Then
-        verify(connectionRepository).findBydestinationAirportIataCodeIgnoreCase(destination.toUpperCase(), pageable);
+        verify(flightConnectionRepository).findBydestinationAirportIataCodeIgnoreCase(destination.toUpperCase(), pageable);
     }
 
 
