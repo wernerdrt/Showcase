@@ -44,13 +44,13 @@ public class CompleteShipmentOrderTask {
                 .active()
                 .singleResult();
 
-        Assert.isNull(completeShipmentOrderCaseExecution);
+        Assert.notNull(completeShipmentOrderCaseExecution);
 
         Task task = processEngine.getTaskService().createTaskQuery()
                 .caseExecutionId(completeShipmentOrderCaseExecution.getId())
                 .singleResult();
 
-        Assert.isNull(task);
+        Assert.notNull(task);
 
         processEngine.getTaskService().complete(task.getId());
     }
