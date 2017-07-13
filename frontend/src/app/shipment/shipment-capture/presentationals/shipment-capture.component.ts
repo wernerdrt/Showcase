@@ -107,7 +107,7 @@ export class ShipmentCaptureComponent implements OnInit, DoCheck {
             this.senderStreetNo = this.shipment.sender.address.streetNo;
             this.senderCity = this.shipment.sender.address.city;
             this.senderZipCode = this.shipment.sender.address.zipCode;
-            this.receiverUUID = this.shipment.sender.uuid;
+            this.receiverUUID = this.shipment.receiver.uuid;
             this.receiverStreet = this.shipment.receiver.address.street;
             this.receiverStreetNo = this.shipment.receiver.address.streetNo;
             this.receiverCity = this.shipment.receiver.address.city;
