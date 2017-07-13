@@ -100,10 +100,10 @@ public class CustomerController {
     }
 
     /**
-     * Retrieves Customers in a pageable fashion.
+     * Retrieves a single customer.
      *
-     * @id pageable parameter for creating pages
-     * @return a collection of all customers
+     * @id identified (UUID) of the customer
+     * @return the found customer
      */
     @RequestMapping(value = "/{uuid}", method = RequestMethod.GET)
     public ResponseEntity<CustomerResource> findOneByUuid(@PathVariable("uuid") UUID uuid) {
