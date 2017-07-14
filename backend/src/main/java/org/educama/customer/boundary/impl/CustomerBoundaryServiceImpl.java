@@ -87,7 +87,7 @@ public class CustomerBoundaryServiceImpl implements CustomerBoundaryService {
     public Page<Customer> findSuggestionsForCustomer(String name, Pageable pageable) {
         notNull(name);
         notNull(pageable);
-        Page<Customer> page = customerRepository.findSuggestionByName(name, pageable);
+        Page<Customer> page = customerRepository.findByNameStartingWithIgnoreCase(name, pageable);
         return page;
     }
 
