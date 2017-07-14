@@ -2,9 +2,10 @@
 applications:
 - name: educama-backend
   path: ../backend/target/educama-backend-exec.jar
-  buildpack: https://github.com/cloudfoundry/java-buildpack.git#v3.10
+  buildpack: https://github.com/cloudfoundry/java-buildpack.git#v3.18
   memory: 768M
   disk_quota: 256M
+  timeout: 180
   env:
     SPRING_H2_CONSOLE_ENABLED: false
     FLYWAY_LOCATIONS: classpath:db/migration/common,classpath:db/migration/mysql
