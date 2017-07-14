@@ -15,7 +15,7 @@
             included in camunda-bpm-spring-boot-starter-webapp -->
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.4.2.RELEASE</version>
+        <version>1.5.3.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -23,7 +23,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
         <snippetsDirectory>${project.build.directory}/generated-snippets</snippetsDirectory>
-        <camunda-spring-boot.version>2.0.0</camunda-spring-boot.version>
+        <camunda-spring-boot.version>2.1.2</camunda-spring-boot.version>
         <camunda.version>7.6.0</camunda.version>
     </properties>
 
