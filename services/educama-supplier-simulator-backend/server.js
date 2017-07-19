@@ -99,6 +99,22 @@ router.get('/', function(req, res) {
 });
 
 // ----------------------------------------------------
+router.route('/bookings')
+    // Get all events(accessed at GET http://localhost:8080/api/bookings)
+    .get(function(req, res) {
+        Promise.props({
+            airlineBookingEvents: AirlineBooking.find().execAsync(),
+            haulierBookingEvents: HaulierBooking.find().execAsync()
+       
+         })
+        .then(function(results) {
+            res.json(results);
+         })
+        .catch(function(err) {
+            res.send(err);
+        });
+    });
+
 router.route('/flights')
 
     // Create an airline booking (accessed at POST http://localhost:8080/api/flights)
