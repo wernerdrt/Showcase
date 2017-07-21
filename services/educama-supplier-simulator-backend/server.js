@@ -49,6 +49,7 @@ mongoose.connect(mongoURL, mongoDbOptions, function(err, db) {
 // Models
 var AirlineBooking = require('./app/models/airlineBooking');
 var HaulierBooking = require('./app/models/haulierBooking');
+var message = require('./app/models/message');
 
 // App configuration
 app.use(cors());
@@ -64,7 +65,6 @@ app.set( 'views', __dirname + '/app/views');
 app.set( 'view engine', 'jade');
 
 app.get( '/', function ( req, res) {
-
     Promise.props({
     airlineBookingEvents: AirlineBooking.find().execAsync(),
     haulierBookingEvents: HaulierBooking.find().execAsync()
@@ -143,7 +143,7 @@ router.route('/flights')
                     // Create a channel
                     conn.createChannel(function(err, ch) {
                         var bookingResponseQueue = 'bookingResponseQueue';
-                        var msg = JSON.stringify(flight);
+                        var msg = JSON.stringify(message.getMessageFromAirlineBooking(flight));
 
                         // Declare a queue for us to send to; then we can publish a message to the queue
                         ch.assertQueue(bookingResponseQueue, {durable: false});
@@ -192,7 +192,7 @@ router.route('/flights/:flight_id')
                     // Create a channel
                     conn.createChannel(function(err, ch) {
                         var bookingResponseQueue = 'bookingResponseQueue';
-                        var msg = JSON.stringify(flight);
+                        var msg = JSON.stringify(message.getMessageFromAirlineBooking(flight));
 
                         // Declare a queue for us to send to; then we can publish a message to the queue
                         ch.assertQueue(bookingResponseQueue, {durable: false});
@@ -228,7 +228,7 @@ router.route('/flights/:flight_id')
                     // Create a channel
                     conn.createChannel(function(err, ch) {
                         var bookingResponseQueue = 'bookingResponseQueue';
-                        var msg = JSON.stringify(flight);
+                        var msg = JSON.stringify(message.getMessageFromAirlineBooking(flight));
 
                         // Declare a queue for us to send to; then we can publish a message to the queue
                         ch.assertQueue(bookingResponseQueue, {durable: false});
@@ -268,7 +268,7 @@ router.route('/flights/:flight_id/departed')
                     // Create a channel
                     conn.createChannel(function(err, ch) {
                         var bookingResponseQueue = 'bookingResponseQueue';
-                        var msg = JSON.stringify(flight);
+                        var msg = JSON.stringify(message.getMessageFromAirlineBooking(flight));
 
                         // Declare a queue for us to send to; then we can publish a message to the queue
                         ch.assertQueue(bookingResponseQueue, {durable: false});
@@ -307,7 +307,7 @@ router.route('/flights/:flight_id/arrived')
                     // Create a channel
                     conn.createChannel(function(err, ch) {
                         var bookingResponseQueue = 'bookingResponseQueue';
-                        var msg = JSON.stringify(flight);
+                        var msg = JSON.stringify(message.getMessageFromAirlineBooking(flight));
 
                         // Declare a queue for us to send to; then we can publish a message to the queue
                         ch.assertQueue(bookingResponseQueue, {durable: false});
@@ -347,7 +347,7 @@ router.route('/cargos')
                     // Create a channel
                     conn.createChannel(function(err, ch) {
                         var bookingResponseQueue = 'bookingResponseQueue';
-                        var msg = JSON.stringify(cargo);
+                        var msg = JSON.stringify(message.getMessageFromHaulierBooking(cargo));
 
                         // Declare a queue for us to send to; then we can publish a message to the queue
                         ch.assertQueue(bookingResponseQueue, {durable: false});
@@ -396,7 +396,7 @@ router.route('/cargos/:cargo_id')
                     // Create a channel
                     conn.createChannel(function(err, ch) {
                         var bookingResponseQueue = 'bookingResponseQueue';
-                        var msg = JSON.stringify(cargo);
+                        var msg = JSON.stringify(message.getMessageFromHaulierBooking(cargo));
 
                         // Declare a queue for us to send to; then we can publish a message to the queue
                         ch.assertQueue(bookingResponseQueue, {durable: false});
@@ -432,7 +432,7 @@ router.route('/cargos/:cargo_id')
                     // Create a channel
                     conn.createChannel(function(err, ch) {
                         var bookingResponseQueue = 'bookingResponseQueue';
-                        var msg = JSON.stringify(cargo);
+                        var msg = JSON.stringify(message.getMessageFromHaulierBooking(cargo));
 
                         // Declare a queue for us to send to; then we can publish a message to the queue
                         ch.assertQueue(bookingResponseQueue, {durable: false});
@@ -472,7 +472,7 @@ router.route('/cargos/:cargo_id/pickedup')
                     // Create a channel
                     conn.createChannel(function(err, ch) {
                         var bookingResponseQueue = 'bookingResponseQueue';
-                        var msg = JSON.stringify(cargo);
+                        var msg = JSON.stringify(message.getMessageFromHaulierBooking(cargo));
 
                         // Declare a queue for us to send to; then we can publish a message to the queue
                         ch.assertQueue(bookingResponseQueue, {durable: false});
@@ -511,7 +511,7 @@ router.route('/cargos/:cargo_id/delivered')
                     // Create a channel
                     conn.createChannel(function(err, ch) {
                         var bookingResponseQueue = 'bookingResponseQueue';
-                        var msg = JSON.stringify(cargo);
+                        var msg = JSON.stringify(message.getMessageFromHaulierBooking(cargo));
 
                         // Declare a queue for us to send to; then we can publish a message to the queue
                         ch.assertQueue(bookingResponseQueue, {durable: false});
