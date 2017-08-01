@@ -11,4 +11,4 @@ echo "Directory content after build:"
 ls -al
 
 ELAPSED_TIME=$(($SECONDS - $START_TIME))
-echo "Flightservice Build & test duration: $ELAPSED_TIME seconds"
+echo "API Gateway Build & test duration: $ELAPSED_TIME seconds"
