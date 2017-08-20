@@ -45,6 +45,10 @@ export class NavigationBarComponent {
                     {
                         label: this._translateService.instant("NAVIGATION-BAR-COMPONENT_MENU-ITEM_AIRPORTS-LIST"),
                         routerLink: ["/airports"]
+                    },
+                    {
+                      label: this._translateService.instant("NAVIGATION-BAR-COMPONENT_MENU-ITEM_AIRLINES-LIST"),
+                      routerLink: ["/airlines"]
                     }
                 ]
             }

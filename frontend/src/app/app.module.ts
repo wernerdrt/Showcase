@@ -22,7 +22,6 @@ import {NavigationModule} from "./navigation/navigation.module";
 import {ShipmentModule} from "./shipment/shipment.module";
 import {FlightsModule} from "./flights/flights.module";
 
-
 @NgModule({
     imports: [
         BrowserAnimationsModule,

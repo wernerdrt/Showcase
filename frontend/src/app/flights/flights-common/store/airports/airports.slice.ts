@@ -1,7 +1,7 @@
-import {AirportResource} from "../api/airports/airport.resource";
-import {SortOrder} from "../../../shared/enums/sort-order.enum";
+import {AirportResource} from "../../api/airports/airport.resource";
+import {SortOrder} from "../../../../shared/enums/sort-order.enum";
 
-export interface AirportListSlice {
+export interface AirportSlice {
     pageNumber: number;
     pageSize: number;
     totalPages: number;

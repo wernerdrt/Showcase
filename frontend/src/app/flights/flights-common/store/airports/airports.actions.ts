@@ -1,9 +1,9 @@
 import {Action} from "@ngrx/store";
-import {AirportListResource} from "../api/airports/airport-list.resource";
-import {SortOrder} from "../../../shared/enums/sort-order.enum";
+import {AirportListResource} from "../../api/airports/airport-list.resource";
+import {SortOrder} from "../../../../shared/enums/sort-order.enum";
 
 // Initialize Actions
-export const INITIALIZE_AIRPORT_LIST = "INITIALIZE_AIRPORT_LIST";
+export const INITIALIZE_AIRPORT_SLICE = "INITIALIZE_AIRPORT_SLICE";
 
 // Customer List Actions
 export const CHANGE_AIRPORTS_PAGE = "CHANGE_AIRPORTS_PAGE";
@@ -14,8 +14,8 @@ export const REQUEST_AIRPORTS = "REQUEST_AIRPORTS";
 export const REQUEST_AIRPORTS_SUCCESSFUL = "REQUEST_AIRPORTS_SUCCESSFUL";
 export const REQUEST_AIRPORTS_FAILED = "REQUEST_AIRPORTS_FAILED";
 
-export class InitializeAirportListAction implements Action {
-    type = INITIALIZE_AIRPORT_LIST;
+export class InitializeAirportSliceAction implements Action {
+    type = INITIALIZE_AIRPORT_SLICE;
 
     constructor() {
     }

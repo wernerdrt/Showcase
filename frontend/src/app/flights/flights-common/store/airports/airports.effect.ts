@@ -1,20 +1,20 @@
 import {Injectable} from "@angular/core";
 import {Actions, Effect} from "@ngrx/effects";
-import {AirportService} from "../api/airports/airport.service";
-import * as actions from "../store/airport-list-page.actions";
+import {AirportService} from "../../api/airports/airport.service";
+import * as actions from "./airports.actions";
 import {
     RequestAirportsAction,
     RequestAirportsFailedAction,
     RequestAirportsSuccessfulAction
-} from "../store/airport-list-page.actions";
+} from "./airports.actions";
 import {Store} from "@ngrx/store";
-import {State} from "../../../app.reducers";
+import {State} from "../../../../app.reducers";
 import {Observable} from "rxjs/Observable";
-import {AirportListSlice} from "../store/airport-list-page.slice";
+import {AirportSlice} from "./airports.slice";
 import "rxjs/Rx";
 
 @Injectable()
-export class AirportListEffect {
+export class AirportEffects {
 
     private readonly TRIGGER_REQUEST_AIRPORTS_ACTIONS: string[] = [
         actions.CHANGE_AIRPORTS_PAGE,
@@ -35,8 +35,8 @@ export class AirportListEffect {
 
     @Effect() loadAirports = this._actions
         .ofType(actions.REQUEST_AIRPORTS)
-        .withLatestFrom(this._store, (action, state) => state.airportListSlice)
-        .switchMap((airportListSlice: AirportListSlice) => {
+        .withLatestFrom(this._store, (action, state) => state.airportSlice)
+        .switchMap((airportListSlice: AirportSlice) => {
             return this._airportService.findAirports(
                 airportListSlice.pageNumber, airportListSlice.pageSize,
                 airportListSlice.sortBy, airportListSlice.sortOrder);

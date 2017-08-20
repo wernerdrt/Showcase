@@ -1,6 +1,27 @@
 <div class="airports-list-page">
     <h1>{{'AIRPORTS-LIST-COMPONENT_TITLE' | translate}}</h1>
-    <educama-airport-list></educama-airport-list>
+    <p-blockUI [blocked]="airportsLoading" [target]="airportlist"></p-blockUI>
+    <p-dataTable
+        #airportlist
+        id="airport-list-component_airport-table"
+        [emptyMessage]="emptyListMessage"
+        [lazy]="true"
+        [pageLinks]="3"
+        [paginator]="true"
+        [responsive] = true
+        [rows]="pageSize"
+        [rowsPerPageOptions]="[10, 20, 50]"
+        selectionMode="single"
+        [totalRecords]="totalPages*pageSize"
+        [value]="airportList"
+        (onLazyLoad)="loadAirportsLazy($event)">
+        <p-column field="name" header="{{'AIRPORT-RESOURCE_NAME' | translate}}" [sortable]="true"></p-column>
+        <p-column field="country" header="{{'AIRPORT-RESOURCE_COUNTRY' | translate}}" [sortable]="true"></p-column>
+        <p-column field="iataCode" header="{{'AIRPORT-RESOURCE_IATACODE' | translate}}" [sortable]="true"></p-column>
+        <p-column field="icaoCode" header="{{'AIRPORT-RESOURCE_ICAOCODE' | translate}}" [sortable]="true"></p-column>
+        <p-column field="longitude" header="{{'AIRPORT-RESOURCE_LONGITUDE' | translate}}" [sortable]="true"></p-column>
+        <p-column field="latitude" header="{{'AIRPORT-RESOURCE_LATITUDE' | translate}}" [sortable]="true"></p-column>
+    </p-dataTable>
     <div class="ui-g ui-fluid">
         <div class="ui-g-12 ui-md-9 ui-lg-10">
         </div>

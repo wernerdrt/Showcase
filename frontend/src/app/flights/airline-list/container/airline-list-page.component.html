@@ -1,0 +1,32 @@
+<div class="airports-list-page">
+  <h1>{{'AIRLINES-LIST-COMPONENT_TITLE' | translate}}</h1>
+  <p-blockUI [blocked]="airlineLoading" [target]="airlinelist"></p-blockUI>
+  <p-dataTable
+    #airlinelist
+    id="airport-list-component_airport-table"
+    [emptyMessage]="emptyListMessage"
+    [lazy]="true"
+    [pageLinks]="3"
+    [paginator]="true"
+    [responsive] = true
+    [rows]="pageSize"
+    [rowsPerPageOptions]="[10, 20, 50]"
+    selectionMode="single"
+    [totalRecords]="totalPages*pageSize"
+    [value]="airlineList"
+    (onLazyLoad)="loadAirlinesLazy($event)">
+    <p-column field="name" header="{{'AIRLINE-RESOURCE_NAME' | translate}}" [sortable]="true"></p-column>
+    <p-column field="alias" header="{{'AIRLINE-RESOURCE_ALIAS' | translate}}" [sortable]="true"></p-column>
+    <p-column field="iataCode" header="{{'AIRLINE-RESOURCE_IATA-CODE' | translate}}" [sortable]="true"></p-column>
+    <p-column field="icaoCode" header="{{'AIRLINE-RESOURCE_ICAO-CODE' | translate}}" [sortable]="true"></p-column>
+    <p-column field="callSign" header="{{'AIRLINE-RESOURCE_CALL-SIGN' | translate}}" [sortable]="true"></p-column>
+    <p-column field="country" header="{{'AIRLINE-RESOURCE_COUNTRY' | translate}}" [sortable]="true"></p-column>
+  </p-dataTable>
+  <div class="ui-g ui-fluid">
+    <div class="ui-g-12 ui-md-9 ui-lg-10">
+    </div>
+    <div class="ui-g-12 ui-md-3 ui-lg-2">
+      <button id="airports-list-page_refresh-button" pButton type="button" (click)="onButtonRefresh()" label="{{'GENERIC_REFRESH' | translate}}" icon="fa-repeat"></button>
+    </div>
+  </div>
+</div>

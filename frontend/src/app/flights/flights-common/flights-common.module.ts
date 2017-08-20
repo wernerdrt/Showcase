@@ -2,18 +2,20 @@ import {NgModule} from "@angular/core";
 import {SharedModule} from "../../shared/shared.module";
 import {EffectsModule} from "@ngrx/effects";
 import {AirportService} from "./api/airports/airport.service";
-import {AirportListEffect} from "./efffects/airport-list.effect";
-import {FLIGHTS_ROUTING} from "./routes/flights.routes";
+import {AirportEffects} from "./store/airports/airports.effect";
+import {AirlineEffects} from "./store/airlines/airlines.effects";
+import {AirlineService} from "./api/airlines/airline.service";
 
 @NgModule({
   imports: [
     EffectsModule.forFeature([
-      AirportListEffect
+      AirlineEffects,
+      AirportEffects
     ]),
-    FLIGHTS_ROUTING,
     SharedModule
   ],
   providers: [
+    AirlineService,
     AirportService
   ]
 })

@@ -1,13 +1,13 @@
 import {Action, ActionReducer} from "@ngrx/store";
-import * as actions from "./airport-list-page.actions";
-import {AIRPORT_LIST_SLICE_INITIAL_STATE} from "./airport-list-page.initial-state";
-import {AirportListSlice} from "./airport-list-page.slice";
+import * as actions from "./airports.actions";
+import {AIRPORT_SLICE_INITIAL_STATE} from "./airports.initial-state";
+import {AirportSlice} from "./airports.slice";
 
-export function airportListPageReducer(state: AirportListSlice = AIRPORT_LIST_SLICE_INITIAL_STATE, action: Action) {
+export function airportReducer(state: AirportSlice = AIRPORT_SLICE_INITIAL_STATE, action: Action) {
     switch (action.type) {
 
-        case actions.INITIALIZE_AIRPORT_LIST:
-            return AIRPORT_LIST_SLICE_INITIAL_STATE;
+        case actions.INITIALIZE_AIRPORT_SLICE:
+            return AIRPORT_SLICE_INITIAL_STATE;
 
         case actions.CHANGE_AIRPORTS_PAGE:
             const changeAirportsPageAction = action as actions.ChangeAirportsPageAction;
@@ -46,4 +46,4 @@ export function airportListPageReducer(state: AirportListSlice = AIRPORT_LIST_SL
     }
 }
 
-export const AIRPORT_LIST_PAGE_REDUCER: ActionReducer<AirportListSlice> = airportListPageReducer;
+export const AIRPORT_REDUCER: ActionReducer<AirportSlice> = airportReducer;
