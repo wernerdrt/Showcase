@@ -34,7 +34,6 @@ public class ShipmentTaskBoundaryServiceImpl implements ShipmentTaskBoundaryServ
     private TaskService taskService;
     @Autowired
     private CaseService caseService;
-
     @Autowired
     private HistoryService historyService;
 
@@ -76,7 +75,6 @@ public class ShipmentTaskBoundaryServiceImpl implements ShipmentTaskBoundaryServ
 
             CompletedTaskDS completedTask = new CompletedTaskDS(shipment.trackingId, task.getId(), task.getName(),
                     task.getDescription(), task.getAssignee(), task.getEndTime());
-            // getCreateTime, trackingId getDescription getAssignee, ,
             completedShipmentTasks.add(completedTask);
         }
         return completedShipmentTasks;

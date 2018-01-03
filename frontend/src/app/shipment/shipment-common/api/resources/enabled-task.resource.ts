@@ -1,5 +1,3 @@
-
-
 export class EnabledTaskResource {
     public trackingId: string;
     public type: string;

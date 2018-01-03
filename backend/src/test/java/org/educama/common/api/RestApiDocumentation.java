@@ -232,7 +232,6 @@ public class RestApiDocumentation {
                 fieldWithPath("totalPages").description("Number of pages"),
                 fieldWithPath("totalElements").description("Number of entries in response"),
                 fieldWithPath("customers[]").description("An array of customer objects")};
-
         }
 
     @Test

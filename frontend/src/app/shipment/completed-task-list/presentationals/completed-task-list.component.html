@@ -1,11 +1,9 @@
 <p-dataTable
-  id="task-list-component_task-table"
-  [value]="taskList"
+  id="task-list-component_completedTask-table"
+  [value]="completedTaskList"
   selectionMode="single"
-  [(selection)]="selectedTask"
-  (onRowSelect)="onRowSelect($event)"
->
-  <p-column field="createTime" header="{{'TASK-RESOURCE_DATE' | translate}}">
+  [(selection)]="selectedCompletedTask">
+  <p-column field="endTime" header="{{'TASK-RESOURCE_END-TIME' | translate}}">
     <ng-template let-col let-task="rowData" pTemplate="body">
             <span>
                 {{task[col.field] | educamaI18nDateFormat:"shortDate" }}

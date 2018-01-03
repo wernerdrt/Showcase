@@ -13,8 +13,7 @@ import {
     InputTextareaModule,
     MenubarModule,
     PanelModule,
-    TabViewModule,
-    FieldsetModule
+    TabViewModule
 } from "primeng/primeng";
 
 @NgModule({

@@ -3,8 +3,6 @@ package org.educama.shipment.boundary;
 import org.educama.shipment.api.datastructure.EnabledTaskDS;
 import org.educama.shipment.api.datastructure.ShipmentTaskDS;
 import org.educama.shipment.api.datastructure.CompletedTaskDS;
-
-
 import java.util.List;
 
 
@@ -34,10 +32,13 @@ public interface ShipmentTaskBoundaryService {
      */
      List <EnabledTaskDS> findAllEnabledTasksForShipment(String trackingId);
 
-     /*
-      * @return a collection of completed tasks for a Shipment
+     /**
+      * @return a collection of completed tasks for a Shipment.
       */
      List<CompletedTaskDS> findAllCompletedTasksForShipment(String trackingId);
 
+    /**
+     * manually start a enabled task in camunda.
+     */
      void manuallyStartEnabledTask(String trackingId, String name);
 }

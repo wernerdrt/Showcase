@@ -1,11 +1,10 @@
-import {Component, DoCheck, OnDestroy, OnInit} from "@angular/core";
+import {Component, OnDestroy, OnInit} from "@angular/core";
 import {Store} from "@ngrx/store";
 import {Observable, Subscription} from "rxjs";
 import {State} from "../../../app.reducers";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute} from "@angular/router";
 import {EnabledTaskListSlice} from "../../shipment-common/store/enbaled-tasks/enabled-task-list-page.slice";
 import {EnabledTaskListModel, EnabledTaskListRowModel} from "./enabled-task-list-page.model";
-import {TaskService} from "../../shipment-common/api/task.service";
 import {TaskResource} from "../../shipment-common/api/resources/task.resource";
 import {
   InitializeEnabledTaskListAction, RequestEnabledTasksForShipmentAction,
@@ -25,10 +24,8 @@ export class EnabledTaskListPageComponent implements OnInit, OnDestroy {
   // model for the page
   public enabledTaskListModel: EnabledTaskListModel = new EnabledTaskListModel();
 
-  constructor(private _router: Router,
-              private _store: Store<State>,
-              private _activatedRoute: ActivatedRoute,
-              private _taskService: TaskService) {
+  constructor(private _store: Store<State>,
+              private _activatedRoute: ActivatedRoute) {
 
     this.enabledTaskListSlice = this._store.select(state => state.enabledTaskListSlice);
 
@@ -39,8 +36,8 @@ export class EnabledTaskListPageComponent implements OnInit, OnDestroy {
   public ngOnInit() {
 
     this._activatedRoute.params.subscribe(params => {
-      this._store.dispatch(new RequestEnabledTasksForShipmentAction(params["id"]))
-      });
+      this._store.dispatch(new RequestEnabledTasksForShipmentAction(params["id"]));
+    });
   }
 
   public ngOnDestroy() {
@@ -54,7 +51,6 @@ export class EnabledTaskListPageComponent implements OnInit, OnDestroy {
 
   public onTaskSelectedEvent(taskResource: TaskResource) {
     this._store.dispatch(new StartEnabledTaskAction(taskResource.trackingId, taskResource.name));
-
   }
 
   // ***************************************************

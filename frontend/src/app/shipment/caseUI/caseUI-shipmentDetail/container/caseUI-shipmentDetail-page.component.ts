@@ -1,9 +1,8 @@
 import {Component, OnDestroy, OnInit} from "@angular/core";
-import {ShipmentResource} from "../../../shipment-common/api/resources/shipment.resource";
 import {ShipmentCaptureSlice} from "../../../shipment-common/store/shipments/shipment-capture-page.slice";
 import {Observable} from "rxjs/Observable";
 import {Subscription} from "rxjs/Subscription";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute} from "@angular/router";
 import {ShipmentService} from "../../../shipment-common/api/shipment.service";
 import {State} from "../../../../app.reducers";
 import {Store} from "@ngrx/store";
@@ -26,7 +25,6 @@ export class CaseUIShipmentDetailPageComponent implements OnInit, OnDestroy {
 
   constructor(private _activatedRoute: ActivatedRoute,
               private _shipmentService: ShipmentService,
-              private _router: Router,
               private _store: Store<State>) {
 
     this.shipmentDetailSlice = this._store.select(state => state.shipmentCaptureSlice);
@@ -66,7 +64,6 @@ export class CaseUIShipmentDetailPageComponent implements OnInit, OnDestroy {
       }
     );
     console.log(trackingId);
-
   }
 
   private updateShipmentCaptureModel(shipmentCaptureSlice: ShipmentCaptureSlice) {

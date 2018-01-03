@@ -17,5 +17,5 @@ import {FieldsetModule} from "primeng/primeng";
     CaseUIShipmentDetailPageComponent
   ]
 })
-export class  CaseUIShipmentDetailModule {
+export class CaseUIShipmentDetailModule {
 }

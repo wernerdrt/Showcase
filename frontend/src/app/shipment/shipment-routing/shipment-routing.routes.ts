@@ -3,7 +3,6 @@ import {ShipmentListPageComponent} from "../shipment-list/container/shipment-lis
 import {TaskListPageComponent} from "../task-list/container/task-list-page.component";
 import {ShipmentCapturePageComponent} from "../shipment-capture/container/shipment-capture-page.component";
 import {CaseUiComponent} from "../caseUI/caseUi.component";
-import {EnabledTaskListComponent} from "../enabled-task-list/presentationals/enabled-task-list.component";
 import {EnabledTaskListPageComponent} from "../enabled-task-list/container/enabled-task-list-page.component";
 
 /*
@@ -31,7 +30,7 @@ export const SHIPMENT_ROUTES: Routes = [
         component: CaseUiComponent
     },
     {
-      path: "tasks/enabled",
-      component: EnabledTaskListPageComponent
+        path: "tasks/enabled",
+        component: EnabledTaskListPageComponent
     },
 ];
