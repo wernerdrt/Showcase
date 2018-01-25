@@ -18,11 +18,13 @@ export class EnabledTaskListEffect {
   @Effect()
   requestEnabledTasksForShipment = this._actions
     .ofType(actions.REQUEST_ENABLED_TASKS_FOR_SHIPMENT)
-    .map((action: actions.RequestEnabledTasksForShipmentAction) => this.lastId = action.trackingId)
-    .switchMap((payload) => {
-      return this._taskService.findEnabledTasksToShipment(payload);
+    .switchMap((action: actions.RequestEnabledTasksForShipmentAction) => {
+      return this._taskService.findEnabledTasksToShipment(action.trackingId);
     })
-    .map(enabledTaskListSlice => new RequestEnabledTasksSuccessfulAction(enabledTaskListSlice));
+    .map((enabledTaskListSlice) =>
+      new RequestEnabledTasksSuccessfulAction(enabledTaskListSlice)
+    );
+
 
   @Effect()
   startEnabledTask = this._actions
@@ -35,6 +37,7 @@ export class EnabledTaskListEffect {
       this._taskService.manuallyStartEnabledTask(payload.trackingId, payload.taskName)
     )
     .map((payload) => new StartEnabledTasksSuccessfulAction(payload));
+
 
   @Effect()
   getNewActioveTasks = this._actions

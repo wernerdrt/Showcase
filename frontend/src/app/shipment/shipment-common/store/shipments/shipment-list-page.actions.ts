@@ -12,12 +12,13 @@ export const LOAD_SINGLE_SHIPMENT = "LOAD_SINGLE_SHIPMENT";
 export const REQUEST_SHIPMENTS = "REQUEST_SHIPMENTS";
 export const REQUEST_SHIPMENTS_SUCCESSFUL = "REQUEST_SHIPMENTS_SUCCESSFUL";
 export const REQUEST_SHIPMENTS_FAILED = "REQUEST_SHIPMENTS_FAILED";
+export const REQUEST_SINGLE_SHIPMENT = "REQUEST_SINGLE_SHIPMENT";
 
 export class LoadSingleShipmentAction implements Action {
-    type = LOAD_SINGLE_SHIPMENT;
+  type = LOAD_SINGLE_SHIPMENT;
 
-    constructor(public payload: ShipmentResource) {
-    }
+  constructor(public payload: ShipmentResource) {
+  }
 }
 
 export class InitializeShipmentListAction implements Action {
@@ -45,5 +46,14 @@ export class RequestShipmentsFailedAction implements Action {
   type = REQUEST_SHIPMENTS_FAILED;
 
   constructor() {
+  }
+}
+
+
+export class RequestSingleShipment implements Action {
+  type = REQUEST_SINGLE_SHIPMENT;
+
+  constructor(public payload: string) {
+
   }
 }

@@ -17,17 +17,21 @@ export const SHIPMENT_ROUTES: Routes = [
         path: "shipments/capture",
         component: ShipmentCapturePageComponent
     },
+  {
+    path: "shipments/edit/:id",
+    component: ShipmentCapturePageComponent
+  },
     {
         path: "tasks/active",
         component: TaskListPageComponent
     },
     {
-        path: "shipments/edit/:id",
-        component: ShipmentCapturePageComponent
-    },
-    {
         path: "caseui/:id",
-        component: CaseUiComponent
+        component: CaseUiComponent,
+            children: [
+              { path: "changeShipment", component: ShipmentCapturePageComponent },
+              { path: "completeShipment", component: ShipmentCapturePageComponent }
+            ]
     },
     {
         path: "tasks/enabled",

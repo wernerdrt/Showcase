@@ -15,9 +15,9 @@ export class CaseUITaskListComponent {
     public selectedTask: TaskResource = new TaskResource();
 
     @Output()
-    public taskSelectedEvent: EventEmitter<string> = new EventEmitter();
+    public taskSelectedEvent: EventEmitter<TaskResource> = new EventEmitter();
 
     public onRowSelect(event: Event) {
-        this.taskSelectedEvent.emit(this.selectedTask.trackingId);
+        this.taskSelectedEvent.emit(this.selectedTask);
     }
 }

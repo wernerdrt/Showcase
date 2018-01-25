@@ -10,81 +10,94 @@ import {
   InitializeTaskListAction,
   RequestTasksAction, RequestTasksForShipmentAction
 } from "../../shipment-common/store/tasks/task-list-page.actions";
+import {TaskResource} from "../../shipment-common/api/resources/task.resource";
 
 @Component({
-    selector: "educama-task-list-page",
-    templateUrl: `./task-list-page.component.html`
+  selector: "educama-task-list-page",
+  templateUrl: `./task-list-page.component.html`
 })
 export class TaskListPageComponent implements OnInit, OnDestroy {
 
   // relevant slice of store and subscription for this slice
-    public taskListSlice: Observable<TaskListSlice>;
-    public taskListSliceSubscription: Subscription;
-    public isCaseUi: boolean;
+  public taskListSlice: Observable<TaskListSlice>;
+  public taskListSliceSubscription: Subscription;
+  public isCaseUi: boolean;
 
-    // model for the page
-    public taskListModel: TaskListModel = new TaskListModel();
+  // model for the page
+  public taskListModel: TaskListModel = new TaskListModel();
 
-    constructor(private _router: Router,
-                private _store: Store<State>,
-                private  _activatedRoute: ActivatedRoute) {
+  constructor(private _router: Router,
+              private _store: Store<State>,
+              private  _activatedRoute: ActivatedRoute) {
 
-      this.taskListSlice = this._store.select(state => state.taskListSlice);
-      this.taskListSliceSubscription = this.taskListSlice
-        .subscribe(taskListSlice => this.updateTaskListModel(taskListSlice));
+    this.taskListSlice = this._store.select(state => state.taskListSlice);
+    this.taskListSliceSubscription = this.taskListSlice
+      .subscribe(taskListSlice => this.updateTaskListModel(taskListSlice));
+  }
+
+  public ngOnInit() {
+    if (this._router.url.includes("caseui")) {
+      this._activatedRoute.params.subscribe(params => {
+          this._store.dispatch(new RequestTasksForShipmentAction(params["id"]));
+        }
+      );
+      this.isCaseUi = true;
+    } else {
+      this._store.dispatch(new RequestTasksAction());
+      this.isCaseUi = false;
     }
+  }
 
-    public ngOnInit() {
-      if (this._router.url.includes("caseui")) {
-        this._activatedRoute.params.subscribe(params => {
-            this._store.dispatch(new RequestTasksForShipmentAction(params["id"]));
-          }
-        );
-        this.isCaseUi = true;
-      } else {
-        this._store.dispatch(new RequestTasksAction());
-        this.isCaseUi = false;
-      }
+  public ngOnDestroy() {
+    this._store.dispatch(new InitializeTaskListAction());
+    this.taskListSliceSubscription.unsubscribe();
+  }
+
+  // ***************************************************
+  // Event Handler
+  // ***************************************************
+
+  public onTaskSelectedEvent(task: TaskResource) {
+    switch (task.name) {
+      case "Change shipment order":
+        this._router.navigate(["caseui/" + task.trackingId + "/changeShipment"]);
+        break;
+      case "Complete shipment order":
+        this._router.navigate(["caseui/" + task.trackingId + "/completeShipment"]);
+        break;
+      case "Create invoice":
+        this._router.navigate(["caseui/" + task.trackingId]);
+        break;
+      default:
+        break;
     }
+  }
 
-    public ngOnDestroy() {
-      this._store.dispatch(new InitializeTaskListAction());
-      this.taskListSliceSubscription.unsubscribe();
-    }
+  // ***************************************************
+  // Data Retrieval
+  // ***************************************************
 
-    // ***************************************************
-    // Event Handler
-    // ***************************************************
+  private updateTaskListModel(taskListSlice: TaskListSlice) {
+    this.taskListModel.taskList =
+      taskListSlice.taskList.map(
+        taskResource => new TaskListRowModel(
+          taskResource.createTime,
+          taskResource.trackingId,
+          taskResource.taskId,
+          taskResource.name,
+          taskResource.description,
+          taskResource.assignee,
+          this.formatAddress(taskResource.sender.address),
+          this.formatAddress(taskResource.receiver.address))
+      );
+  }
 
-    public onTaskSelectedEvent(trackingId: string) {
-      this._router.navigate(["/shipments/edit/" + trackingId]);
-    }
-
-    // ***************************************************
-    // Data Retrieval
-    // ***************************************************
-
-    private updateTaskListModel(taskListSlice: TaskListSlice) {
-      this.taskListModel.taskList =
-        taskListSlice.taskList.map(
-          taskResource => new TaskListRowModel(
-            taskResource.createTime,
-            taskResource.trackingId,
-            taskResource.taskId,
-            taskResource.name,
-            taskResource.description,
-            taskResource.assignee,
-            this.formatAddress(taskResource.sender.address),
-            this.formatAddress(taskResource.receiver.address))
-        );
-    }
-
-    private formatAddress(address: Address): string {
-      let formatedAddress = "";
-      formatedAddress += address.street + " ";
-      formatedAddress += address.streetNo + ", ";
-      formatedAddress += address.zipCode + " ";
-      formatedAddress += address.city;
-      return formatedAddress;
-    }
+  private formatAddress(address: Address): string {
+    let formatedAddress = "";
+    formatedAddress += address.street + " ";
+    formatedAddress += address.streetNo + ", ";
+    formatedAddress += address.zipCode + " ";
+    formatedAddress += address.city;
+    return formatedAddress;
+  }
 }

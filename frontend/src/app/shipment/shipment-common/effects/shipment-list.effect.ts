@@ -7,6 +7,7 @@ import * as actions from "../store/shipments/shipment-list-page.actions";
 import {ShipmentListSlice} from "../store/shipments/shipment-list-page.slice";
 import {RequestShipmentsFailedAction, RequestShipmentsSuccessfulAction} from "../store/shipments/shipment-list-page.actions";
 import {Observable} from "rxjs/Observable";
+import {LoadShipmentSuccessfullAction} from "../store/shipments/shipment-capture-page.actions";
 
 @Injectable()
 export class ShipmentListEffect {
@@ -24,5 +25,15 @@ export class ShipmentListEffect {
         })
         .map(shipmentListResource => new RequestShipmentsSuccessfulAction(shipmentListResource))
         .catch(() => Observable.of(new RequestShipmentsFailedAction()));
+
+    @Effect() loadUniqueShipment = this._actions
+      .ofType(actions.REQUEST_SINGLE_SHIPMENT)
+      .map((action: actions.RequestSingleShipment) => action.payload)
+      .switchMap((trackingId: string) => {
+        return this._shipmentService.findShipmentbyId(trackingId);
+      })
+      .map(shipmentListResource =>
+        new LoadShipmentSuccessfullAction(shipmentListResource)
+      );
 
 }

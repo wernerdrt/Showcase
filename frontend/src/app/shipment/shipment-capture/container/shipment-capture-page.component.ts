@@ -7,109 +7,106 @@ import {ShipmentResource} from "../../shipment-common/api/resources/shipment.res
 import {Subscription, Observable} from "rxjs";
 import {ShipmentService} from "../../shipment-common/api/shipment.service";
 import {ShipmentCapturePageModel} from "./shipment-capture-page.model";
-import * as actions from "../../shipment-common/store/shipments/shipment-capture-page.actions";
 import * as _ from "lodash";
 import {ShipmentCaptureSlice} from "../../shipment-common/store/shipments/shipment-capture-page.slice";
+import {RequestEnabledTasksForShipmentAction} from "../../shipment-common/store/enbaled-tasks/enabled-task-list-page.actions";
+import {RequestTasksForShipmentAction} from "../../shipment-common/store/tasks/task-list-page.actions";
+import {RequestCompletedTaskForShipmentAction} from "../../shipment-common/store/completed-tasks/completed-task-list-page.actions";
+import {ResetShipmentCaptureSliceAction} from "../../shipment-common/store/shipments/shipment-capture-page.actions";
+import {RequestSingleShipment} from "../../shipment-common/store/shipments/shipment-list-page.actions";
 
 @Component({
-    selector: "educama-shipment-capture-page",
-    templateUrl: "./shipment-capture-page.component.html",
+  selector: "educama-shipment-capture-page",
+  templateUrl: "./shipment-capture-page.component.html",
 })
 export class ShipmentCapturePageComponent implements OnInit, OnDestroy {
 
-    // relevant slice of store and subscription for this slice
-    public shipmentCaptureSlice: Observable<ShipmentCaptureSlice>;
-    public shipmentCaptureSliceSubscription: Subscription;
+  // relevant slice of store and subscription for this slice
+  public shipmentCaptureSlice: Observable<ShipmentCaptureSlice>;
+  public shipmentCaptureSliceSubscription: Subscription;
 
-    // model for the page
-    public shipmentCaptureModel: ShipmentCapturePageModel = new ShipmentCapturePageModel();
+  // model for the page
+  public shipmentCaptureModel: ShipmentCapturePageModel = new ShipmentCapturePageModel();
 
-    constructor(private _activatedRoute: ActivatedRoute,
-                private _shipmentService: ShipmentService,
-                private _router: Router,
-                private _store: Store<State>) {
+  constructor(private _activatedRoute: ActivatedRoute,
+              private _shipmentService: ShipmentService,
+              private _router: Router,
+              private _store: Store<State>) {
 
-        this.shipmentCaptureSlice = this._store.select(state => state.shipmentCaptureSlice);
+    this.shipmentCaptureSlice = this._store.select(state => state.shipmentCaptureSlice);
 
-        this.shipmentCaptureSliceSubscription = this.shipmentCaptureSlice.subscribe(
-            shipmentCaptureSlice => this.updateShipmentCaptureModel(shipmentCaptureSlice)
-        );
-    }
+    this.shipmentCaptureSliceSubscription = this.shipmentCaptureSlice.subscribe(
+      shipmentCaptureSlice => this.updateShipmentCaptureModel(shipmentCaptureSlice)
+    );
+  }
 
-    public ngOnInit() {
-        this._activatedRoute.params.subscribe(params => {
-            if (params["id"] && params["id"] !== "capture") {
-                this.loadShipment(params["id"]);
-            }
-            console.log(params["id"]);
+  public ngOnInit() {
+    this._activatedRoute.parent.params.subscribe(params => {
+      if (this._router.url.includes("caseui")) {
+        this._store.dispatch(new RequestSingleShipment(params["id"]));
+      }
+      console.log(params["id"]);
+    });
+  }
+
+  public ngOnDestroy() {
+    this._store.dispatch(new ResetShipmentCaptureSliceAction(""));
+    this.shipmentCaptureSliceSubscription.unsubscribe();
+  }
+
+  // ***************************************************
+  // Event Handler
+  // ***************************************************
+
+  /*
+   * Handles the save event for a shipment
+   */
+  public onSaveShipmentEvent(saveShipmentEvent: SaveShipmentEvent) {
+    if (_.isUndefined(this.shipmentCaptureModel.shipment)) {
+      this._shipmentService.createShipment(this.mapShipmentFromSaveShipmentEvent(saveShipmentEvent))
+        .subscribe(shipment => {
+          this._router.navigate(["/shipments"]);
         });
+    } else {
+      this._activatedRoute.parent.params.subscribe(params => {
+        saveShipmentEvent.trackingId = params["id"];
+        this._shipmentService.updateShipment(params["id"], this.mapShipmentFromSaveShipmentEvent(saveShipmentEvent))
+          .subscribe(shipment => {
+            const trackingId = shipment.trackingId;
+            this._store.dispatch(new RequestEnabledTasksForShipmentAction(trackingId));
+            this._store.dispatch(new RequestTasksForShipmentAction(trackingId));
+            this._store.dispatch(new RequestCompletedTaskForShipmentAction(trackingId));
+            this._store.dispatch(new RequestSingleShipment(trackingId));
+            this._router.navigate(["/caseui/" + trackingId]);
+          });
+      });
     }
+  }
 
-    public ngOnDestroy() {
-        this._store.dispatch(new actions.ResetShipmentCaptureSliceAction(""));
-        this.shipmentCaptureSliceSubscription.unsubscribe();
-    }
+  /*
+   * Handles the cancellation of a new shipment creation
+   */
+  public onSaveShipmentCancellationEvent(saveShipmentEvent: SaveShipmentEvent) {
+    this._router.navigate(["/shipments"]);
+  }
 
-    // ***************************************************
-    // Event Handler
-    // ***************************************************
+  // ***************************************************
+  // Data Retrieval
+  // ***************************************************
 
-    /*
-     * Handles the save event for a shipment
-     */
-    public onSaveShipmentEvent(saveShipmentEvent: SaveShipmentEvent) {
-        if (_.isUndefined(this.shipmentCaptureModel.shipment)) {
-            this._shipmentService.createShipment(this.mapShipmentFromSaveShipmentEvent(saveShipmentEvent))
-                .subscribe(shipment => {
-                    this._router.navigate(["/shipments"]);
-                });
-        } else {
-            this._activatedRoute.params.subscribe(params => {
+  private updateShipmentCaptureModel(shipmentCaptureSlice: ShipmentCaptureSlice) {
+    this.shipmentCaptureModel.shipment = shipmentCaptureSlice.shipment;
+  }
 
-                saveShipmentEvent.trackingId = params["id"];
-                this._shipmentService.updateShipment(saveShipmentEvent.trackingId, this.mapShipmentFromSaveShipmentEvent(saveShipmentEvent))
-                    .subscribe(shipment => {
-                        this._router.navigate(["/shipments"]);
-                    });
-
-            });
-        }
-    }
-
-    /*
-     * Handles the cancellation of a new shipment creation
-     */
-    public onSaveShipmentCancellationEvent(saveShipmentEvent: SaveShipmentEvent) {
-        this._router.navigate(["/shipments"]);
-    }
-
-    // ***************************************************
-    // Data Retrieval
-    // ***************************************************
-
-    private loadShipment(trackingId: string) {
-        this._shipmentService.findShipmentbyId(trackingId).subscribe(
-            shipment => {
-                this._store.dispatch(new actions.LoadShipmentAction(shipment));
-            }
-        );
-        console.log(trackingId);
-
-    }
-
-    private updateShipmentCaptureModel(shipmentCaptureSlice: ShipmentCaptureSlice) {
-        this.shipmentCaptureModel.shipment = shipmentCaptureSlice.shipment;
-    }
-
-    private mapShipmentFromSaveShipmentEvent(saveShipmentEvent: SaveShipmentEvent): ShipmentResource {
-        const shipment = new ShipmentResource();
-        shipment.uuidSender = saveShipmentEvent.uuidSender;
-        shipment.uuidReceiver = saveShipmentEvent.uuidReceiver;
-        shipment.customerTypeEnum = saveShipmentEvent.customerTypeEnum;
-        shipment.shipmentCargo = saveShipmentEvent.shipmentCargo;
-        shipment.shipmentServices = saveShipmentEvent.shipmentServices;
-        shipment.trackingId = saveShipmentEvent.trackingId;
-        return shipment;
-    }
+  private mapShipmentFromSaveShipmentEvent(saveShipmentEvent: SaveShipmentEvent): ShipmentResource {
+    const shipment = new ShipmentResource();
+    shipment.uuidSender = saveShipmentEvent.uuidSender;
+    shipment.uuidReceiver = saveShipmentEvent.uuidReceiver;
+    shipment.customerTypeEnum = saveShipmentEvent.customerTypeEnum;
+    shipment.shipmentCargo = saveShipmentEvent.shipmentCargo;
+    shipment.shipmentServices = saveShipmentEvent.shipmentServices;
+    shipment.trackingId = saveShipmentEvent.trackingId;
+    return shipment;
+  }
 
 }
