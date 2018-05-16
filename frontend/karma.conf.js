@@ -4,8 +4,9 @@
 module.exports = function (config) {
   config.set({
     basePath: '',
-    frameworks: ['jasmine', '@angular/cli'],
+    frameworks: ['jasmine', '@angular/cli','pact'],
     plugins: [
+      require('@pact-foundation/karma-pact'),
       require('karma-jasmine'),
       require('karma-chrome-launcher'),
       require('karma-jasmine-html-reporter'),
@@ -21,6 +22,20 @@ module.exports = function (config) {
     },
     angularCli: {
       environment: 'dev'
+    },
+    pact: [{
+      cors: true,
+      port: 1234,
+      consumer: 'ui',
+      provider: 'shipmentService',
+      dir: 'C:/Users/Dani/Educama/Showcase/frontend/test/pacts',
+      spec: 2
+    }],
+    files: [
+
+    ],
+    proxies: {
+      '/shipments': 'http://localhost:1234/shipments/'
     },
     reporters: ['progress', 'kjhtml'],
     port: 9876,
