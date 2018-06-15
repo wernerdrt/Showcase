@@ -27,7 +27,7 @@ public class DemoCustomerLifecycleBean implements SmartLifecycle {
 
     @Override
     public boolean isAutoStartup() {
-        return true;
+        return false;
     }
 
     @Override

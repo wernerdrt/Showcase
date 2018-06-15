@@ -1,54 +1,61 @@
+import {Action, Store} from "@ngrx/store";
 import {TestBed} from "@angular/core/testing";
-import {HttpClientModule} from "@angular/common/http";
-import {PactWeb, Matchers} from "@pact-foundation/pact-web";
-import {CustomerService} from "../../src/app/customer/customer-common/api/customer.service";
-import {CustomerResource} from "../../src/app/customer/customer-common/api/resources/customer.resource";
-import {Address} from "../../src/app/customer/customer-common/api/datastructures/address.datastructure";
+import {ShipmentService} from "../../../shipment/shipment-common/api/shipment.service";
+import {RestClientService} from "../../../shared/http/services/rest-client.service";
+import {HttpHelper} from "../../../shared/http/helper/http.helper";
+import {HttpModule} from "@angular/http";
+import {Address} from "./datastructures/address.datastructure";
+import {CustomerResource} from "./resources/customer.resource";
+import {Matchers} from "@pact-foundation/pact-web/pact";
+import {CustomerService} from "./customer.service";
 
-  describe("CustomerService", () => {
 
-    let provider;
+declare function require(name: string);
 
-    beforeAll(function (done) {
-      provider = new PactWeb({
-        consumer: "ui",
-        provider: "CustomerService",
-        port: 1234,
-        host: "127.0.0.1",
-      });
+const Pact = require("pact-web");
 
-      // required for slower CI environments
-      setTimeout(done, 2000);
+class HttpHelperStub{
+  getRestApiBaseUrl(): string{
+    return "http://localhost:1234/";
+  }
+}
 
-      // Required if run with `singleRun: false`
-       provider.removeInteractions();
-    });
+class StoreStub{
+  dispatch<V extends Action = Action> (action: V){
 
-    afterAll(function (done) {
-      provider.finalize()
-        .then(function () {
-          done();
-        }, function (err) {
-          done.fail(err);
-        });
-    });
+  }
 
-    beforeEach(() => {
-      TestBed.configureTestingModule({
-        imports: [
-          HttpClientModule
-        ],
-        providers: [
-          CustomerService
-        ],
-      });
-    });
+}
+describe("ShipmentService", () => {
 
-    afterEach((done) => {
-      provider.verify().then(done, e => done.fail(e));
-    });
 
     describe("createCustomer()", () => {
+      const provider = null;
+
+      afterEach((done) => {
+        provider.removeInteractions();
+        provider.verify().then(done, e => done.fail(e));
+
+      });
+
+      afterAll(function(done){
+        provider.finalize()
+          .then(function () { done(); }, function(err){ done.fail(err); });
+      });
+
+
+      beforeEach(function(){
+        TestBed.configureTestingModule({
+          providers: [
+            ShipmentService,
+            RestClientService,
+            {provide: HttpHelper, useClass: HttpHelperStub},
+            {provide: Store, useClass: StoreStub}
+          ],
+          imports: [HttpModule]
+        });
+
+      });
       const address: Address = {
         street: "str",
         streetNo: "1",
@@ -81,7 +88,7 @@ import {Address} from "../../src/app/customer/customer-common/api/datastructures
           uponReceiving: "a request to POST a new Customer",
           withRequest: {
             method: "POST",
-            path: "/educama/v1/customers",
+            path: "/customers",
             body: expectedCustomer,
             headers: {
               "Content-Type": "application/json"

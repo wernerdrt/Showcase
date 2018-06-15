@@ -25,7 +25,7 @@ class StoreStub {
   }
 
 }
-describe("ShipmentService", () => {
+describe("ShipmentService2", () => {
 
   let provider;
 
@@ -125,13 +125,13 @@ describe("ShipmentService", () => {
       "    \"customerTypeEnum\": \"RECEIVER\"\n" +
       "}");
     beforeAll(function(done) {
-      provider = Pact({ consumer: "ui", provider: "shipmentservice", web: true});
+      provider = Pact({ consumer: "ui2", provider: "shipmentservice", web: true});
       provider.addInteraction({
-        state: "provider accepts a new shipment",
+      //  state: "provider accepts a new shipment",
         uponReceiving: "a request to create a shipment",
         withRequest: {
           method: "POST",
-          path: "/educama/v1/shipments",
+          path: "/shipments",
           body: {
             "uuidSender" : "3c808e57-2751-4f1c-8f1c-80772bf540a2",
             "uuidReceiver" : "b2443a43-b107-4ea0-91ed-1ccc9369fb59",
@@ -217,119 +217,6 @@ describe("ShipmentService", () => {
       inject([ShipmentService], (service: ShipmentService) => {
 
         service.createShipment(postShipment)
-          .subscribe(response => {
-            expect(response).toEqual(expectedShipment);
-            done();
-          }, err => done.fail(err), () => {
-          });
-      })();
-    });
-  });
-
-  describe("getShipmentById()", () => {
-    const expectedShipment: ShipmentResource = JSON.parse("{\n" +
-      "    \"trackingId\": \"2dad095a-5f33-4a7e-b068-7c22204994d3\",\n" +
-      "    \"sender\": {\n" +
-      "        \"name\": \"Daimler AG (Standort Möhringen)\",\n" +
-      "        \"uuid\": \"3c808e57-2751-4f1c-8f1c-80772bf540a2\",\n" +
-      "        \"address\": {\n" +
-      "            \"street\": \"Epplestraße\",\n" +
-      "            \"streetNo\": \"225\",\n" +
-      "            \"zipCode\": \"70567\",\n" +
-      "            \"city\": \"Stuttgart\"\n" +
-      "        }\n" +
-      "    },\n" +
-      "    \"receiver\": {\n" +
-      "        \"name\": \"Continental AG\",\n" +
-      "        \"uuid\": \"b2443a43-b107-4ea0-91ed-1ccc9369fb59\",\n" +
-      "        \"address\": {\n" +
-      "            \"street\": \"Vahrenwalder Str.\",\n" +
-      "            \"streetNo\": \"9\",\n" +
-      "            \"zipCode\": \"30165\",\n" +
-      "            \"city\": \"Hannover\"\n" +
-      "        }\n" +
-      "    },\n" +
-      "    \"shipmentCargo\": {\n" +
-      "        \"numberPackages\": 5,\n" +
-      "        \"totalWeight\": 40,\n" +
-      "        \"totalCapacity\": 32.5,\n" +
-      "        \"cargoDescription\": \"this cargo includes pens and other writing articles\",\n" +
-      "        \"dangerousGoods\": null\n" +
-      "    },\n" +
-      "    \"shipmentServices\": {\n" +
-      "        \"preCarriage\": true,\n" +
-      "        \"exportInsurance\": false,\n" +
-      "        \"exportCustomsClearance\": true,\n" +
-      "        \"flight\": true,\n" +
-      "        \"importInsurance\": true,\n" +
-      "        \"importCustomsClearance\": false,\n" +
-      "        \"onCarriage\": true\n" +
-      "    },\n" +
-      "    \"customerTypeEnum\": \"RECEIVER\"\n" +
-      "}");
-    beforeAll(function(done) {
-      provider = Pact({ consumer: "ui", provider: "shipmentservice", web: true});
-      provider.addInteraction({
-        state: "provider returns a shipment",
-        uponReceiving: "a request for a shipment with id 2dad095a-5f33-4a7e-b068-7c22204994d3",
-        withRequest: {
-          method: "GET",
-          path: "/educama/v1/shipments/2dad095a-5f33-4a7e-b068-7c22204994d3",
-        },
-        willRespondWith: {
-          status: 200,
-          headers: {"Content-Type": "application/json"},
-          body: Matchers.somethingLike({
-            "trackingId": "2dad095a-5f33-4a7e-b068-7c22204994d3",
-            "sender": {
-              "name": "Daimler AG (Standort Möhringen)",
-              "uuid": "3c808e57-2751-4f1c-8f1c-80772bf540a2",
-              "address": {
-                "street": "Epplestraße",
-                "streetNo": "225",
-                "zipCode": "70567",
-                "city": "Stuttgart"
-              }
-            },
-            "receiver": {
-              "name": "Continental AG",
-              "uuid": "b2443a43-b107-4ea0-91ed-1ccc9369fb59",
-              "address": {
-                "street": "Vahrenwalder Str.",
-                "streetNo": "9",
-                "zipCode": "30165",
-                "city": "Hannover"
-              }
-            },
-            "shipmentCargo": {
-              "numberPackages": 5,
-              "totalWeight": 40,
-              "totalCapacity": 32.5,
-              "cargoDescription": "this cargo includes pens and other writing articles",
-              "dangerousGoods": null
-            },
-            "shipmentServices": {
-              "preCarriage": true,
-              "exportInsurance": false,
-              "exportCustomsClearance": true,
-              "flight": true,
-              "importInsurance": true,
-              "importCustomsClearance": false,
-              "onCarriage": true
-            },
-            "customerTypeEnum": "RECEIVER"
-          }),
-        }
-      })
-        .then(function () {
-          done();
-        }, function(err){ done.fail(err); });
-    });
-
-    it("should give a shipment", function(done){
-      inject([ShipmentService], (service: ShipmentService) => {
-
-        service.findShipmentbyId("2dad095a-5f33-4a7e-b068-7c22204994d3")
           .subscribe(response => {
             expect(response).toEqual(expectedShipment);
             done();

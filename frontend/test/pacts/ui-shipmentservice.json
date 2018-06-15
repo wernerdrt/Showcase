@@ -1,0 +1,163 @@
+{
+  "consumer": {
+    "name": "ui"
+  },
+  "provider": {
+    "name": "shipmentservice"
+  },
+  "interactions": [
+    {
+      "description": "a request to create a shipment",
+      "providerState": "provider accepts a new shipment",
+      "request": {
+        "method": "POST",
+        "path": "/educama/v1/shipments",
+        "body": {
+          "uuidSender": "3c808e57-2751-4f1c-8f1c-80772bf540a2",
+          "uuidReceiver": "b2443a43-b107-4ea0-91ed-1ccc9369fb59",
+          "customerTypeEnum": "RECEIVER",
+          "shipmentCargo": {
+            "numberPackages": "5",
+            "totalWeight": "40",
+            "totalCapacity": "32.5",
+            "cargoDescription": "this cargo includes pens and other writing articles",
+            "dangerousGoods": false
+          },
+          "shipmentServices": {
+            "preCarriage": true,
+            "exportInsurance": false,
+            "exportCustomsClearance": true,
+            "flight": true,
+            "importInsurance": true,
+            "importCustomsClearance": false,
+            "onCarriage": true
+          },
+          "shipmentFlight": {
+            "flightNumber": "10243",
+            "airline": "LH",
+            "departureAirport": "FRA",
+            "destinationAirport": "STR",
+            "departureTime": "2015-06-02T21:34:33.616Z",
+            "destinationTime": "2015-06-02T21:34:33.616Z",
+            "price": 100.12
+          }
+        }
+      },
+      "response": {
+        "status": 201,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "trackingId": "2dad095a-5f33-4a7e-b068-7c22204994d3",
+          "sender": {
+            "name": "Daimler AG (Standort Möhringen)",
+            "uuid": "3c808e57-2751-4f1c-8f1c-80772bf540a2",
+            "address": {
+              "street": "Epplestraße",
+              "streetNo": "225",
+              "zipCode": "70567",
+              "city": "Stuttgart"
+            }
+          },
+          "receiver": {
+            "name": "Continental AG",
+            "uuid": "b2443a43-b107-4ea0-91ed-1ccc9369fb59",
+            "address": {
+              "street": "Vahrenwalder Str.",
+              "streetNo": "9",
+              "zipCode": "30165",
+              "city": "Hannover"
+            }
+          },
+          "shipmentCargo": {
+            "numberPackages": 5,
+            "totalWeight": 40,
+            "totalCapacity": 32.5,
+            "cargoDescription": "this cargo includes pens and other writing articles",
+            "dangerousGoods": null
+          },
+          "shipmentServices": {
+            "preCarriage": true,
+            "exportInsurance": false,
+            "exportCustomsClearance": true,
+            "flight": true,
+            "importInsurance": true,
+            "importCustomsClearance": false,
+            "onCarriage": true
+          },
+          "customerTypeEnum": "RECEIVER"
+        },
+        "matchingRules": {
+          "$.body": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "a request for a shipment with id 2dad095a-5f33-4a7e-b068-7c22204994d3",
+      "providerState": "provider returns a shipment",
+      "request": {
+        "method": "GET",
+        "path": "/educama/v1/shipments/2dad095a-5f33-4a7e-b068-7c22204994d3"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "trackingId": "2dad095a-5f33-4a7e-b068-7c22204994d3",
+          "sender": {
+            "name": "Daimler AG (Standort Möhringen)",
+            "uuid": "3c808e57-2751-4f1c-8f1c-80772bf540a2",
+            "address": {
+              "street": "Epplestraße",
+              "streetNo": "225",
+              "zipCode": "70567",
+              "city": "Stuttgart"
+            }
+          },
+          "receiver": {
+            "name": "Continental AG",
+            "uuid": "b2443a43-b107-4ea0-91ed-1ccc9369fb59",
+            "address": {
+              "street": "Vahrenwalder Str.",
+              "streetNo": "9",
+              "zipCode": "30165",
+              "city": "Hannover"
+            }
+          },
+          "shipmentCargo": {
+            "numberPackages": 5,
+            "totalWeight": 40,
+            "totalCapacity": 32.5,
+            "cargoDescription": "this cargo includes pens and other writing articles",
+            "dangerousGoods": null
+          },
+          "shipmentServices": {
+            "preCarriage": true,
+            "exportInsurance": false,
+            "exportCustomsClearance": true,
+            "flight": true,
+            "importInsurance": true,
+            "importCustomsClearance": false,
+            "onCarriage": true
+          },
+          "customerTypeEnum": "RECEIVER"
+        },
+        "matchingRules": {
+          "$.body": {
+            "match": "type"
+          }
+        }
+      }
+    }
+  ],
+  "metadata": {
+    "pactSpecification": {
+      "version": "2.0.0"
+    }
+  }
+}
